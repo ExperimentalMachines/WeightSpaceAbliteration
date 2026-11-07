@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  integrity:
+    name: ledger and data policy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # The gates need corpora and a GPU. The ledger does not. This job checks the part that must
+      # never be wrong: the chain, its first entry, and that no answers drifted.
+      - name: install verifier
+        run: pip install "gdkit @ git+https://github.com/arjhinety/gdkit@8cf73ec9306e943f63e622d2b2f41824a9a23755"
+
+      - name: verify ledgers
+        run: python scripts/verify_ledger.py
+
+      - name: compile sources
+        run: python -m compileall -q harness tools scripts
+
+      - name: no corpora or generated output tracked
+        run: |
+          if git ls-files | grep -E '(_cache/|splits/.*\.jsonl$|results/)'; then
+            echo "corpora or generated output is tracked; refusing" >&2
+            exit 1
+          fi
+          echo "no corpora tracked"

@@ -1,0 +1,79 @@
+{
+  "host": {
+    "TODO": "record GPU model, VRAM and count when the execution machine is provisioned; this file is a harness declaration, not a pre-registration answer"
+  },
+  "batch": 8,
+  "model": {
+    "id": "Qwen/Qwen3-4B",
+    "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+    "dtype": "bfloat16",
+    "max_new_tokens": 256,
+    "thinking": false
+  },
+  "parent": {
+    "id": "Qwen/Qwen3-4B",
+    "revision": "1cfa9a7208912126459214e8b04321603b3df60c"
+  },
+  "judge": {
+    "id": "cais/HarmBench-Llama-2-13b-cls",
+    "revision": "bda705349d1144fa618770bea64d99ce54e3835b"
+  },
+  "judge_alt": {
+    "id": "cais/HarmBench-Mistral-7b-val-cls",
+    "revision": "51182c7cdaf9b2e5f05b745b81b047b67e7384a1"
+  },
+  "capability": {
+    "num_fewshot": 5,
+    "tasks": [
+      "mmlu_pro",
+      "gpqa_diamond",
+      "bbh",
+      "leaderboard_musr",
+      "ifeval",
+      "hellaswag",
+      "arc_challenge",
+      "winogrande",
+      "piqa",
+      "truthfulqa_mc1",
+      "truthfulqa_mc2",
+      "truthfulqa_gen",
+      "gsm8k"
+    ]
+  },
+  "direction": {
+    "n": 400
+  },
+  "refusal_eval": {
+    "arms": [
+      "primary",
+      "large"
+    ]
+  },
+  "seeds": {
+    "capability": [
+      0,
+      1,
+      2
+    ],
+    "probe": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "embedding": {
+    "id": "BAAI/bge-small-en-v1.5",
+    "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+    "threshold": 0.8,
+    "truncation": 128
+  },
+  "probe": {
+    "pos_arm": "probe_pos",
+    "heldout_arm": "probe_heldout",
+    "neg_arm": "probe_neg",
+    "train_fraction": 0.8
+  },
+  "stage": "baseline"
+}

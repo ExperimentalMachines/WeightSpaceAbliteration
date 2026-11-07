@@ -1,0 +1,61 @@
+# Local environment and workstation metadata
+.omp/
+.gdkit/*.local
+
+# ---------------------------------------------------------------------------
+# Corpora. Never committed. The pre-registration publishes hashes, exclusion
+# lists and a fetch script (see .gdkit/project.yaml); redistributing the rows
+# would contradict it. Rebuild with `python harness/build_splits.py`.
+# ---------------------------------------------------------------------------
+datasets/_cache/
+datasets/**/*.csv
+datasets/**/*.parquet
+datasets/**/*.json
+
+# Materialised splits: rebuilt from pinned sources, hashed into splits/manifest.json.
+runs/*/splits/*.jsonl
+
+# Generated model output. Contains harmful text and must never be published.
+runs/*/results/
+
+# Model artifacts
+*.npz
+*.npy
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.gguf
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+build/
+dist/
+
+# Dependency checkout. gdkit is pinned in pyproject.toml instead.
+gdkit-src/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Build logs and downloaded archives (rebuildable from the pinned commit)
+*.log
+harness/*.tar.gz
+.gdkit/.value.txt
+datasets/inventory/_verified.json
+datasets/inventory/_manifest.json
+
+# Reviewer handoff — sent directly, not published
+docs/handoff.pdf
+docs/handoff.html
+
+# Internal audit reports — not part of the published artifact
+reports/

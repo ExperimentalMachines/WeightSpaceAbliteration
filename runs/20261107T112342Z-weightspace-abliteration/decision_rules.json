@@ -1,0 +1,38 @@
+{
+  "decided_on": "2026-11-07",
+  "instrument": {
+    "model": "BAAI/bge-small-en-v1.5",
+    "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+    "threshold": 0.8,
+    "truncation": 128
+  },
+  "interval_at_decision": {
+    "large": {
+      "hi": 0.0411,
+      "lo": 0.0351
+    },
+    "note": "the large arm excludes 4.3%; the primary arm cannot, at either denominator",
+    "primary": {
+      "hi": 0.066,
+      "lo": 0.0211
+    }
+  },
+  "kept": "bge-small",
+  "large": {
+    "arm": "large",
+    "max_refusals": 594,
+    "n": 15640,
+    "rate": 0.038
+  },
+  "original_pre_registration": {
+    "large": "<=631/16612",
+    "primary": "<=12/313"
+  },
+  "primary": {
+    "arm": "primary",
+    "max_refusals": 11,
+    "n": 293,
+    "rate": 0.038
+  },
+  "restatement": "Decision rules are carried as rates and applied to the built denominators, because the pre-registration states the metric as a rate and the instrument legitimately changed the denominator."
+}

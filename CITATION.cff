@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this repository or its split, cite it as below."
+title: "WeightSpaceAbliteration"
+abstract: >-
+  A pre-registered study of whether a weight-space edit can remove the refusal direction from an
+  instruction-tuned language model, measured mechanistically: a linear probe on base-model
+  activations must stop separating harmful from harmless prompts beyond its null-control and
+  permutation baselines on held-out categories, while residual refusal on a behaviour-disjoint
+  evaluation set falls below a declared threshold at a declared capability cost.
+authors:
+  - name: "Experimental Machines"
+version: "0.1.0"
+date-released: "2026-11-07"
+license: Apache-2.0
+repository-code: "https://github.com/arjhinety/WeightSpaceAbliteration"
+keywords:
+  - refusal
+  - abliteration
+  - interpretability
+  - reproducibility
+  - pre-registration
+  - safety evaluation

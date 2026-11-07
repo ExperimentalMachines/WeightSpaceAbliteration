@@ -1,0 +1,61 @@
+WeightSpaceAbliteration
+Copyright 2026 the WeightSpaceAbliteration authors.
+
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+This repository does not redistribute the evaluation corpora. It publishes identifiers,
+revisions and hashes, and fetches the rows at build time. The notices below are reproduced
+because the measurements depend on those works.
+
+--------------------------------------------------------------------------------
+HarmBench
+  Copyright (c) 2024 centerforaisafety
+  https://github.com/centerforaisafety/HarmBench
+  MIT License
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this
+  software and associated documentation files (the "Software"), to deal in the Software
+  without restriction, including without limitation the rights to use, copy, modify, merge,
+  publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+  to whom the Software is furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all copies or
+  substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+  FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+  DEALINGS IN THE SOFTWARE.
+
+--------------------------------------------------------------------------------
+AdvBench (llm-attacks)
+  Copyright (c) 2023 Andy Zou
+  https://github.com/llm-attacks/llm-attacks
+  MIT License — same permission and warranty text as above.
+
+--------------------------------------------------------------------------------
+mlabonne/harmless_alpaca
+  No licence is declared on the dataset card. The dataset is derived from
+  tatsu-lab/alpaca, which is CC BY-NC 4.0; non-commercial terms are inherited.
+  Used locally for the benign arm and for KL divergence. Not redistributed, not
+  republished, and not included in any released artifact bundle.
+
+--------------------------------------------------------------------------------
+Salad-Data
+  Copyright OpenSafetyLab
+  https://huggingface.co/datasets/OpenSafetyLab/Salad-Data
+  Apache License, Version 2.0.
+
+--------------------------------------------------------------------------------
+gdkit
+  Copyright gdkit contributors
+  https://github.com/arjhinety/gdkit
+  Apache License, Version 2.0.
+
+  Used as a dependency, pinned by commit in pyproject.toml. Not vendored, not modified.
+  gdkit's own NOTICE records that it vendors one module from OpenGrad
+  (https://github.com/arjhinety/OpenGrad); the upstream OpenGrad NOTICE states that
+  third-party datasets, models, checkpoints, benchmark assets and papers retain their own
+  licenses and terms.

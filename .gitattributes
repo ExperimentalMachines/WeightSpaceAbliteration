@@ -1,0 +1,26 @@
+* text=auto eol=lf
+
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.cff text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.parquet binary
+*.npz binary
+*.npy binary
+*.safetensors binary
+*.tar.gz binary
+
+# The split manifest and the inventory are data, not prose; keep them out of linguist stats.
+runs/**/splits/manifest.json linguist-generated=true
+datasets/inventory/*.md linguist-documentation=true
+
+*.pdf binary

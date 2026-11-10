@@ -1,0 +1,12 @@
+{
+  "model": {
+    "id": "Qwen/Qwen3.5-0.8B",
+    "license": "apache-2.0",
+    "parameters": 873438784,
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17"
+  },
+  "note": "One run per model. This run shares the frozen answers (digest c722ba65) and the same split content as the Qwen3-4B run; arm hashes are identical because the sources and the exclusion instrument are identical.",
+  "registered_set": "six models; the sixth was added after the freeze and is recorded as model_set_extension in run 20261107T112342Z-weightspace-abliteration",
+  "run_id": "20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b",
+  "stage": "baseline"
+}

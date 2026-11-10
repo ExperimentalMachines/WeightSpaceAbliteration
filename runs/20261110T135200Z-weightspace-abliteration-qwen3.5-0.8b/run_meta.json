@@ -1,0 +1,6 @@
+{
+  "run_id": "20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b",
+  "mode": "registered",
+  "model": "qwen3.5-0.8b",
+  "pre_registration": ".gdkit/project.yaml"
+}

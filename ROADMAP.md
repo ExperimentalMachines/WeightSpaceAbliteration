@@ -36,6 +36,17 @@ Status as of 2026-11-07. Nothing here is a promise; the pre-registration is the 
   `base_model_revision` answer is not edited. Recorded as ledger entry 18 (`model_set_extension`) with
   `runs/…/model_set_extension.json`. It gets its own run and its own receipts when it is studied.
 
+## Environment and host
+
+- `uv.lock` pins the declared toolchain (116 packages, `lm-eval` 0.4.13 among them). It is the target,
+  not the record: the host may resolve differently, and the difference matters.
+- `scripts/record_host.py --run runs/<id>` writes `runs/<id>/host.json` from `nvidia-smi`, `nvcc`,
+  the Python and package versions, torch's CUDA and cuDNN build, and the GPU list, then records a
+  `host_provisioned` ledger entry hashing both the raw tool output and the structured record.
+- Run it once on the host, before any gate. A hand-written version list is not evidence; this is.
+- `capability_suite` shells out to `python -m lm_eval`, which is now a declared dependency. Without it
+  the gate cannot run on a clean install.
+
 ## After the first result
 
 - Attest and promote. `promote` re-runs the cheap gates and checks every receipt.

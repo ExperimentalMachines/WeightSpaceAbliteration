@@ -62,3 +62,6 @@ reports/
 
 # Gate logs: hashed into the ledger, kept locally (may contain machine paths)
 runs/*/logs/
+
+# Full host record: contains GPU UUIDs and absolute paths. The ledger carries the hash and the summary.
+runs/*/host.json

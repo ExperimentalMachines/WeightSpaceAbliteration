@@ -44,6 +44,8 @@ Status as of 2026-11-07. Nothing here is a promise; the pre-registration is the 
   the Python and package versions, torch's CUDA and cuDNN build, and the GPU list, then records a
   `host_provisioned` ledger entry hashing both the raw tool output and the structured record.
 - Run it once on the host, before any gate. A hand-written version list is not evidence; this is.
+- `host.json` stays local: it carries GPU UUIDs and absolute paths. The ledger entry records the hash
+  and the summary fields (GPU names, torch, transformers, CUDA, driver), which is what a reader needs.
 - `capability_suite` shells out to `python -m lm_eval`, which is now a declared dependency. Without it
   the gate cannot run on a clean install.
 

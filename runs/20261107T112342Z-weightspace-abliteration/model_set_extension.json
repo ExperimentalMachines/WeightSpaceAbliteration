@@ -1,0 +1,19 @@
+{
+  "added": {
+    "gated": false,
+    "id": "Qwen/Qwen3.5-0.8B",
+    "license": "apache-2.0",
+    "parameters": 873438784,
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17"
+  },
+  "extension": "model_set",
+  "reason": "Added after the freeze at the owner's direction, following the Qwen3.5-0.8B development pilot. The frozen answer in .gdkit/project.yaml is not edited; the extension is recorded here instead, and the model gets its own run with its own receipts when it is studied.",
+  "registered_set_unchanged": [
+    "Qwen/Qwen3-4B",
+    "Qwen/Qwen3-30B-A3B",
+    "Qwen/Qwen3-8B",
+    "google/gemma-4-E2B-it",
+    "openbmb/MiniCPM5-2B"
+  ],
+  "status": "registered for future runs; no run exists for it yet"
+}

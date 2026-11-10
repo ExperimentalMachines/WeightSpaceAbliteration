@@ -31,6 +31,10 @@ Status as of 2026-11-07. Nothing here is a promise; the pre-registration is the 
 - **Seeds**: capability 0–2, probe 0–4. Generation stays at temperature 0.
 - **Method order**: `abliteration`, then `heretic_style`, then `obliteratus_style`; each reviewed
   against the checklist before the next begins.
+- **Model set extended to six** (2026-11-10): `Qwen/Qwen3.5-0.8B` @ `2fc06364715b967f1860aea9cf38778875588b17`,
+  Apache-2.0, ungated, 873M parameters. Added after the freeze at the owner's direction; the frozen
+  `base_model_revision` answer is not edited. Recorded as ledger entry 18 (`model_set_extension`) with
+  `runs/…/model_set_extension.json`. It gets its own run and its own receipts when it is studied.
 
 ## After the first result
 

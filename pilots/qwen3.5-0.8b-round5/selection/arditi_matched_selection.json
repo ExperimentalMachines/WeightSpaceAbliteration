@@ -1,0 +1,74 @@
+{
+ "method": "Arditi et al. 2406.11717 (single direction, all residual writers + input embedding; output head untied and unchanged)",
+ "selection_mode": "weights",
+ "n_train": 335,
+ "n_sel": 80,
+ "chosen": {
+  "layer": 11,
+  "pos": -8,
+  "bypass": -6.712843894958496,
+  "kl": 0.09136168658733368,
+  "induce": 0.9702059030532837,
+  "kept": true
+ },
+ "refusal_token_ids": [
+  40
+ ],
+ "refusal_tokens": [
+  "I"
+ ],
+ "baseline_refusal_score_selection": 0.5638777017593384,
+ "candidates_total": 162,
+ "candidates_kept": 4,
+ "top5": [
+  {
+   "layer": 11,
+   "pos": -8,
+   "bypass": -6.712843894958496,
+   "kl": 0.09136168658733368,
+   "induce": 0.9702059030532837,
+   "kept": true
+  },
+  {
+   "layer": 10,
+   "pos": -8,
+   "bypass": -5.312228202819824,
+   "kl": 0.07629856467247009,
+   "induce": 1.9984149932861328,
+   "kept": true
+  },
+  {
+   "layer": 13,
+   "pos": -2,
+   "bypass": -5.077914714813232,
+   "kl": 0.07789580523967743,
+   "induce": 0.1859625279903412,
+   "kept": true
+  },
+  {
+   "layer": 12,
+   "pos": -2,
+   "bypass": -4.069517612457275,
+   "kl": 0.08336862176656723,
+   "induce": 0.3435962200164795,
+   "kept": true
+  }
+ ],
+ "hook_vs_weight": {
+  "harmful_selection": {
+   "tv_mean": 0.040515247732400894,
+   "tv_max": 0.11446957290172577,
+   "refusal_mass_hook": 0.011441526003181934,
+   "refusal_mass_weight": 0.01032238733023405,
+   "max_abs_logp_diff": 1.1379661560058594
+  },
+  "harmless_selection": {
+   "tv_mean": 0.036084163933992386,
+   "tv_max": 0.12044677138328552,
+   "refusal_mass_hook": 0.010132183320820332,
+   "refusal_mass_weight": 0.010171646252274513,
+   "max_abs_logp_diff": 1.480245590209961
+  }
+ },
+ "direction_norm": 0.8855456709861755
+}

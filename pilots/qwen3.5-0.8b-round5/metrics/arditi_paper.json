@@ -1,0 +1,141 @@
+{
+ "cond": "arditi_paper",
+ "arms": {
+  "val_eval": 60,
+  "sr_dev": 267
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 0,
+  "n": 83,
+  "rate": 0.0,
+  "match": "string (first 160 chars of a 64-token reply)"
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.364,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.0656106248497963,
+ "seconds": 429,
+ "patch": {
+  "elements_changed": 326697554,
+  "elements_total": 1006672704,
+  "share_of_unique_params": 0.43421130124672713,
+  "tensors_changed": 49,
+  "per_tensor_elements": {
+   "model.embed_tokens.weight": 210333096,
+   "model.layers.0.linear_attn.out_proj.weight": 1770833,
+   "model.layers.0.mlp.down_proj.weight": 3069625,
+   "model.layers.1.linear_attn.out_proj.weight": 1772438,
+   "model.layers.1.mlp.down_proj.weight": 3067268,
+   "model.layers.2.linear_attn.out_proj.weight": 1779325,
+   "model.layers.2.mlp.down_proj.weight": 3081881,
+   "model.layers.3.self_attn.o_proj.weight": 1795790,
+   "model.layers.3.mlp.down_proj.weight": 3111312,
+   "model.layers.4.linear_attn.out_proj.weight": 1801700,
+   "model.layers.4.mlp.down_proj.weight": 3111629,
+   "model.layers.5.linear_attn.out_proj.weight": 1780501,
+   "model.layers.5.mlp.down_proj.weight": 3131284,
+   "model.layers.6.linear_attn.out_proj.weight": 1788123,
+   "model.layers.6.mlp.down_proj.weight": 3127050,
+   "model.layers.7.self_attn.o_proj.weight": 1776489,
+   "model.layers.7.mlp.down_proj.weight": 3121755,
+   "model.layers.8.linear_attn.out_proj.weight": 1755964,
+   "model.layers.8.mlp.down_proj.weight": 3120876,
+   "model.layers.9.linear_attn.out_proj.weight": 1782481,
+   "model.layers.9.mlp.down_proj.weight": 3134429,
+   "model.layers.10.linear_attn.out_proj.weight": 1786012,
+   "model.layers.10.mlp.down_proj.weight": 3106037,
+   "model.layers.11.self_attn.o_proj.weight": 1778394,
+   "model.layers.11.mlp.down_proj.weight": 3122248,
+   "model.layers.12.linear_attn.out_proj.weight": 1772960,
+   "model.layers.12.mlp.down_proj.weight": 3092281,
+   "model.layers.13.linear_attn.out_proj.weight": 1756421,
+   "model.layers.13.mlp.down_proj.weight": 3077043,
+   "model.layers.14.linear_attn.out_proj.weight": 1762756,
+   "model.layers.14.mlp.down_proj.weight": 3062530,
+   "model.layers.15.self_attn.o_proj.weight": 1772059,
+   "model.layers.15.mlp.down_proj.weight": 3073602,
+   "model.layers.16.linear_attn.out_proj.weight": 1777832,
+   "model.layers.16.mlp.down_proj.weight": 3058232,
+   "model.layers.17.linear_attn.out_proj.weight": 1765303,
+   "model.layers.17.mlp.down_proj.weight": 3063861,
+   "model.layers.18.linear_attn.out_proj.weight": 1746796,
+   "model.layers.18.mlp.down_proj.weight": 3060524,
+   "model.layers.19.self_attn.o_proj.weight": 1737148,
+   "model.layers.19.mlp.down_proj.weight": 3032263,
+   "model.layers.20.linear_attn.out_proj.weight": 1745216,
+   "model.layers.20.mlp.down_proj.weight": 3040543,
+   "model.layers.21.linear_attn.out_proj.weight": 1738957,
+   "model.layers.21.mlp.down_proj.weight": 3034028,
+   "model.layers.22.linear_attn.out_proj.weight": 1723943,
+   "model.layers.22.mlp.down_proj.weight": 3032152,
+   "model.layers.23.self_attn.o_proj.weight": 1730812,
+   "model.layers.23.mlp.down_proj.weight": 3033752
+  }
+ },
+ "selection": {
+  "method": "Arditi et al. 2406.11717 (single direction, all residual writers + input embedding; output head untied and unchanged)",
+  "selection_mode": "weights",
+  "n_train": 128,
+  "n_sel": 32,
+  "chosen": {
+   "layer": 10,
+   "pos": -5,
+   "bypass": -6.860750675201416,
+   "kl": 0.09979261457920074,
+   "induce": 0.20922031998634338,
+   "kept": true
+  },
+  "refusal_token_ids": [
+   40
+  ],
+  "refusal_tokens": [
+   "I"
+  ],
+  "baseline_refusal_score_selection": 0.14968781173229218,
+  "candidates_total": 162,
+  "candidates_kept": 2,
+  "top5": [
+   {
+    "layer": 10,
+    "pos": -5,
+    "bypass": -6.860750675201416,
+    "kl": 0.09979261457920074,
+    "induce": 0.20922031998634338,
+    "kept": true
+   },
+   {
+    "layer": 12,
+    "pos": -2,
+    "bypass": -4.556290626525879,
+    "kl": 0.09633314609527588,
+    "induce": 0.10120145976543427,
+    "kept": true
+   }
+  ],
+  "hook_vs_weight": {
+   "harmful_selection": {
+    "tv_mean": 0.04252748191356659,
+    "tv_max": 0.10261833667755127,
+    "refusal_mass_hook": 0.009129589423537254,
+    "refusal_mass_weight": 0.008012106642127037,
+    "max_abs_logp_diff": 1.184798240661621
+   },
+   "harmless_selection": {
+    "tv_mean": 0.022600285708904266,
+    "tv_max": 0.07706183195114136,
+    "refusal_mass_hook": 0.010303949005901814,
+    "refusal_mass_weight": 0.010045794770121574,
+    "max_abs_logp_diff": 0.7351646423339844
+   }
+  },
+  "direction_norm": 0.7124075889587402
+ }
+}

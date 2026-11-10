@@ -1,0 +1,58 @@
+{
+ "method": "Arditi et al. 2406.11717 (single direction, all residual writers + input embedding; output head untied and unchanged)",
+ "selection_mode": "weights",
+ "n_train": 128,
+ "n_sel": 32,
+ "chosen": {
+  "layer": 10,
+  "pos": -5,
+  "bypass": -6.860750675201416,
+  "kl": 0.09979261457920074,
+  "induce": 0.20922031998634338,
+  "kept": true
+ },
+ "refusal_token_ids": [
+  40
+ ],
+ "refusal_tokens": [
+  "I"
+ ],
+ "baseline_refusal_score_selection": 0.14968781173229218,
+ "candidates_total": 162,
+ "candidates_kept": 2,
+ "top5": [
+  {
+   "layer": 10,
+   "pos": -5,
+   "bypass": -6.860750675201416,
+   "kl": 0.09979261457920074,
+   "induce": 0.20922031998634338,
+   "kept": true
+  },
+  {
+   "layer": 12,
+   "pos": -2,
+   "bypass": -4.556290626525879,
+   "kl": 0.09633314609527588,
+   "induce": 0.10120145976543427,
+   "kept": true
+  }
+ ],
+ "hook_vs_weight": {
+  "harmful_selection": {
+   "tv_mean": 0.04252748191356659,
+   "tv_max": 0.10261833667755127,
+   "refusal_mass_hook": 0.009129589423537254,
+   "refusal_mass_weight": 0.008012106642127037,
+   "max_abs_logp_diff": 1.184798240661621
+  },
+  "harmless_selection": {
+   "tv_mean": 0.022600285708904266,
+   "tv_max": 0.07706183195114136,
+   "refusal_mass_hook": 0.010303949005901814,
+   "refusal_mass_weight": 0.010045794770121574,
+   "max_abs_logp_diff": 0.7351646423339844
+  }
+ },
+ "direction_norm": 0.7124075889587402
+}

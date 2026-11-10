@@ -1,0 +1,191 @@
+[
+ {
+  "pass": 1,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "automatic: baseline full-vocabulary first-token log-probs on harmless_val (the KL reference)",
+  "t": 1794288510
+ },
+ {
+  "pass": 2,
+  "kind": "read",
+  "n": 335,
+  "note": "harmful_ext states, layers 1-23, last 9 positions",
+  "t": 1794288555
+ },
+ {
+  "pass": 3,
+  "kind": "read",
+  "n": 335,
+  "note": "harmless_ext states, layers 1-23, last 9 positions",
+  "t": 1794288556
+ },
+ {
+  "pass": 4,
+  "kind": "first_logp",
+  "n": 670,
+  "note": "first-token distributions on the fit prompts (refusal token set)",
+  "t": 1794288608
+ },
+ {
+  "pass": 5,
+  "kind": "first_logp",
+  "n": 960,
+  "note": "scan: harmful_val x 12 rows (baseline + 11 layer directions), refusal mass",
+  "t": 1794288663
+ },
+ {
+  "pass": 6,
+  "kind": "first_logp",
+  "n": 960,
+  "note": "scan: harmless_val x 12 rows, full-vocab KL",
+  "t": 1794288666
+ },
+ {
+  "pass": 7,
+  "kind": "read_modules",
+  "n": 335,
+  "note": "writer outputs, harmful_ext, last position",
+  "t": 1794288710
+ },
+ {
+  "pass": 8,
+  "kind": "read_modules",
+  "n": 335,
+  "note": "writer outputs, harmless_ext, last position",
+  "t": 1794288711
+ },
+ {
+  "pass": 9,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "candidate top7: refusal flags on harmful_val",
+  "t": 1794288742
+ },
+ {
+  "pass": 10,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate top7: full-vocab first-token KL on harmless_val",
+  "t": 1794288747
+ },
+ {
+  "pass": 11,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "candidate top10: refusal flags on harmful_val",
+  "t": 1794288747
+ },
+ {
+  "pass": 12,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate top10: full-vocab first-token KL on harmless_val",
+  "t": 1794288753
+ },
+ {
+  "pass": 13,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "candidate top12: refusal flags on harmful_val",
+  "t": 1794288753
+ },
+ {
+  "pass": 14,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate top12: full-vocab first-token KL on harmless_val",
+  "t": 1794288758
+ },
+ {
+  "pass": 15,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "candidate top14: refusal flags on harmful_val",
+  "t": 1794288759
+ },
+ {
+  "pass": 16,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate top14: full-vocab first-token KL on harmless_val",
+  "t": 1794288764
+ },
+ {
+  "pass": 17,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "candidate top16: refusal flags on harmful_val",
+  "t": 1794288765
+ },
+ {
+  "pass": 18,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate top16: full-vocab first-token KL on harmless_val",
+  "t": 1794288770
+ },
+ {
+  "pass": 19,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "candidate top18: refusal flags on harmful_val",
+  "t": 1794288770
+ },
+ {
+  "pass": 20,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate top18: full-vocab first-token KL on harmless_val",
+  "t": 1794288776
+ },
+ {
+  "pass": 21,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "candidate top20: refusal flags on harmful_val",
+  "t": 1794288776
+ },
+ {
+  "pass": 22,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate top20: full-vocab first-token KL on harmless_val",
+  "t": 1794288782
+ },
+ {
+  "pass": 23,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "candidate all_pre14: refusal flags on harmful_val",
+  "t": 1794288782
+ },
+ {
+  "pass": 24,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate all_pre14: full-vocab first-token KL on harmless_val",
+  "t": 1794288788
+ },
+ {
+  "pass": 25,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "candidate all48: refusal flags on harmful_val",
+  "t": 1794288788
+ },
+ {
+  "pass": 26,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate all48: full-vocab first-token KL on harmless_val",
+  "t": 1794288793
+ },
+ {
+  "pass": 27,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "reference only: unedited refusal flags on harmful_val",
+  "t": 1794288820
+ }
+]

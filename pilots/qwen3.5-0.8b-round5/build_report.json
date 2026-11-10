@@ -1,0 +1,25 @@
+{
+ "derivation": {
+  "count": 415,
+  "sha256": "cbae5795a398745e",
+  "matches_manifest": true
+ },
+ "harmless": {
+  "count": 415,
+  "sha256": "2a633bfd71eb4ab4",
+  "matches_manifest": true
+ },
+ "primary": {
+  "count": 293,
+  "sha256": "93ab40e3bb29f147",
+  "matches_manifest": true
+ },
+ "primary_eval": {
+  "count": 213,
+  "by_functional": {
+   "standard": 133,
+   "contextual": 80,
+   "copyright": 80
+  }
+ }
+}

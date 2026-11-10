@@ -1,0 +1,54 @@
+{
+ "cond": "wsp",
+ "arms": {
+  "val_eval": 60,
+  "sr_dev": 267
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 0,
+  "n": 83,
+  "rate": 0.0,
+  "match": "string (first 160 chars of a 64-token reply)"
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.372,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.027676891535520554,
+ "seconds": 431,
+ "patch": {
+  "elements_changed": 48035590,
+  "elements_total": 752393024,
+  "share_of_unique_params": 0.06384374717434914,
+  "tensors_changed": 20,
+  "per_tensor_elements": {
+   "model.layers.1.linear_attn.out_proj.weight": 1790481,
+   "model.layers.2.linear_attn.out_proj.weight": 1791627,
+   "model.layers.3.self_attn.o_proj.weight": 1794466,
+   "model.layers.3.mlp.down_proj.weight": 3125418,
+   "model.layers.5.linear_attn.out_proj.weight": 1796603,
+   "model.layers.6.linear_attn.out_proj.weight": 1782509,
+   "model.layers.6.mlp.down_proj.weight": 3150891,
+   "model.layers.7.self_attn.o_proj.weight": 1794772,
+   "model.layers.7.mlp.down_proj.weight": 3150424,
+   "model.layers.8.mlp.down_proj.weight": 3142226,
+   "model.layers.9.linear_attn.out_proj.weight": 1771065,
+   "model.layers.9.mlp.down_proj.weight": 3144534,
+   "model.layers.10.linear_attn.out_proj.weight": 1784869,
+   "model.layers.10.mlp.down_proj.weight": 3134780,
+   "model.layers.11.self_attn.o_proj.weight": 1823471,
+   "model.layers.11.mlp.down_proj.weight": 3171568,
+   "model.layers.12.linear_attn.out_proj.weight": 1796786,
+   "model.layers.12.mlp.down_proj.weight": 3154495,
+   "model.layers.13.linear_attn.out_proj.weight": 1795655,
+   "model.layers.13.mlp.down_proj.weight": 3138950
+  }
+ }
+}

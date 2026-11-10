@@ -1,0 +1,26 @@
+{
+ "cond": "parent",
+ "arms": {
+  "val_eval": 60,
+  "sr_dev": 267
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 4,
+  "n": 83,
+  "rate": 0.04819277108433735,
+  "match": "string (first 160 chars of a 64-token reply)"
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.394,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.0,
+ "seconds": 424
+}

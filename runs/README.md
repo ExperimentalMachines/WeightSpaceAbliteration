@@ -27,6 +27,26 @@ single run would make `promote` responsible for models it never ran.
 
 `tools/start_run.py --model <slug>` appends the slug to the default run id and writes `run_meta.json`.
 
+## What a run must record
+
+Enforced by code, not by convention:
+
+| step | forced by | what it binds |
+|---|---|---|
+| freeze the answers | `prereg.freeze_run` | answer digest as both input and output hash |
+| record the host | `scripts/record_host.py` | raw `nvidia-smi`/`nvcc`/version text as input, structured record as output |
+| every gate | `gates.py` wrapper | receipt hash as input, gate log hash as output |
+| every paper lookup | `gdkit.pwc_lookup` | request hash, response hash, raw response on disk |
+| the split | `build_splits.py` + `split_*` entries | source hashes, manifest hash, exclusion hash |
+
+`gdkit.ledger` refuses any entry in registered mode that lacks an input hash and an output hash, so this
+is a property of the format rather than a habit. What it does **not** force is that a gate declares
+every file it read; the wrapper now adds `harness.json` for that reason, and a new gate must add its own
+inputs to `inputs` in `gates.py:main`.
+
+Gate logs are written to `runs/<id>/logs/<gate>.log` and hashed into a `gate_log` entry that also names
+the receipt and the ledger head at execution time. The log files are ignored by git; the hash is not.
+
 ## The ledger
 
 Every entry carries `seq`, `ts`, `op`, `params`, `prev_hash` and `entry_hash`. Registered mode also

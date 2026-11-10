@@ -59,3 +59,6 @@ docs/handoff.html
 
 # Internal audit reports — not part of the published artifact
 reports/
+
+# Gate logs: hashed into the ledger, kept locally (may contain machine paths)
+runs/*/logs/

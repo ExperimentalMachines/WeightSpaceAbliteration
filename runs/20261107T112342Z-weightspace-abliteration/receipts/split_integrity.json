@@ -3,6 +3,7 @@
   "gate": "split_integrity",
   "gate_code_hash": "ea01689d669e85f7604f80760a946df3a1758580a9a71783b5b754413fc371a1",
   "inputs": {
+    "harness.json": "6b7ebb44b9bcfa331a6c30adc2648a4f7b4eec8da4629c26714b459a730053c9",
     "splits/derivation.jsonl": "cbae5795a398745e9fee2ae7f2d34c0d6e5acf8ba508891b2223b9c4a72fbf51",
     "splits/enriched.jsonl": "e899a1706f94161a7d01ab0eeb85e91df9d14876a37619f6aea21bd42ee0b9fa",
     "splits/harmbench_val.jsonl": "5b09934543f07a25ac07bf0b53112dd1853ad571a15e65be034fee7096040d15",
@@ -16,8 +17,8 @@
     "splits/treadon.jsonl": "2398b5bc4b28c25d9d7a2e9b47912a3bbe12b9262f7eb8637f46bf1982ccae39",
     "splits/zaakirio.jsonl": "7c8844dc162bf17d620f9e16c48f76c6cb007bf4b38c57081c5072827235641b"
   },
-  "ledger_head": "614ab56b6bc1c3482b95cfde61f8751781624f37c2074c587e6501247aa8f547",
-  "receipt_hash": "4c596217ff85f34a5ab941817a5836ff3c9291996a2c42d7be9abd3b0cbe29e6",
+  "ledger_head": "e6ca4a99ccd57f0c881fc16e8d327f88470d65be17ebb482583d100ada31e209",
+  "receipt_hash": "1a759a5870d58b4c63712183399c13c4519bd5243c86eba53678fdcd65849c8b",
   "result": {
     "arms": 12,
     "ok": true,

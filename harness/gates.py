@@ -15,6 +15,9 @@ the gates produce measurements, and `gdkit.promote` decides whether the receipts
 from __future__ import annotations
 
 import argparse
+import contextlib
+import hashlib
+import io
 import json
 import subprocess
 import sys
@@ -550,12 +553,48 @@ def main(argv: list[str] | None = None) -> int:
         print("--gate is required unless --dry-run or --smoke", file=sys.stderr)
         return 1
     gate = REGISTRY[args.gate]
+    run_id = args.run_id or run_dir.name
     ledger_head = json.loads(
         (run_dir / "ledger.jsonl").read_text(encoding="utf-8").strip().splitlines()[-1]
     )["entry_hash"]
+
+    # Every file the gate could read, not only the split arms: a receipt that does not name
+    # harness.json can be produced against a different model, judge or seed set than declared.
     inputs = [f"splits/{p.name}" for p in sorted((run_dir / "splits").glob("*.jsonl"))]
-    path = run_gate(run_dir, gate, inputs=inputs, run_id=args.run_id or run_dir.name, ledger_head=ledger_head)
-    print(path)
+    if (run_dir / HARNESS_CONFIG).exists():
+        inputs.append(HARNESS_CONFIG)
+
+    # Capture the gate's own output. A number without the run's stdout is a number nobody can audit.
+    out_buf, err_buf = io.StringIO(), io.StringIO()
+    with contextlib.redirect_stdout(out_buf), contextlib.redirect_stderr(err_buf):
+        path = run_gate(run_dir, gate, inputs=inputs, run_id=run_id, ledger_head=ledger_head)
+
+    logs = run_dir / "logs"
+    logs.mkdir(parents=True, exist_ok=True)
+    log_path = logs / f"{gate.name}.log"
+    log_blob = (out_buf.getvalue() + err_buf.getvalue()).encode("utf-8")
+    log_path.write_bytes(log_blob)
+
+    receipt = json.loads(Path(path).read_text(encoding="utf-8"))
+    from gdkit.ledger import Ledger
+
+    ledger = Ledger(run_dir / "ledger.jsonl", run_id, "registered")
+    entry = ledger.record(
+        "gate_log",
+        rows_before=0,
+        rows_after=0,
+        params={
+            "gate": gate.name,
+            "receipt_sha256": receipt["receipt_hash"],
+            "log": str(log_path.relative_to(run_dir).as_posix()),
+            "log_bytes": len(log_blob),
+            "inputs": inputs,
+            "ledger_head_at_execution": ledger_head,
+        },
+        input_hash=receipt["receipt_hash"],
+        output_hash=hashlib.sha256(log_blob).hexdigest(),
+    )
+    print(json.dumps({"receipt": str(path), "log": str(log_path), "ledger_entry": entry["seq"]}, indent=2))
     return 0
 
 

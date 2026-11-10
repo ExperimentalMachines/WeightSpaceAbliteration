@@ -30,6 +30,10 @@ jobs:
       - name: compile sources
         run: python -m compileall -q harness tools scripts
 
+      - name: run artifacts are append-only
+        if: github.event_name == 'pull_request'
+        run: python scripts/check_append_only.py --base "${{ github.event.pull_request.base.sha }}"
+
       - name: no corpora or generated output tracked
         run: |
           if git ls-files | grep -E '(_cache/|splits/.*\.jsonl$|results/)'; then

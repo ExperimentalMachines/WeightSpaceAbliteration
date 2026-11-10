@@ -109,6 +109,21 @@ python harness/build_splits.py --run-id 20261107T112342Z-weightspace-abliteratio
 A run with a GPU additionally needs `harness.json` in the run directory — model, parent, both judges,
 capability tasks — which is where the host TODO lives today.
 
+## Conducting a run
+
+Every run follows [`docs/protocol/RUN_PROTOCOL.md`](docs/protocol/RUN_PROTOCOL.md): freeze the answers,
+record the machine, build the split, run the gates. The harness refuses out-of-order steps, and a
+refusal names the rule it enforces and the command that satisfies it. A refusal is a protocol event,
+handled per the deviation section of that document — never worked around.
+
+```bash
+python -m harness.preflight runs/<id>          # what the run is still missing
+python scripts/verify_ledger.py                # chain integrity across all runs
+```
+
+The index, including every rule and the code that enforces it, is
+[`docs/protocol/README.md`](docs/protocol/README.md).
+
 ## Data policy
 
 The corpora are **not redistributed**. The repository publishes dataset identifiers, revisions,

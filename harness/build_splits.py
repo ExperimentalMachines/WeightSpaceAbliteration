@@ -277,6 +277,29 @@ def main(argv: list[str] | None = None) -> int:
     for name, info in manifest["arms"].items():
         print(f"  {name:16s} {info['count']:6d}  {info['sha256'][:16]}")
     print(f"exclusions sha256: {manifest['exclusions_sha256']}")
+
+    # The builder records its own build. Without this, a run can hold a hashed manifest that nothing
+    # in the ledger says was ever produced, which is the same as an unrecorded measurement.
+    ledger_path = run_dir / "ledger.jsonl"
+    if ledger_path.exists():
+        from gdkit.ledger import Ledger
+        from gdkit.stream_hash import canonical_json_bytes
+
+        sources = {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                   for p in (CACHE / "advbench_pinned.csv", CACHE / "harmbench_pinned.csv",
+                             CACHE / "salad_base.json") if p.exists()}
+        inp = hashlib.sha256(canonical_json_bytes(
+            {"sources": sources, "model": MODEL, "revision": MODEL_REVISION,
+             "threshold": THRESHOLD, "truncation": 128})).hexdigest()
+        out = hashlib.sha256((splits_dir / "manifest.json").read_bytes()).hexdigest()
+        entry = Ledger(ledger_path, args.run_id, "registered").record(
+            "split_build", rows_before=0, rows_after=sum(a["count"] for a in manifest["arms"].values()),
+            params={"arms": {k: v["count"] for k, v in manifest["arms"].items()},
+                    "exclusions_sha256": manifest["exclusions_sha256"],
+                    "instruction": {"model": MODEL, "revision": MODEL_REVISION,
+                                    "threshold": THRESHOLD, "truncation": 128}},
+            input_hash=inp, output_hash=out)
+        print(f"recorded split_build: entry {entry['seq']} {entry['entry_hash'][:16]}")
     return 0
 
 

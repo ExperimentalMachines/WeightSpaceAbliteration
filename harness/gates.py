@@ -122,9 +122,9 @@ def require_admitted(run_dir: Path) -> None:
     candidate is an unreviewed artifact, and artifacts are what this run exists to keep honest.
     The parent baseline is exempt: it is measured before a method exists.
     """
-    cfg_path = run_dir / HARNESS_CONFIG
-    cfg = json.loads(cfg_path.read_text(encoding="utf-8")) if cfg_path.exists() else {}
-    if cfg.get("stage", "baseline") != "candidate":
+    from harness.preflight import ledger_stage
+
+    if ledger_stage(run_dir) != "candidate":
         return
     ops = [json.loads(line)["op"] for line in
            (run_dir / "ledger.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
@@ -554,6 +554,20 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     gate = REGISTRY[args.gate]
     run_id = args.run_id or run_dir.name
+
+    # A run that has not recorded its machine cannot produce evidence: the same numbers on different
+    # hardware are not the same numbers. Refusals name their rule; see docs/protocol/RUN_PROTOCOL.md.
+    from harness import preflight
+
+    from harness.protocol_rules import ProtocolViolation
+
+    try:
+        preflight.require_host(run_dir)
+        preflight.require_stage_consistency(run_dir)
+        preflight.require_run_model(run_dir)
+    except ProtocolViolation as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
     ledger_head = json.loads(
         (run_dir / "ledger.jsonl").read_text(encoding="utf-8").strip().splitlines()[-1]
     )["entry_hash"]

@@ -1,0 +1,8 @@
+#!/bin/sh
+# Run artifacts are append-only (docs/protocol/RUN_PROTOCOL.md#runs-append-only).
+# Install with: git config core.hooksPath .githooks
+python scripts/check_append_only.py || {
+    echo ""
+    echo "Commit refused. Run artifacts may only be added to. A correction is a new entry."
+    exit 1
+}

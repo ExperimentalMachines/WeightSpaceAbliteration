@@ -184,6 +184,7 @@ def main(argv: list[str] | None = None) -> int:
     out.write_text(blob, encoding="utf-8")
 
     from gdkit.ledger import Ledger
+    from harness.preflight import host_fingerprint
 
     run_id = run_dir.name
     ledger = Ledger(run_dir / "ledger.jsonl", run_id, "registered")
@@ -200,6 +201,7 @@ def main(argv: list[str] | None = None) -> int:
             "driver": (structured["nvidia_smi"].get("stdout", "").split(", ")[3]
                        if structured["nvidia_smi"].get("stdout") else None),
             "record_sha256": hashlib.sha256(blob.encode()).hexdigest(),
+            "fingerprint": host_fingerprint(),
         },
         input_hash=hashlib.sha256(raw.encode()).hexdigest(),
         output_hash=hashlib.sha256(blob.encode()).hexdigest(),

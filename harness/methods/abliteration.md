@@ -22,17 +22,19 @@ In every block the modified tensors are the attention output projection and the 
 
 | Family | Tensor name | Notes |
 |---|---|---|
-| Attention | `model.layers.<i>.self_attn.o_proj.weight` | required in every block |
+| Attention (full) | `model.layers.<i>.self_attn.o_proj.weight` | one attention writer is required in every block |
+| Attention (linear) | `model.layers.<i>.linear_attn.out_proj.weight` | the equivalent output projection in linear-attention blocks (Qwen3.5 hybrid layers); a block has this **or** `self_attn.o_proj`, never both |
 | MLP, dense | `model.layers.<i>.mlp.down_proj.weight` | |
 | MLP, one module per expert | `model.layers.<i>.mlp.experts.<E>.down_proj.weight` | one rank-1 update per expert; indices must be contiguous from 0 |
 | MLP, fused experts | `model.layers.<i>.mlp.experts.down_proj` (3-D, `[experts, hidden, in]`) | one rank-1 update per expert slice |
 
-A block must have exactly one MLP family; blocks of one model may differ (some dense, some expert). Routers
+A block must have exactly one attention writer and exactly one MLP family; blocks of one model may differ (full and
+linear attention, dense and expert MLPs). Routers
 (`mlp.gate`), q/k/v projections, MLP up/gate projections, norms, embeddings and the LM head are unchanged.
 The implementation rejects missing, noncontiguous, mixed, malformed, or dimension-incompatible targets.
 
 **Known gaps (the method fails closed on these; it does not skip them):**
-- **Linear-attention blocks.** Qwen3.5's linear-attention layers have `linear_attn.out_proj` and no `self_attn.o_proj`, so this module raises on Qwen3.5-0.8B (registered after this module was written). Covering it is a definition question for the owner (the pilot's own edits included `linear_attn.out_proj`).
+- **Linear-attention coverage is a definition decision.** `linear_attn.out_proj` was added after review so the module can run on Qwen3.5-0.8B (registered after the module was written; 18 of its 24 blocks are linear attention). The change follows from the method's rule (project the direction out of every matrix that writes into the residual stream) and from the pilot's own edits, which included these matrices. Whether the study's "abliteration" definition includes them is the owner's call; if it does not, remove the `linear_attn` pattern and the module reverts to failing closed on that model. The tensor name and shape (`[1024, 2048]`) were read from Qwen3.5-0.8B @ `2fc06364` as loaded in the pilot, not from a fresh load with the pinned toolchain.
 - **Expert layouts are tested on toy tensors only.** The two layouts above are exercised with synthetic state dictionaries. They have **not** been checked against the pinned `Qwen/Qwen3-30B-A3B` checkpoint as loaded by the pinned `transformers`, whose state-dict names may differ by version. A reviewer should list the actual tensor names for each registered model before admission.
 - Gemma-4-E2B and MiniCPM5 layouts have not been inspected.
 

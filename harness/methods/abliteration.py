@@ -4,7 +4,8 @@ This module deliberately has no registration side effect. ``load_method()`` stay
 review records a ledger entry; a materializer will call ``Abliteration.apply()`` only after the
 study's admission workflow has an approved pre-evaluation transition.
 
-Targets are the residual-writing output projections of every block: the attention ``o_proj`` and
+Targets are the residual-writing output projections of every block: the attention output projection
+(``self_attn.o_proj``, or ``linear_attn.out_proj`` in linear-attention blocks such as Qwen3.5's) and
 the MLP output, which is ``mlp.down_proj`` in dense blocks, ``mlp.experts.<E>.down_proj`` in blocks
 that keep one module per expert, or a single 3-D ``mlp.experts.down_proj`` in blocks that fuse the
 experts. Each matrix (each expert slice, for a fused tensor) gets one rank-1 update.
@@ -23,6 +24,8 @@ import torch
 from .base import MethodSpec
 
 _ATTN = "self_attn.o_proj"
+_LINEAR = "linear_attn.out_proj"
+_ATTN_FAMILIES = (_ATTN, _LINEAR)
 _DENSE = "mlp.down_proj"
 _EXPERT = "mlp.experts.down_proj"
 _FUSED = "mlp.experts.down_proj[fused]"
@@ -30,6 +33,7 @@ _MLP_FAMILIES = (_DENSE, _EXPERT, _FUSED)
 
 _PATTERNS = (
     (re.compile(r"^model\.layers\.(?P<layer>\d+)\.self_attn\.o_proj\.weight$"), _ATTN),
+    (re.compile(r"^model\.layers\.(?P<layer>\d+)\.linear_attn\.out_proj\.weight$"), _LINEAR),
     (re.compile(r"^model\.layers\.(?P<layer>\d+)\.mlp\.down_proj\.weight$"), _DENSE),
     (re.compile(r"^model\.layers\.(?P<layer>\d+)\.mlp\.experts\.(?P<expert>\d+)\.down_proj\.weight$"), _EXPERT),
     (re.compile(r"^model\.layers\.(?P<layer>\d+)\.mlp\.experts\.down_proj$"), _FUSED),
@@ -58,6 +62,7 @@ class Abliteration:
         summary="Rank-1 projection of the precomputed refusal direction from all residual writers.",
         targets=(
             "model.layers.*.self_attn.o_proj.weight",
+            "model.layers.*.linear_attn.out_proj.weight",
             "model.layers.*.mlp.down_proj.weight",
             "model.layers.*.mlp.experts.*.down_proj.weight",
             "model.layers.*.mlp.experts.down_proj",
@@ -175,9 +180,10 @@ def _direction_tensor(direction: Any) -> torch.Tensor:
 def _targets(state: Mapping[str, torch.Tensor], direction_shape: torch.Size) -> list[Target]:
     """Discover a complete, contiguous set of supported residual writers or fail closed.
 
-    Every block must have an attention ``o_proj`` and exactly one MLP-output family (dense, per-expert or fused).
-    Blocks may differ from each other (a model with some dense and some expert blocks is accepted), but a block
-    that mixes families, lacks either side, or has gaps in its expert indices is rejected.
+    Every block must have exactly one attention writer (``self_attn.o_proj`` or ``linear_attn.out_proj``) and exactly one
+    MLP-output family (dense, per-expert or fused). Blocks may differ from each other (a hybrid model with linear-attention
+    and full-attention blocks, or some dense and some expert blocks, is accepted), but a block that mixes families, lacks
+    either side, or has gaps in its expert indices is rejected.
     """
     found: dict[int, dict[str, list[Target]]] = {}
     for name, value in state.items():
@@ -214,14 +220,15 @@ def _targets(state: Mapping[str, torch.Tensor], direction_shape: torch.Size) -> 
     targets: list[Target] = []
     for layer in layers:
         kinds = found[layer]
+        attention = [kind for kind in _ATTN_FAMILIES if kind in kinds]
         families = [kind for kind in _MLP_FAMILIES if kind in kinds]
-        missing = ([] if _ATTN in kinds else [_ATTN]) + ([] if families else ["mlp.down_proj or mlp.experts.*.down_proj"])
-        if missing or len(families) > 1:
-            raise ValueError(f"layer {layer} target mismatch; missing={missing}, unexpected={families[1:]}")
+        missing = ([] if attention else ["self_attn.o_proj or linear_attn.out_proj"]) + ([] if families else ["mlp.down_proj or mlp.experts.*.down_proj"])
+        if missing or len(attention) > 1 or len(families) > 1:
+            raise ValueError(f"layer {layer} target mismatch; missing={missing}, unexpected={attention[1:] + families[1:]}")
         experts = sorted(t.expert for t in kinds.get(_EXPERT, []))
         if experts != list(range(len(experts))):
             raise ValueError(f"layer {layer} expert indices must be contiguous from zero, found {experts}")
-        targets += kinds[_ATTN]
+        targets += kinds[attention[0]]
         targets += sorted(kinds[families[0]], key=lambda t: -1 if t.expert is None else t.expert)
     return targets
 

@@ -61,7 +61,7 @@ What the numbers support:
 - `metrics/<Condition>__round<N>.json`: aggregate side metrics and patch sizes.
 - `selection/`: how each method's setting was chosen (Arditi candidate scans, Heretic chosen trials, the WSP candidate sets, forward-pass logs).
 - `sessions/`: every cell the editor submitted in each WSP session and its output (replies to harmful prompts are never returned to the editor).
-- `prereg_round5.md`, `prereg_round6.md`: verbatim copies of the preregistrations written before each round (infrastructure and budget text removed; a name key at the top maps the original working labels to the names above); `deviations_round5.md`: what differed from plan.
+- `prereg_round5.md`, `prereg_round6.md`: copies of the preregistrations written before each round, relabelled with the names above (the key at the top lists the original working labels; the only other change is the removal of infrastructure and budget text); `deviations_round5.md`: what differed from plan.
 - `build_report_*.json`: arm sizes and their hash match against the committed manifest.
 
 **Not included, deliberately:** model weights, adapters and refusal-direction vectors, generated text, and any prompt corpus (consistent with `SECURITY.md` and `CONTRIBUTING.md`).

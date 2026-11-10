@@ -1,6 +1,6 @@
 {
- "cond": "arditi_paper",
- "arm": "val_eval",
+ "condition": "Arditi-Paper",
+ "test_set": "HarmBench-Val-60",
  "n": 60,
  "invalid": 0,
  "asr_successes": 41,

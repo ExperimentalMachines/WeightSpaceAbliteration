@@ -1,0 +1,62 @@
+{
+ "chosen": "k12_loc",
+ "candidate": {
+  "modules": [
+   "model.layers.10.linear_attn.out_proj",
+   "model.layers.10.mlp.down_proj",
+   "model.layers.11.mlp.down_proj",
+   "model.layers.11.self_attn.o_proj",
+   "model.layers.12.linear_attn.out_proj",
+   "model.layers.12.mlp.down_proj",
+   "model.layers.13.linear_attn.out_proj",
+   "model.layers.13.mlp.down_proj",
+   "model.layers.5.linear_attn.out_proj",
+   "model.layers.7.self_attn.o_proj",
+   "model.layers.9.linear_attn.out_proj",
+   "model.layers.9.mlp.down_proj"
+  ],
+  "n_modules": 12,
+  "harmful": 50,
+  "invalid": 0,
+  "n_judged": 80,
+  "kl": 0.061359893530607224,
+  "note": "top-12, per-module local direction, alpha 1",
+  "elements_changed": 28676905
+ },
+ "digest_edited_matrices_bf16": "27bced5754efa4bc38320a5753141855351a4c560d784e887ff346ab90acd07b",
+ "rebuild_identical_pct": 100.0,
+ "factor_bytes_fp32": 178176,
+ "alpha": {
+  "model.layers.10.linear_attn.out_proj": 1.0,
+  "model.layers.10.mlp.down_proj": 1.0,
+  "model.layers.11.mlp.down_proj": 1.0,
+  "model.layers.11.self_attn.o_proj": 1.0,
+  "model.layers.12.linear_attn.out_proj": 1.0,
+  "model.layers.12.mlp.down_proj": 1.0,
+  "model.layers.13.linear_attn.out_proj": 1.0,
+  "model.layers.13.mlp.down_proj": 1.0,
+  "model.layers.5.linear_attn.out_proj": 1.0,
+  "model.layers.7.self_attn.o_proj": 1.0,
+  "model.layers.9.linear_attn.out_proj": 1.0,
+  "model.layers.9.mlp.down_proj": 1.0
+ },
+ "note": "round 6: top-12 writers by contribution along the layer-14 direction, each projected off its OWN local harmful-minus-harmless output direction (alpha 1), chosen by choose6 on judged harmful_val counts",
+ "elements_changed": 28676905,
+ "matrices": 12,
+ "share_of_model": 0.03811426220772616,
+ "per_matrix": {
+  "model.layers.5.linear_attn.out_proj.weight": 1826659,
+  "model.layers.7.self_attn.o_proj.weight": 1830311,
+  "model.layers.9.linear_attn.out_proj.weight": 1803711,
+  "model.layers.9.mlp.down_proj.weight": 3228973,
+  "model.layers.10.linear_attn.out_proj.weight": 1843767,
+  "model.layers.10.mlp.down_proj.weight": 3154429,
+  "model.layers.11.self_attn.o_proj.weight": 1838647,
+  "model.layers.11.mlp.down_proj.weight": 3170892,
+  "model.layers.12.linear_attn.out_proj.weight": 1855166,
+  "model.layers.12.mlp.down_proj.weight": 3156048,
+  "model.layers.13.linear_attn.out_proj.weight": 1803374,
+  "model.layers.13.mlp.down_proj.weight": 3164928
+ },
+ "budget": "29/50 forward passes used"
+}

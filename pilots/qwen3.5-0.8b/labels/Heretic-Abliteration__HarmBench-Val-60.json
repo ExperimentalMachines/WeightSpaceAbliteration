@@ -1,6 +1,6 @@
 {
- "cond": "heretic_abl",
- "arm": "val_eval",
+ "condition": "Heretic-Abliteration",
+ "test_set": "HarmBench-Val-60",
  "n": 60,
  "invalid": 0,
  "asr_successes": 43,

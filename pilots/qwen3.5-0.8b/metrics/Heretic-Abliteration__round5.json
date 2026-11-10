@@ -1,8 +1,8 @@
 {
- "cond": "heretic_abl",
+ "cond": "Heretic-Abliteration",
  "arms": {
-  "val_eval": 60,
-  "sr_dev": 267
+  "HarmBench-Val-60": 60,
+  "StrongREJECT-267": 267
  },
  "generation": {
   "max_new_tokens": 512,

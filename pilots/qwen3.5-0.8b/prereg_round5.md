@@ -1,4 +1,4 @@
-> Copy of the private preregistration, written 2026-11-10 before any round-5 run and committed to the author's private git repository as `61a0595` (`git log` timestamps there; the repository is not public). Only infrastructure and budget text was removed; every rule is verbatim.
+> **Name key.** This is a copy of the private preregistration, written before the runs it covers and committed to the authors' private git repository (round 5: `61a0595`; round 6: `f16d174`, addendum before any run). Rule text is verbatim and still uses the original working labels: D1 = HarmBench-Val-60, D2 = StrongREJECT-267, D3 = JBB+MI-98, `wsp`/`WSP-v1` = WSP-Full, `WSP-v2` = WSP-Compact, `arditi_paper` = Arditi-Paper, `arditi_matched` = Arditi-Matched, `heretic_abl` = Heretic-Abliteration, `heretic_ara` = Heretic-ARA. Only infrastructure and budget text was removed.
 
 # Round 5 preregistration: clean rerun of four refusal-removal methods on Qwen3.5-0.8B (written 2026-11-10, before any round-5 run)
 
@@ -62,7 +62,7 @@ Copyright behaviours (hash classifier) are not scored. No reply to a harmful pro
 - Frozen at the end: one `finalize()`; the choice is never revised after any D-arm result.
 - Disclosure: the editor knows the refusal-direction literature, rounds 1-4 and their D1 results; D2 is the only endpoint it has never seen.
 
-## 6. Artifacts
+## 6. Artifacts 
 Arditi: direction vector, layer, position, selection JSON. Heretic: chosen-trial JSON, Optuna journal, LoRA adapter (merged model stays on the compute host). WSP: rank-1 factors (r and v per matrix, fp16), matrix list, digest, a bit-exact rebuild check against the edited weights, the full session log. Per condition: judged labels (0/1/-1 per public behaviour id), aggregate side metrics. Edited full weights are not published and not required to leave the compute host.
 
 ## 7. Budget and stopping

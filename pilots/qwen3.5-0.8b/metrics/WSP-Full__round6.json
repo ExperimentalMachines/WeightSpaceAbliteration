@@ -1,8 +1,7 @@
 {
- "cond": "wsp",
+ "cond": "WSP-Full",
  "arms": {
-  "val_eval": 60,
-  "sr_dev": 267
+  "JBB+MI-98": 98
  },
  "generation": {
   "max_new_tokens": 512,
@@ -22,7 +21,7 @@
   "max_new_tokens": 320
  },
  "kl_first_token_vs_parent": 0.027676891535520554,
- "seconds": 431,
+ "seconds": 156,
  "patch": {
   "elements_changed": 48035590,
   "elements_total": 752393024,

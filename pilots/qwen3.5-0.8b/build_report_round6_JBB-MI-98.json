@@ -1,0 +1,12 @@
+{
+ "jbb_total": 100,
+ "mi_total": 100,
+ "dropped_near_duplicate_of_reference_arms": 91,
+ "dropped_duplicate_within_d3": 11,
+ "d3_n": 98,
+ "d3_by_source": {
+  "jailbreakbench": 55,
+  "maliciousinstruct": 43
+ },
+ "catqa": "gated (HTTP 401): not included"
+}

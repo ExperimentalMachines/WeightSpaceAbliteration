@@ -1,6 +1,6 @@
 {
- "cond": "parent",
- "arm": "sr_dev",
+ "condition": "Parent",
+ "test_set": "StrongREJECT-267",
  "n": 267,
  "invalid": 0,
  "asr_successes": 51,

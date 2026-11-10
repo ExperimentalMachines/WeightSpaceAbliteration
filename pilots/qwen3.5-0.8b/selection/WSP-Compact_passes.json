@@ -1,0 +1,205 @@
+[
+ {
+  "pass": 1,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "automatic: baseline full-vocabulary first-token log-probs on harmless_val (the KL reference)",
+  "t": 1794310976
+ },
+ {
+  "pass": 2,
+  "kind": "read",
+  "n": 670,
+  "note": "fit states: harmful_ext + harmless_ext, layers 1-23, last position",
+  "t": 1794311014
+ },
+ {
+  "pass": 3,
+  "kind": "read_modules",
+  "n": 670,
+  "note": "module outputs, harmful_ext + harmless_ext, last position",
+  "t": 1794311015
+ },
+ {
+  "pass": 4,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k20_a1: replies to harmful_val, judged in-kernel",
+  "t": 1794311060
+ },
+ {
+  "pass": 5,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k20_a1: full-vocab first-token KL on harmless_val",
+  "t": 1794311089
+ },
+ {
+  "pass": 6,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k14_a1: replies to harmful_val, judged in-kernel",
+  "t": 1794311089
+ },
+ {
+  "pass": 7,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k14_a1: full-vocab first-token KL on harmless_val",
+  "t": 1794311115
+ },
+ {
+  "pass": 8,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k10_a1: replies to harmful_val, judged in-kernel",
+  "t": 1794311116
+ },
+ {
+  "pass": 9,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k10_a1: full-vocab first-token KL on harmless_val",
+  "t": 1794311142
+ },
+ {
+  "pass": 10,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k8_a1: replies to harmful_val, judged in-kernel",
+  "t": 1794311142
+ },
+ {
+  "pass": 11,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k8_a1: full-vocab first-token KL on harmless_val",
+  "t": 1794311168
+ },
+ {
+  "pass": 12,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k12_a1: replies to harmful_val, judged in-kernel",
+  "t": 1794311237
+ },
+ {
+  "pass": 13,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k12_a1: full-vocab first-token KL on harmless_val",
+  "t": 1794311264
+ },
+ {
+  "pass": 14,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k16_a1: replies to harmful_val, judged in-kernel",
+  "t": 1794311264
+ },
+ {
+  "pass": 15,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k16_a1: full-vocab first-token KL on harmless_val",
+  "t": 1794311291
+ },
+ {
+  "pass": 16,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k14_a75: replies to harmful_val, judged in-kernel",
+  "t": 1794311291
+ },
+ {
+  "pass": 17,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k14_a75: full-vocab first-token KL on harmless_val",
+  "t": 1794311317
+ },
+ {
+  "pass": 18,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k14_a50: replies to harmful_val, judged in-kernel",
+  "t": 1794311317
+ },
+ {
+  "pass": 19,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k14_a50: full-vocab first-token KL on harmless_val",
+  "t": 1794311343
+ },
+ {
+  "pass": 20,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k12_a75: replies to harmful_val, judged in-kernel",
+  "t": 1794311343
+ },
+ {
+  "pass": 21,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k12_a75: full-vocab first-token KL on harmless_val",
+  "t": 1794311370
+ },
+ {
+  "pass": 22,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k14_loc: replies to harmful_val, judged in-kernel",
+  "t": 1794311416
+ },
+ {
+  "pass": 23,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k14_loc: full-vocab first-token KL on harmless_val",
+  "t": 1794311443
+ },
+ {
+  "pass": 24,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k12_loc: replies to harmful_val, judged in-kernel",
+  "t": 1794311443
+ },
+ {
+  "pass": 25,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k12_loc: full-vocab first-token KL on harmless_val",
+  "t": 1794311470
+ },
+ {
+  "pass": 26,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k14_R10: replies to harmful_val, judged in-kernel",
+  "t": 1794311470
+ },
+ {
+  "pass": 27,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k14_R10: full-vocab first-token KL on harmless_val",
+  "t": 1794311496
+ },
+ {
+  "pass": 28,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate k14_R17: replies to harmful_val, judged in-kernel",
+  "t": 1794311496
+ },
+ {
+  "pass": 29,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate k14_R17: full-vocab first-token KL on harmless_val",
+  "t": 1794311521
+ }
+]

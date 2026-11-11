@@ -22,7 +22,7 @@ jobs:
       # The gates need corpora and a GPU. The ledger does not. This job checks the part that must
       # never be wrong: the chain, its first entry, and that no answers drifted.
       - name: install verifier
-        run: pip install "gdkit @ git+https://github.com/arjhinety/gdkit@8cf73ec9306e943f63e622d2b2f41824a9a23755"
+        run: pip install "gdkit @ git+https://github.com/arjhinety/gdkit@fa1e4d57b42b6e32d5351340fe12cc15d0357b41"
 
       - name: verify ledgers
         run: python scripts/verify_ledger.py

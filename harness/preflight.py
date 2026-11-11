@@ -116,38 +116,52 @@ def require_run_model(run_dir: Path) -> None:
 
 
 def require_log_binding(run_dir: Path) -> None:
+    """Every receipt's log exists and matches the hash recorded for it.
+
+    Receipts written by gdkit 8cf73ec (no ``receipt_schema``, schema 0) are bound through a ``gate_log`` ledger
+    entry, as they were written. Receipts from gdkit fa1e4d5 on (schema 1) carry the log's path and hash in the
+    receipt itself, and no ledger entry follows the gate, so the receipt stays bound to the current head.
+    """
     receipts = run_dir / "receipts"
     if not receipts.exists():
         return
-    bound: dict[str, str] = {}
-    for entry in entries(run_dir):
-        if entry.get("op") == "gate_log":
-            params = entry.get("params", {})
-            bound[params.get("receipt_sha256", "")] = params.get("log", "")
+    gate_logs = {
+        e["params"].get("receipt_sha256", ""): e
+        for e in entries(run_dir)
+        if e.get("op") == "gate_log"
+    }
     for receipt_path in sorted(receipts.glob("*.json")):
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
         digest = receipt.get("receipt_hash", "")
-        if digest not in bound:
-            raise ProtocolViolation(
-                "gate-log-bound", run_dir,
-                f"{receipt_path.name} has no gate_log entry",
-                "re-run the gate through `python -m harness.gates`",
-            )
-        log_path = run_dir / bound[digest]
+        if "receipt_schema" not in receipt:
+            entry = gate_logs.get(digest)
+            if entry is None:
+                raise ProtocolViolation(
+                    "gate-log-bound", run_dir,
+                    f"{receipt_path.name} has no gate_log entry",
+                    "re-run the gate through `python -m harness.gates`",
+                )
+            rel, expected = entry["params"].get("log", ""), entry.get("output_hash")
+        else:
+            log = receipt.get("log")
+            if not log:
+                raise ProtocolViolation(
+                    "gate-log-bound", run_dir,
+                    f"{receipt_path.name} names no log",
+                    "run gates through `python -m harness.gates`, which captures the log",
+                )
+            rel, expected = log.get("path", ""), log.get("sha256")
+        log_path = run_dir / rel
         if not log_path.exists():
             raise ProtocolViolation(
-                "gate-log-bound", run_dir, f"{bound[digest]} is missing",
+                "gate-log-bound", run_dir, f"{rel} is missing",
                 "logs are evidence; restore it from the machine that ran the gate",
             )
-        entry = next(e for e in entries(run_dir)
-                     if e.get("op") == "gate_log" and e["params"].get("receipt_sha256") == digest)
-        actual = hashlib.sha256(log_path.read_bytes()).hexdigest()
-        if actual != entry.get("output_hash"):
+        if hashlib.sha256(log_path.read_bytes()).hexdigest() != expected:
             raise ProtocolViolation(
-                "gate-log-bound", run_dir, f"{bound[digest]} does not match its recorded hash",
+                "gate-log-bound", run_dir, f"{rel} does not match its recorded hash",
                 "the log was edited after the fact; that is a deviation, not a repair",
             )
-
 
 
 def require_upstream_clear(run_dir: Path) -> None:

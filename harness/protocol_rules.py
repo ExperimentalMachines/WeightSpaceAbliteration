@@ -52,7 +52,8 @@ RULES: dict[str, Rule] = {
         ),
         Rule(
             "gate-log-bound",
-            "Every receipt has exactly one gate_log entry, and every log file has its hash there.",
+            "Every receipt's log exists and matches its recorded hash: in the receipt (schema 1) or in its "
+            "gate_log entry (schema 0, before gdkit fa1e4d5).",
             "harness/preflight.py:require_log_binding",
         ),
         Rule(

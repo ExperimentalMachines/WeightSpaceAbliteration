@@ -70,6 +70,26 @@ RULES: dict[str, Rule] = {
             "All runs carry the same pre-registration digest and the same split-manifest hash.",
             "scripts/verify_ledger.py",
         ),
+        Rule(
+            "upstream-clear",
+            "A gate may not run while a blocking upstream issue has no recorded workaround.",
+            "harness/preflight.py:require_upstream_clear",
+        ),
+        Rule(
+            "compute-before-admission",
+            "A method may not be admitted until compute evidence (GPU-hours, peak memory) is recorded.",
+            "harness/preflight.py:require_compute_evidence",
+        ),
+        Rule(
+            "tensor-inventory-before-admission",
+            "A method may not be admitted until target tensor names are verified against the pinned model.",
+            "harness/preflight.py:require_tensor_inventory",
+        ),
+        Rule(
+            "retroactive-dating",
+            "An entry recorded after its event must declare recorded_retroactively with evidence.",
+            "harness/preflight.py:require_retroactive_dating",
+        ),
     )
 }
 

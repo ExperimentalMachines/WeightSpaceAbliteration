@@ -149,17 +149,129 @@ def require_log_binding(run_dir: Path) -> None:
             )
 
 
+
+def require_upstream_clear(run_dir: Path) -> None:
+    """Refuse to run gates while a blocking upstream issue has no recorded workaround.
+
+    See ``docs/upstream_issues/README.md`` and ``docs/PROVENANCE.md`` § Upstream issue recording.
+    """
+    for entry in entries(run_dir):
+        if entry.get("op") != "upstream_issue":
+            continue
+        params = entry.get("params", {})
+        if params.get("severity") == "blocking" and params.get("status") == "open":
+            slug = params.get("slug", "<unknown>")
+            raise ProtocolViolation(
+                "upstream-clear", run_dir,
+                f"blocking upstream issue {slug!r} has no recorded workaround (status=open)",
+                "apply a workaround and record it, or downgrade severity if the assessment changed",
+            )
+
+
+def require_compute_evidence(run_dir: Path) -> None:
+    """Refuse method admission unless compute evidence has been recorded.
+
+    The method review checklist (``harness/methods/README.md`` §8) requires observed GPU-hours.
+    This check ensures that requirement is code-enforced, not just a human checkbox.
+
+    See ``docs/PROVENANCE.md`` § Compute evidence.
+    """
+    entry = last_entry(run_dir, "compute_evidence")
+    if entry is None:
+        raise ProtocolViolation(
+            "compute-before-admission", run_dir,
+            "no compute_evidence entry; the method review requires measured GPU-hours before admission",
+            "run the method on the registered model, record wall-clock time and peak memory",
+        )
+
+
+def require_tensor_inventory(run_dir: Path) -> None:
+    """Refuse method admission unless a tensor inventory has been recorded.
+
+    The method's target list must be verified against the actual state-dict key names of the
+    registered model loaded by the pinned transformers version.
+
+    See ``docs/PROVENANCE.md`` § Tensor inventory.
+    """
+    entry = last_entry(run_dir, "tensor_inventory")
+    if entry is None:
+        raise ProtocolViolation(
+            "tensor-inventory-before-admission", run_dir,
+            "no tensor_inventory entry; target tensor names must be verified against the pinned model",
+            "load the registered model with the pinned transformers, dump state_dict keys and shapes",
+        )
+
+
+def require_retroactive_dating(run_dir: Path) -> None:
+    """Check that retroactively recorded entries declare themselves as such.
+
+    An entry whose ``event_occurred_at`` differs from its ``ts`` by more than 60 seconds without
+    declaring ``recorded_retroactively: true`` is a masquerade.
+
+    See ``docs/PROVENANCE.md`` § Reconstructed events.
+    """
+    from datetime import datetime, timezone
+
+    for entry in entries(run_dir):
+        params = entry.get("params", {})
+        event_at = params.get("event_occurred_at")
+        if event_at is None:
+            continue
+        ts = entry.get("ts")
+        if ts is None:
+            continue
+        try:
+            event_dt = datetime.fromisoformat(event_at)
+            entry_dt = datetime.fromisoformat(ts)
+            if event_dt.tzinfo is None:
+                event_dt = event_dt.replace(tzinfo=timezone.utc)
+            if entry_dt.tzinfo is None:
+                entry_dt = entry_dt.replace(tzinfo=timezone.utc)
+        except (ValueError, TypeError):
+            continue
+        delta = abs((entry_dt - event_dt).total_seconds())
+        is_retro = params.get("recorded_retroactively", False)
+        if delta > 60 and not is_retro:
+            raise ProtocolViolation(
+                "retroactive-dating", run_dir,
+                f"entry seq={entry.get('seq')} has event_occurred_at {event_at} but ts {ts} "
+                f"(delta {delta:.0f}s) without recorded_retroactively=true",
+                "add recorded_retroactively, entry_recorded_at, and reconstruction_evidence to params",
+            )
+        if is_retro:
+            missing = []
+            if "entry_recorded_at" not in params:
+                missing.append("entry_recorded_at")
+            if "reconstruction_evidence" not in params:
+                missing.append("reconstruction_evidence")
+            if missing:
+                raise ProtocolViolation(
+                    "retroactive-dating", run_dir,
+                    f"entry seq={entry.get('seq')} declares recorded_retroactively but lacks "
+                    + ", ".join(missing),
+                    "add the missing fields to the entry's params",
+                )
+
 CHECKS = (
     ("host-before-gates", require_host),
     ("stage-from-ledger", require_stage_consistency),
     ("one-model-one-run", require_run_model),
     ("gate-log-bound", require_log_binding),
+    ("upstream-clear", require_upstream_clear),
+    ("retroactive-dating", require_retroactive_dating),
+)
+
+ADMISSION_CHECKS = (
+    ("compute-before-admission", require_compute_evidence),
+    ("tensor-inventory-before-admission", require_tensor_inventory),
 )
 
 REQUIRED_ORDER = (
     ("preregistration", "the answers are frozen"),
     ("host_provisioned", "the machine is recorded"),
     ("split_build", "the split is built and hashed"),
+    ("compute_evidence", "compute cost is measured (before admission)"),
+    ("tensor_inventory", "target tensors verified against pinned model (before admission)"),
     ("method_selected", "a method is admitted (candidates only)"),
 )
 

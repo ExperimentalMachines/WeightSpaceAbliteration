@@ -77,6 +77,9 @@ module has not been run on any real model; the timings from the Qwen3.5-0.8B pil
 and are not evidence for it. This method must not be admitted until a reproducibility run records the
 measurement. No estimate is being substituted for evidence.
 
+**Code-enforced:** `require_compute_evidence` in `harness/preflight.py` refuses method admission
+until a `compute_evidence` ledger entry exists. See `docs/PROVENANCE.md` § Compute evidence.
+
 ## 9. Failure behaviour
 
 The implementation fails closed if the direction is not a finite rank-2 array of unit nonzero vectors,
@@ -84,9 +87,22 @@ if its vector count or width conflicts with the model, if `scale` is not a finit
 required residual writer is absent, if a block mixes MLP families or has gaps in its expert indices, or if
 the projection would make no representable weight change. It returns no partial candidate.
 
+## 10. Tensor inventory
+
+**Not yet recorded.** The expert layouts in §3 are tested on synthetic state dictionaries only. The
+actual state-dict key names for each registered model (Qwen3.5-0.8B, Qwen3-30B-A3B, and the other
+three named in the pre-registration) must be dumped from the pinned `transformers` version and
+recorded as a `tensor_inventory` ledger entry before admission.
+
+**Code-enforced:** `require_tensor_inventory` in `harness/preflight.py` refuses method admission
+until this entry exists. See `docs/PROVENANCE.md` § Tensor inventory.
+
 ## Review prerequisites not supplied by this module
 
 - The owner must resolve the candidate-admission cycle before candidate gates can run.
 - A reviewed materializer must bind the method source hash, parent revision, direction artifact digest,
   candidate checksum, and manifest to the ledger before endpoint results are read.
 - The parent baseline must be measured before any candidate result, as required by the frozen protocol.
+- Compute evidence and tensor inventory must be recorded before admission (now code-enforced; see
+  `docs/PROVENANCE.md`).
+- Any blocking upstream issues must have a recorded workaround (see `docs/upstream_issues/README.md`).

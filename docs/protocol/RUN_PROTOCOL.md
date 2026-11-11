@@ -18,7 +18,10 @@ else exists on disk.
 | build the split | `python harness/build_splits.py --run-id <run>` | `split_build` | `harness/build_splits.py` |
 | check wiring | `python -m harness.gates --run <run> --smoke` | none | — |
 | run a gate | `python -m harness.gates --run <run> --gate <name>` | `gate_log` | `harness/gates.py` |
+| record compute | run method once, record timing | `compute_evidence` | `harness/preflight.py:require_compute_evidence` |
+| record tensor inventory | dump state-dict keys from pinned model | `tensor_inventory` | `harness/preflight.py:require_tensor_inventory` |
 | admit a method | review, then one entry | `method_selected` | `harness/gates.py:require_admitted` |
+| record upstream issue | ledger entry + companion .md | `upstream_issue` | `harness/preflight.py:require_upstream_clear` |
 | switch stage | one entry | `stage_transition` | `harness/preflight.py:require_stage_consistency` |
 | promote | `gdkit.promote` | — | receipt and attestation checks |
 
@@ -107,6 +110,84 @@ All runs carry the same pre-registration digest and the same split-manifest hash
 from the freeze is a different study wearing the same name.
 
 *Enforced by:* `scripts/verify_ledger.py`, run in CI.
+
+### `upstream-clear`
+
+A gate may not run while a blocking upstream issue (severity `blocking`, status `open`) has no
+recorded workaround. The issue must be recorded as a ledger entry and a companion Markdown file.
+
+*Threat:* a result produced while a known dependency bug is unfixed is a result whose provenance
+is suspect. Recording the workaround makes the code path auditable; refusing without one prevents
+unauditable results.
+
+*Enforced by:* `harness/preflight.py:require_upstream_clear`, called at the start of every gate.
+
+*Refusal:*
+```
+ProtocolViolation[upstream-clear]: blocking upstream issue has no recorded workaround
+  detail: transformers-qwen35-linear-attn-key-names (blocking, status=open)
+  run:    runs/<id>
+  remedy: apply a workaround and record it, or downgrade severity if the assessment changed
+```
+
+See [`docs/upstream_issues/README.md`](../upstream_issues/README.md) for the recording format.
+
+### `compute-before-admission`
+
+A method may not be admitted (`method_selected` entry) until a `compute_evidence` entry exists in
+the run's ledger, recording GPU model, wall-clock time, and peak memory for one `apply()` call.
+
+*Threat:* a method whose cost is unknown cannot be assessed for feasibility, and an estimate
+substituted for evidence is not a measurement.
+
+*Enforced by:* `harness/preflight.py:require_compute_evidence`, called by `require_admitted`.
+
+### `tensor-inventory-before-admission`
+
+A method may not be admitted until a `tensor_inventory` entry exists in the run's ledger, recording
+the state-dict key names, shapes, and dtypes of every target tensor as loaded by the pinned
+`transformers` version.
+
+*Threat:* a method that targets tensor names verified only on toy tensors may silently miss or
+misidentify targets on the real model. The inventory is the check that the method's assumptions
+match the model's reality.
+
+*Enforced by:* `harness/preflight.py:require_tensor_inventory`, called by `require_admitted`.
+
+### `retroactive-dating`
+
+An entry recorded after its event must declare `recorded_retroactively: true` in its params,
+along with `event_occurred_at`, `entry_recorded_at`, and `reconstruction_evidence`.
+
+*Threat:* a ledger entry written today about a gate that ran yesterday is indistinguishable from
+one written at the time unless it says which it is. Without this rule, the ledger's timestamps
+are unreliable.
+
+*Enforced by:* `harness/preflight.py:require_retroactive_dating`, on audit.
+
+### `gate-non-vacuity`
+
+Every gate receipt must include a census (`discovered`, `checked`, `passed`, `failed`, `skipped`,
+`blocked`) and the census invariants must hold: `discovered == checked + blocked + skipped` and
+`checked == passed + failed`. A gate with policy `REQUIRED_NONEMPTY` must discover at least one item.
+
+*Threat:* a gate that returns success without examining anything is indistinguishable from one that
+examined everything and found nothing wrong.
+
+*Enforced by:* `harness/verification/accounting.py:Census`, validated after every gate.
+
+### `contract-version`
+
+Every gate receipt carries a `contract_version` field. When the set of checks or their non-vacuity
+requirements change, the version is bumped. A PASS under one version is not equivalent to a PASS
+under another.
+
+*Threat:* tightening a gate without versioning the change makes old and new receipts
+indistinguishable, so a receipt produced under weaker rules looks like evidence under stronger ones.
+
+*Enforced by:* `harness/verification/__init__.py:CONTRACT_VERSION`, recorded in every receipt.
+
+See [`docs/PROVENANCE.md`](../PROVENANCE.md) for the full provenance model these rules serve.
 
 ## Deviations
 

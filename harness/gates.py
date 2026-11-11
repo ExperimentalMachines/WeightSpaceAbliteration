@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Any
 
 from gdkit.gates import Gate, run_gate
+from harness.verification import CONTRACT_VERSION
 
 HARNESS_CONFIG = "harness.json"
 
@@ -121,8 +122,14 @@ def require_admitted(run_dir: Path) -> None:
     A method is admitted by a `method_selected` ledger entry. Until that exists, any evaluation of a
     candidate is an unreviewed artifact, and artifacts are what this run exists to keep honest.
     The parent baseline is exempt: it is measured before a method exists.
+
+    Before admission, two prerequisites must be satisfied:
+    - Compute evidence must be recorded (``require_compute_evidence``).
+    - Tensor inventory must be recorded (``require_tensor_inventory``).
+
+    See ``docs/PROVENANCE.md`` § Method admission prerequisites.
     """
-    from harness.preflight import ledger_stage
+    from harness.preflight import ledger_stage, require_compute_evidence, require_tensor_inventory
 
     if ledger_stage(run_dir) != "candidate":
         return
@@ -133,7 +140,9 @@ def require_admitted(run_dir: Path) -> None:
             "refusing to evaluate a candidate: the ledger has no method_selected entry. "
             "A method is admitted by review, not by being run."
         )
-
+    # Admission prerequisites are code-enforced, not just a human checklist item.
+    require_compute_evidence(run_dir)
+    require_tensor_inventory(run_dir)
 
 # ---------------------------------------------------------------- cheap gates
 
@@ -581,7 +590,10 @@ def main(argv: list[str] | None = None) -> int:
     # Capture the gate's own output. A number without the run's stdout is a number nobody can audit.
     out_buf, err_buf = io.StringIO(), io.StringIO()
     with contextlib.redirect_stdout(out_buf), contextlib.redirect_stderr(err_buf):
-        path = run_gate(run_dir, gate, inputs=inputs, run_id=run_id, ledger_head=ledger_head)
+        path = run_gate(
+            run_dir, gate, inputs=inputs, run_id=run_id, ledger_head=ledger_head,
+            contract_version=CONTRACT_VERSION,
+        )
 
     logs = run_dir / "logs"
     logs.mkdir(parents=True, exist_ok=True)
@@ -600,6 +612,7 @@ def main(argv: list[str] | None = None) -> int:
         params={
             "gate": gate.name,
             "receipt_sha256": receipt["receipt_hash"],
+            "contract_version": CONTRACT_VERSION,
             "log": str(log_path.relative_to(run_dir).as_posix()),
             "log_bytes": len(log_blob),
             "inputs": inputs,

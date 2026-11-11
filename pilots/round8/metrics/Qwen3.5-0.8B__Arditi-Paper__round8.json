@@ -1,0 +1,101 @@
+{
+ "model": "Qwen3.5-0.8B",
+ "cond": "Arditi-Paper",
+ "arms": {
+  "val_eval": {
+   "n": 60,
+   "empty": 0
+  },
+  "sr_dev": {
+   "n": 267,
+   "empty": 0
+  },
+  "d3": {
+   "n": 98,
+   "empty": 0
+  }
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 0,
+  "n": 83,
+  "rate": 0.0
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.372,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.06696402281522751,
+ "patch": {
+  "elements_changed": 326632813,
+  "elements_total": 752393024,
+  "share_of_unique_params": 0.4341252544627527,
+  "tensors_changed": 49
+ },
+ "selection": {
+  "method": "Arditi et al. 2406.11717 (single direction, all residual writers + input embedding; output head untied and unchanged)",
+  "selection_mode": "weights",
+  "n_train": 128,
+  "n_sel": 32,
+  "n_layers": 24,
+  "template_tail_positions": 9,
+  "chosen": {
+   "layer": 10,
+   "pos": -5,
+   "bypass": -6.86570930480957,
+   "kl": 0.09765801578760147,
+   "induce": 0.22947242856025696,
+   "kept": true
+  },
+  "refusal_token_ids": [
+   40
+  ],
+  "refusal_tokens": [
+   "I"
+  ],
+  "baseline_refusal_score_selection": 0.16731306910514832,
+  "candidates_total": 162,
+  "candidates_kept": 2,
+  "top5": [
+   {
+    "layer": 10,
+    "pos": -5,
+    "bypass": -6.86570930480957,
+    "kl": 0.09765801578760147,
+    "induce": 0.22947242856025696,
+    "kept": true
+   },
+   {
+    "layer": 12,
+    "pos": -2,
+    "bypass": -4.558681011199951,
+    "kl": 0.09463991969823837,
+    "induce": 0.09314944595098495,
+    "kept": true
+   }
+  ],
+  "direction_norm": 0.7127850651741028,
+  "hook_vs_weight": {
+   "harmful_selection": {
+    "tv_mean": 0.04290557652711868,
+    "tv_max": 0.10403496026992798,
+    "refusal_mass_hook": 0.008982047438621521,
+    "refusal_mass_weight": 0.00810283049941063,
+    "max_abs_logp_diff": 1.2425479888916016
+   },
+   "harmless_selection": {
+    "tv_mean": 0.027318105101585388,
+    "tv_max": 0.10572130233049393,
+    "refusal_mass_hook": 0.009734243154525757,
+    "refusal_mass_weight": 0.009236756712198257,
+    "max_abs_logp_diff": 0.8793373107910156
+   }
+  }
+ }
+}

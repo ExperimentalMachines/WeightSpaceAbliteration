@@ -1,0 +1,117 @@
+{
+ "model": "Qwen3.5-0.8B",
+ "cond": "Arditi-Matched",
+ "arms": {
+  "val_eval": {
+   "n": 60,
+   "empty": 0
+  },
+  "sr_dev": {
+   "n": 267,
+   "empty": 0
+  },
+  "d3": {
+   "n": 98,
+   "empty": 0
+  }
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 0,
+  "n": 83,
+  "rate": 0.0
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.364,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.07416605204343796,
+ "patch": {
+  "elements_changed": 327502867,
+  "elements_total": 752393024,
+  "share_of_unique_params": 0.43528163679518644,
+  "tensors_changed": 49
+ },
+ "selection": {
+  "method": "Arditi et al. 2406.11717 (single direction, all residual writers + input embedding; output head untied and unchanged)",
+  "selection_mode": "weights",
+  "n_train": 335,
+  "n_sel": 80,
+  "n_layers": 24,
+  "template_tail_positions": 9,
+  "chosen": {
+   "layer": 11,
+   "pos": -8,
+   "bypass": -6.694699287414551,
+   "kl": 0.09367760270833969,
+   "induce": 0.9635958671569824,
+   "kept": true
+  },
+  "refusal_token_ids": [
+   40
+  ],
+  "refusal_tokens": [
+   "I"
+  ],
+  "baseline_refusal_score_selection": 0.5704070925712585,
+  "candidates_total": 162,
+  "candidates_kept": 4,
+  "top5": [
+   {
+    "layer": 11,
+    "pos": -8,
+    "bypass": -6.694699287414551,
+    "kl": 0.09367760270833969,
+    "induce": 0.9635958671569824,
+    "kept": true
+   },
+   {
+    "layer": 10,
+    "pos": -8,
+    "bypass": -5.287015914916992,
+    "kl": 0.07631345093250275,
+    "induce": 1.9986143112182617,
+    "kept": true
+   },
+   {
+    "layer": 13,
+    "pos": -2,
+    "bypass": -5.083046913146973,
+    "kl": 0.07864121347665787,
+    "induce": 0.20173291862010956,
+    "kept": true
+   },
+   {
+    "layer": 12,
+    "pos": -2,
+    "bypass": -4.080842018127441,
+    "kl": 0.08881111443042755,
+    "induce": 0.3570638597011566,
+    "kept": true
+   }
+  ],
+  "direction_norm": 0.8848504424095154,
+  "hook_vs_weight": {
+   "harmful_selection": {
+    "tv_mean": 0.0396924689412117,
+    "tv_max": 0.1037830337882042,
+    "refusal_mass_hook": 0.011579101905226707,
+    "refusal_mass_weight": 0.010836424306035042,
+    "max_abs_logp_diff": 1.0944252014160156
+   },
+   "harmless_selection": {
+    "tv_mean": 0.03790588676929474,
+    "tv_max": 0.1514078825712204,
+    "refusal_mass_hook": 0.00983863603323698,
+    "refusal_mass_weight": 0.009793886914849281,
+    "max_abs_logp_diff": 1.7503986358642578
+   }
+  }
+ }
+}

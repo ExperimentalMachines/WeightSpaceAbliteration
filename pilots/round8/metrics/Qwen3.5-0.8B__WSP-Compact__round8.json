@@ -1,0 +1,37 @@
+{
+ "model": "Qwen3.5-0.8B",
+ "cond": "WSP-Compact",
+ "arms": {
+  "val_eval": {
+   "n": 60,
+   "empty": 0
+  },
+  "sr_dev": {
+   "n": 267,
+   "empty": 0
+  }
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 0,
+  "n": 83,
+  "rate": 0.0
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.398,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.044971056282520294,
+ "patch": {
+  "elements_changed": 28676905,
+  "elements_total": 752393024,
+  "share_of_unique_params": 0.03811426220772616,
+  "tensors_changed": 12
+ }
+}

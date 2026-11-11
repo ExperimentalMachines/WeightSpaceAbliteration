@@ -1,0 +1,98 @@
+{
+ "trial": 58,
+ "refusal_score": 0.075,
+ "kl": 0.09035617858171463,
+ "rule": "min refusal with KL<=0.1",
+ "pareto_trials": [
+  {
+   "trial": 8,
+   "refusal_score": 0.0375,
+   "kl": 0.12831968069076538
+  },
+  {
+   "trial": 9,
+   "refusal_score": 1.0,
+   "kl": 0.0018856923561543226
+  },
+  {
+   "trial": 16,
+   "refusal_score": 0.9875,
+   "kl": 0.004671302158385515
+  },
+  {
+   "trial": 32,
+   "refusal_score": 0.95,
+   "kl": 0.009498695842921734
+  },
+  {
+   "trial": 34,
+   "refusal_score": 0.775,
+   "kl": 0.013180534355342388
+  },
+  {
+   "trial": 44,
+   "refusal_score": 0.5,
+   "kl": 0.020987726747989655
+  },
+  {
+   "trial": 51,
+   "refusal_score": 0.525,
+   "kl": 0.01902872323989868
+  },
+  {
+   "trial": 54,
+   "refusal_score": 0.6,
+   "kl": 0.018675457686185837
+  },
+  {
+   "trial": 56,
+   "refusal_score": 0.05,
+   "kl": 0.11074564605951309
+  },
+  {
+   "trial": 58,
+   "refusal_score": 0.075,
+   "kl": 0.09035617858171463
+  },
+  {
+   "trial": 61,
+   "refusal_score": 0.7375,
+   "kl": 0.015516310930252075
+  },
+  {
+   "trial": 72,
+   "refusal_score": 0.2125,
+   "kl": 0.03540988638997078
+  },
+  {
+   "trial": 75,
+   "refusal_score": 0.675,
+   "kl": 0.016490835696458817
+  },
+  {
+   "trial": 85,
+   "refusal_score": 0.2875,
+   "kl": 0.025503721088171005
+  },
+  {
+   "trial": 86,
+   "refusal_score": 0.1625,
+   "kl": 0.03935052081942558
+  },
+  {
+   "trial": 93,
+   "refusal_score": 0.2,
+   "kl": 0.0390365794301033
+  },
+  {
+   "trial": 96,
+   "refusal_score": 0.1375,
+   "kl": 0.040728043764829636
+  },
+  {
+   "trial": 99,
+   "refusal_score": 0.5625,
+   "kl": 0.0187392421066761
+  }
+ ]
+}

@@ -1,0 +1,125 @@
+{
+ "model": "Gemma-4-E2B-it",
+ "cond": "Arditi-Paper",
+ "arms": {
+  "val_eval": {
+   "n": 60,
+   "empty": 0
+  },
+  "sr_dev": {
+   "n": 267,
+   "empty": 0
+  },
+  "d3": {
+   "n": 98,
+   "empty": 0
+  }
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 0,
+  "n": 83,
+  "rate": 0.0
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.512,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.04078531637787819,
+ "patch": {
+  "elements_changed": 852347116,
+  "elements_total": 5104297504,
+  "share_of_unique_params": 0.1669861749500407,
+  "tensors_changed": 106
+ },
+ "selection": {
+  "method": "Arditi et al. 2406.11717 (single direction, all residual writers + input embedding; output head untied and unchanged)",
+  "selection_mode": "weights",
+  "n_train": 128,
+  "n_sel": 32,
+  "n_layers": 35,
+  "template_tail_positions": 5,
+  "chosen": {
+   "layer": 18,
+   "pos": -1,
+   "bypass": -6.034064769744873,
+   "kl": 0.0025478594470769167,
+   "induce": 2.1537704467773438,
+   "kept": true
+  },
+  "refusal_token_ids": [
+   236777
+  ],
+  "refusal_tokens": [
+   "I"
+  ],
+  "baseline_refusal_score_selection": 13.525909423828125,
+  "candidates_total": 135,
+  "candidates_kept": 27,
+  "top5": [
+   {
+    "layer": 18,
+    "pos": -1,
+    "bypass": -6.034064769744873,
+    "kl": 0.0025478594470769167,
+    "induce": 2.1537704467773438,
+    "kept": true
+   },
+   {
+    "layer": 19,
+    "pos": -1,
+    "bypass": -5.616452217102051,
+    "kl": 0.01207653060555458,
+    "induce": 5.538549423217773,
+    "kept": true
+   },
+   {
+    "layer": 19,
+    "pos": -4,
+    "bypass": -4.587993144989014,
+    "kl": 0.021332690492272377,
+    "induce": 0.8604591488838196,
+    "kept": true
+   },
+   {
+    "layer": 23,
+    "pos": -1,
+    "bypass": -3.4514451026916504,
+    "kl": 0.018315866589546204,
+    "induce": 8.853286743164062,
+    "kept": true
+   },
+   {
+    "layer": 20,
+    "pos": -1,
+    "bypass": -3.061850070953369,
+    "kl": 0.06157570332288742,
+    "induce": 8.855992317199707,
+    "kept": true
+   }
+  ],
+  "direction_norm": 39.7263298034668,
+  "hook_vs_weight": {
+   "harmful_selection": {
+    "tv_mean": 0.9922398328781128,
+    "tv_max": 0.9994415044784546,
+    "refusal_mass_hook": 0.002896961523219943,
+    "refusal_mass_weight": 0.1387687474489212,
+    "max_abs_logp_diff": 39.87462615966797
+   },
+   "harmless_selection": {
+    "tv_mean": 0.9839544892311096,
+    "tv_max": 0.9999889135360718,
+    "refusal_mass_hook": 0.0027821685653179884,
+    "refusal_mass_weight": 2.439915931518044e-07,
+    "max_abs_logp_diff": 44.34031295776367
+   }
+  }
+ }
+}

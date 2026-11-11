@@ -272,7 +272,9 @@ def main(argv: list[str] | None = None) -> int:
 
     manifest["exclusions_sha256"] = hashlib.sha256(
         json.dumps(manifest["exclusions"], sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-    (splits_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    # newline="\n": the ledger hashes these bytes, so they must not depend on the platform's line endings.
+    (splits_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8",
+                                             newline="\n")
 
     for name, info in manifest["arms"].items():
         print(f"  {name:16s} {info['count']:6d}  {info['sha256'][:16]}")

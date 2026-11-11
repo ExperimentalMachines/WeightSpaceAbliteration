@@ -24,3 +24,8 @@ runs/**/splits/manifest.json linguist-generated=true
 datasets/inventory/*.md linguist-documentation=true
 
 *.pdf binary
+
+# Raw pwc responses are hashed byte-for-byte in the ledger; git must not rewrite their line endings.
+runs/**/paper_lookups/*.json -text
+# The split manifest is hashed byte-for-byte in the split_build / split_rebuild entries.
+runs/**/splits/manifest.json -text

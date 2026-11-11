@@ -95,7 +95,10 @@ on audit.
 ### `runs-append-only`
 
 Ledgers may only grow. Receipts, logs, attestations and scope files may be added, never modified or
-deleted. `splits/manifest.json` may be replaced, because a rebuild carries its own ledger entry.
+deleted. `splits/manifest.json` may be replaced, because a rebuild carries its own ledger entry. One
+narrow exception: a raw pwc response under `paper_lookups/` may be rewritten to the exact bytes that its
+own `paper_lookup` entry, already in the ledger before the change, recorded by path and sha256. This
+repairs a file git stored with converted line endings and cannot introduce unrecorded content.
 
 *Threat:* an editable history is not a history. The chain of hashes detects an edit; the append-only
 check prevents one from being committed in the first place.

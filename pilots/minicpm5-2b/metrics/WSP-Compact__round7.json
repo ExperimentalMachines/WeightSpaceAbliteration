@@ -1,0 +1,42 @@
+{
+ "cond": "WSP-Compact",
+ "model": "MiniCPM5-2B",
+ "arms": {
+  "val_eval": {
+   "n": 60,
+   "empty": 0
+  },
+  "sr_dev": {
+   "n": 267,
+   "empty": 0
+  },
+  "d3": {
+   "n": 98,
+   "empty": 0
+  }
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 58,
+  "n": 83,
+  "rate": 0.6987951807228916
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.716,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.024162132292985916,
+ "seconds": 510,
+ "patch": {
+  "elements_changed": 349238811,
+  "elements_total": 2516756480,
+  "share_of_unique_params": 0.13876543629680055,
+  "tensors_changed": 84
+ }
+}

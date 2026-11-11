@@ -1,0 +1,121 @@
+[
+ {
+  "pass": 1,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "automatic: baseline full-vocabulary first-token log-probs on harmless_val (the KL reference)",
+  "t": 1794360542
+ },
+ {
+  "pass": 2,
+  "kind": "read_modules",
+  "n": 670,
+  "note": "writer outputs at last position, 84 writers, 335+335 fit prompts",
+  "t": 1794360565
+ },
+ {
+  "pass": 3,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate loc_k12_a1: replies to harmful_val, judged in-kernel",
+  "t": 1794360581
+ },
+ {
+  "pass": 4,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate loc_k12_a1: full-vocab first-token KL on harmless_val",
+  "t": 1794360612
+ },
+ {
+  "pass": 5,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate loc_k24_a1: replies to harmful_val, judged in-kernel",
+  "t": 1794360616
+ },
+ {
+  "pass": 6,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate loc_k24_a1: full-vocab first-token KL on harmless_val",
+  "t": 1794360632
+ },
+ {
+  "pass": 7,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate loc_k12_a05: replies to harmful_val, judged in-kernel",
+  "t": 1794360635
+ },
+ {
+  "pass": 8,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate loc_k12_a05: full-vocab first-token KL on harmless_val",
+  "t": 1794360653
+ },
+ {
+  "pass": 9,
+  "kind": "read",
+  "n": 670,
+  "note": "layer-24 last-position states, 335+335 fit prompts",
+  "t": 1794362123
+ },
+ {
+  "pass": 10,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate sh24_all84_a100: replies to harmful_val, judged in-kernel",
+  "t": 1794362127
+ },
+ {
+  "pass": 11,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate sh24_all84_a100: full-vocab first-token KL on harmless_val",
+  "t": 1794362162
+ },
+ {
+  "pass": 12,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate sh24_all84_a060: replies to harmful_val, judged in-kernel",
+  "t": 1794362166
+ },
+ {
+  "pass": 13,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate sh24_all84_a060: full-vocab first-token KL on harmless_val",
+  "t": 1794362178
+ },
+ {
+  "pass": 14,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate sh24_all84_a035: replies to harmful_val, judged in-kernel",
+  "t": 1794362182
+ },
+ {
+  "pass": 15,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate sh24_all84_a035: full-vocab first-token KL on harmless_val",
+  "t": 1794362195
+ },
+ {
+  "pass": 16,
+  "kind": "gen_judged",
+  "n": 80,
+  "note": "candidate sh24_all84_a020: replies to harmful_val, judged in-kernel",
+  "t": 1794362199
+ },
+ {
+  "pass": 17,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "candidate sh24_all84_a020: full-vocab first-token KL on harmless_val",
+  "t": 1794362212
+ }
+]

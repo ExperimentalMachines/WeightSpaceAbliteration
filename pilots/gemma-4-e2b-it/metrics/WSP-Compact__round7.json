@@ -1,0 +1,42 @@
+{
+ "cond": "WSP-Compact",
+ "model": "Gemma-4-E2B-it",
+ "arms": {
+  "val_eval": {
+   "n": 60,
+   "empty": 0
+  },
+  "sr_dev": {
+   "n": 267,
+   "empty": 0
+  },
+  "d3": {
+   "n": 98,
+   "empty": 0
+  }
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 0,
+  "n": 83,
+  "rate": 0.0
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.522,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.015824008733034134,
+ "seconds": 1026,
+ "patch": {
+  "elements_changed": 81057033,
+  "elements_total": 5104297504,
+  "share_of_unique_params": 0.015880154504411114,
+  "tensors_changed": 11
+ }
+}

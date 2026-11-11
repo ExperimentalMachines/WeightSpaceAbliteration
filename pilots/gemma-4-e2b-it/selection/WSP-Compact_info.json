@@ -1,0 +1,59 @@
+{
+ "chosen": "sh18_k11_a1",
+ "candidate": {
+  "modules": [
+   "model.language_model.layers.13.self_attn.o_proj",
+   "model.language_model.layers.14.mlp.down_proj",
+   "model.language_model.layers.14.self_attn.o_proj",
+   "model.language_model.layers.15.mlp.down_proj",
+   "model.language_model.layers.15.self_attn.o_proj",
+   "model.language_model.layers.16.mlp.down_proj",
+   "model.language_model.layers.16.self_attn.o_proj",
+   "model.language_model.layers.17.mlp.down_proj",
+   "model.language_model.layers.17.self_attn.o_proj",
+   "model.language_model.layers.4.mlp.down_proj",
+   "model.language_model.layers.4.self_attn.o_proj"
+  ],
+  "n_modules": 11,
+  "harmful": 40,
+  "invalid": 0,
+  "n_judged": 80,
+  "kl": 0.027468670159578323,
+  "note": "layer-18 shared direction, top-11 writers by contribution among blocks < 18, alpha 1",
+  "elements_changed": 81057033
+ },
+ "digest_edited_matrices_bf16": "a7d7f1329f47d691254acc082a4e0f123d3b54d81df48ab6fe9523d7d71fc64a",
+ "rebuild_identical_pct": 100.0,
+ "factor_bytes_fp32": 329728,
+ "alpha": {
+  "model.language_model.layers.13.self_attn.o_proj": 1.0,
+  "model.language_model.layers.14.mlp.down_proj": 1.0,
+  "model.language_model.layers.14.self_attn.o_proj": 1.0,
+  "model.language_model.layers.15.mlp.down_proj": 1.0,
+  "model.language_model.layers.15.self_attn.o_proj": 1.0,
+  "model.language_model.layers.16.mlp.down_proj": 1.0,
+  "model.language_model.layers.16.self_attn.o_proj": 1.0,
+  "model.language_model.layers.17.mlp.down_proj": 1.0,
+  "model.language_model.layers.17.self_attn.o_proj": 1.0,
+  "model.language_model.layers.4.mlp.down_proj": 1.0,
+  "model.language_model.layers.4.self_attn.o_proj": 1.0
+ },
+ "note": "gemma WSP-Compact session: layer-18 shared direction, top-11 writers among blocks < 18, alpha 1 (judged 40/80 on harmful_val, KL 0.0275)",
+ "elements_changed": 81057033,
+ "matrices": 11,
+ "share_of_model": 0.015880154504411114,
+ "per_matrix": {
+  "model.language_model.layers.4.self_attn.o_proj.weight": 5045426,
+  "model.language_model.layers.4.mlp.down_proj.weight": 7588418,
+  "model.language_model.layers.13.self_attn.o_proj.weight": 2532951,
+  "model.language_model.layers.14.self_attn.o_proj.weight": 5063400,
+  "model.language_model.layers.14.mlp.down_proj.weight": 7571316,
+  "model.language_model.layers.15.self_attn.o_proj.weight": 2544269,
+  "model.language_model.layers.15.mlp.down_proj.weight": 15169143,
+  "model.language_model.layers.16.self_attn.o_proj.weight": 2546884,
+  "model.language_model.layers.16.mlp.down_proj.weight": 15291520,
+  "model.language_model.layers.17.self_attn.o_proj.weight": 2535874,
+  "model.language_model.layers.17.mlp.down_proj.weight": 15167832
+ },
+ "budget": "27/50 forward passes used"
+}

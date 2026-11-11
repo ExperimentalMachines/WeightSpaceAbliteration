@@ -1,0 +1,47 @@
+{
+ "chosen": "L18_k12",
+ "candidate": {
+  "modules": [
+   "model.language_model.layers.10.self_attn.o_proj",
+   "model.language_model.layers.13.self_attn.o_proj",
+   "model.language_model.layers.14.mlp.down_proj",
+   "model.language_model.layers.14.self_attn.o_proj",
+   "model.language_model.layers.15.mlp.down_proj",
+   "model.language_model.layers.15.self_attn.o_proj",
+   "model.language_model.layers.16.mlp.down_proj",
+   "model.language_model.layers.16.self_attn.o_proj",
+   "model.language_model.layers.17.mlp.down_proj",
+   "model.language_model.layers.17.self_attn.o_proj",
+   "model.language_model.layers.4.mlp.down_proj",
+   "model.language_model.layers.4.self_attn.o_proj"
+  ],
+  "n_modules": 12,
+  "flags": 11,
+  "kl": 0.025485891848802567,
+  "note": "layer-18 direction, top-12 writers by contribution among blocks < 18, alpha 1",
+  "elements_changed": 83595418
+ },
+ "digest_edited_matrices_bf16": "d19da280829f7834279bce85ca5990c67f1526e043249bd9c027f4f3875a0b42",
+ "rebuild_identical_pct": 100.0,
+ "factor_bytes_fp32": 344064,
+ "alpha": 1.0,
+ "note": "gemma WSP-Full session: layer-18 last-position direction, top-12 writers among blocks < 18, alpha 1",
+ "elements_changed": 83595418,
+ "matrices": 12,
+ "share_of_model": 0.016377458001711337,
+ "per_matrix": {
+  "model.language_model.layers.4.self_attn.o_proj.weight": 5045426,
+  "model.language_model.layers.4.mlp.down_proj.weight": 7588418,
+  "model.language_model.layers.10.self_attn.o_proj.weight": 2538385,
+  "model.language_model.layers.13.self_attn.o_proj.weight": 2532951,
+  "model.language_model.layers.14.self_attn.o_proj.weight": 5063400,
+  "model.language_model.layers.14.mlp.down_proj.weight": 7571316,
+  "model.language_model.layers.15.self_attn.o_proj.weight": 2544269,
+  "model.language_model.layers.15.mlp.down_proj.weight": 15169143,
+  "model.language_model.layers.16.self_attn.o_proj.weight": 2546884,
+  "model.language_model.layers.16.mlp.down_proj.weight": 15291520,
+  "model.language_model.layers.17.self_attn.o_proj.weight": 2535874,
+  "model.language_model.layers.17.mlp.down_proj.weight": 15167832
+ },
+ "budget": "38/50 forward passes used"
+}

@@ -5,6 +5,12 @@ Ledgers may only grow. Receipts, logs, attestations and scope files may be added
 deleted. `splits/manifest.json` may be replaced, because a rebuild is a recorded event with its own
 ledger entry.
 
+One narrow exception: a raw pwc response under `paper_lookups/` may be rewritten to the exact bytes its
+own `paper_lookup` entry recorded. The entry must already be in the run's ledger before the change (HEAD
+for a pre-commit check, the base for CI), name this file as `raw_response_path`, and carry the sha256 of
+the new bytes as `response_sha256`. This repairs a file git stored with converted line endings; it cannot
+introduce content the ledger did not already vouch for.
+
     python scripts/check_append_only.py                 # staged changes against HEAD (pre-commit)
     python scripts/check_append_only.py --base <sha>    # everything since <sha> (CI)
 
@@ -14,6 +20,8 @@ Exit 0 when every change under runs/ is an addition or a legal append, 1 otherwi
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import subprocess
 import sys
 
@@ -36,15 +44,40 @@ def blob(ref: str, path: str) -> str | None:
     return proc.stdout.replace("\r\n", "\n") if proc.returncode == 0 else None
 
 
-def changes(base: str | None) -> list[tuple[str, str]]:
-    args = ["diff", "--name-status", base, "HEAD"] if base else ["diff", "--cached", "--name-status"]
-    out = []
-    for line in git(*args).splitlines():
+def raw_blob(ref: str, path: str) -> bytes | None:
+    """File content exactly as git stores it, as bytes: no decoding, no line-ending conversion."""
+    proc = subprocess.run(["git", "cat-file", "blob", f"{ref}:{path}"], capture_output=True)
+    return proc.stdout if proc.returncode == 0 else None
+
+
+def restores_recorded_lookup(path: str, old_ref: str, new_ref: str) -> bool:
+    """True when ``path`` is a raw pwc response rewritten to the bytes its own, pre-existing entry recorded."""
+    parts = path.split("/")
+    if len(parts) != 4 or parts[0] != "runs" or parts[2] != "paper_lookups":
+        return False
+    ledger = raw_blob(old_ref, f"runs/{parts[1]}/{LEDGER}")
+    new = raw_blob(new_ref, path)
+    if ledger is None or new is None:
+        return False
+    relative = "/".join(parts[2:])
+    digest = hashlib.sha256(new).hexdigest()
+    for line in ledger.decode("utf-8").splitlines():
         if not line.strip():
             continue
-        parts = line.split("\t")
-        out.append((parts[0][0], parts[-1]))
-    return out
+        entry = json.loads(line)
+        params = entry.get("params") or {}
+        if (entry.get("op") == "paper_lookup" and params.get("raw_response_path") in (relative, path)
+                and params.get("response_sha256") == digest):
+            return True
+    return False
+
+
+def changes(base: str | None) -> list[tuple[str, str]]:
+    # -z and --no-renames: a move is a delete plus an add, so a run file moved out of runs/ is still seen.
+    args = ["diff", "-z", "--no-renames", "--name-status"]
+    args += [base, "HEAD"] if base else ["--cached"]
+    fields = [f for f in git(*args).split("\0") if f]
+    return [(fields[i][0], fields[i + 1]) for i in range(0, len(fields) - 1, 2)]
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -65,6 +98,8 @@ def main(argv: list[str] | None = None) -> int:
                 violations.append(f"{path}: the ledger is not a byte-prefix extension of its previous state")
             continue
         if status == "M" and path.endswith(REBUILDABLE):
+            continue
+        if status == "M" and restores_recorded_lookup(path, args.base or "HEAD", "HEAD" if args.base else ""):
             continue
         violations.append(f"{path}: {status} — run artifacts are append-only")
 

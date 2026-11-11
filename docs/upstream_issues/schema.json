@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UpstreamIssueRecord",
+  "description": "Schema for upstream dependency issue records in the study ledger. See docs/upstream_issues/README.md.",
+  "type": "object",
+  "required": [
+    "slug",
+    "package",
+    "severity",
+    "discovered_at",
+    "workaround",
+    "affected_gates",
+    "affected_runs",
+    "status"
+  ],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Short kebab-case identifier. Must match the companion Markdown filename."
+    },
+    "package": {
+      "type": "string",
+      "description": "Affected package name and pinned version, e.g. 'transformers==4.44.2'."
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["blocking", "degrading", "cosmetic"],
+      "description": "blocking: run cannot continue. degrading: results affected. cosmetic: no numerical effect."
+    },
+    "discovered_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of discovery."
+    },
+    "issue_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "URL of the filed upstream issue, or null if not filed."
+    },
+    "pr_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "URL of the filed upstream PR, or null if not filed."
+    },
+    "workaround": {
+      "type": ["string", "null"],
+      "description": "Brief description of the applied workaround, or null if none yet."
+    },
+    "workaround_commit": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{7,40}$",
+      "description": "Study-repo commit SHA that applied the workaround."
+    },
+    "resolved_upstream": {
+      "type": ["boolean", "null"],
+      "description": "true if fixed upstream, false if open, null if unknown."
+    },
+    "resolved_version": {
+      "type": ["string", "null"],
+      "description": "First upstream release containing the fix, or null."
+    },
+    "affected_gates": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of gate names whose results could be affected."
+    },
+    "affected_runs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of run IDs where the issue was observed."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["open", "workaround-in-place", "fix-merged", "adopted", "wont-fix"],
+      "description": "Current status of the issue within this study."
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional classification tags, e.g. ['nondeterminism', 'tensor-naming']."
+    }
+  },
+  "additionalProperties": false
+}

@@ -52,7 +52,8 @@ RULES: dict[str, Rule] = {
         ),
         Rule(
             "gate-log-bound",
-            "Every receipt has exactly one gate_log entry, and every log file has its hash there.",
+            "Every receipt's log exists and matches its recorded hash: in the receipt (schema 1) or in its "
+            "gate_log entry (schema 0, before gdkit fa1e4d5).",
             "harness/preflight.py:require_log_binding",
         ),
         Rule(
@@ -69,6 +70,26 @@ RULES: dict[str, Rule] = {
             "shared-freeze",
             "All runs carry the same pre-registration digest and the same split-manifest hash.",
             "scripts/verify_ledger.py",
+        ),
+        Rule(
+            "upstream-clear",
+            "A gate may not run while a blocking upstream issue has no recorded workaround.",
+            "harness/preflight.py:require_upstream_clear",
+        ),
+        Rule(
+            "compute-before-admission",
+            "A method may not be admitted until compute evidence (GPU-hours, peak memory) is recorded.",
+            "harness/preflight.py:require_compute_evidence",
+        ),
+        Rule(
+            "tensor-inventory-before-admission",
+            "A method may not be admitted until target tensor names are verified against the pinned model.",
+            "harness/preflight.py:require_tensor_inventory",
+        ),
+        Rule(
+            "retroactive-dating",
+            "An entry recorded after its event must declare recorded_retroactively with evidence.",
+            "harness/preflight.py:require_retroactive_dating",
         ),
     )
 }

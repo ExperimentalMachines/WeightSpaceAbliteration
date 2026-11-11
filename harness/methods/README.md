@@ -36,8 +36,13 @@ Answer each of these in the method's own document, not in conversation.
    seeds and any nondeterministic kernels.
 7. **Manifest.** Does `apply()` return what changed — tensor names, edit magnitude, rank? The ledger
    entry records this; without it the method's effect is unverifiable.
-8. **Compute.** What does one run cost in GPU-hours, and on what hardware?
+8. **Compute.** What does one run cost in GPU-hours, and on what hardware? **Code-enforced:**
+   `require_compute_evidence` refuses admission until a `compute_evidence` ledger entry exists
+   recording GPU model, wall-clock seconds, and peak memory for one `apply()` call.
 9. **Failure behaviour.** What does it do when the direction is near-zero or the layer is missing?
+10. **Tensor inventory.** Have the target tensor names been verified against the actual state-dict
+    keys of every registered model, loaded by the pinned `transformers` version? **Code-enforced:**
+    `require_tensor_inventory` refuses admission until a `tensor_inventory` ledger entry exists.
 
 ## What the reviewer runs before saying yes
 
@@ -71,10 +76,20 @@ results is not a study.
 contains a `method_selected` entry. It fires only when `harness.json` sets `"stage": "candidate"`; the
 parent baseline is exempt, because the parent is measured before any method exists.
 
+Before admission, `require_admitted` also checks two code-enforced prerequisites:
+
+1. **`compute_evidence`** — a ledger entry recording observed GPU-hours, peak memory, and hardware
+   for one `apply()` call on the registered model. An estimate is not a measurement.
+2. **`tensor_inventory`** — a ledger entry recording the state-dict key names, shapes, and dtypes
+   of every target tensor, as loaded by the pinned `transformers` on the pinned model revision.
+
+Both are enforced by `harness/preflight.py` checks called from within `require_admitted`.
+See [`docs/PROVENANCE.md`](../../docs/PROVENANCE.md) § Method admission prerequisites.
+
 ## Status
 
-| slot | implemented | reviewed | frozen |
-|---|---|---|---|
-| `abliteration` | no | no | no |
-| `heretic_style` | no | no | no |
-| `obliteratus_style` | no | no | no |
+| slot | implemented | reviewed | compute evidence | tensor inventory | frozen |
+|---|---|---|---|---|---|
+| `abliteration` | **yes** (review-only) | in progress | **not recorded** | **not recorded** | no |
+| `heretic_style` | no | no | — | — | no |
+| `obliteratus_style` | no | no | — | — | no |

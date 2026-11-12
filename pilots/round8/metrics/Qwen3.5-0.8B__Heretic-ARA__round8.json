@@ -1,0 +1,100 @@
+{
+ "model": "Qwen3.5-0.8B",
+ "cond": "Heretic-ARA",
+ "arms": {
+  "val_eval": {
+   "n": 60,
+   "empty": 0
+  },
+  "sr_dev": {
+   "n": 267,
+   "empty": 0
+  },
+  "d3": {
+   "n": 98,
+   "empty": 0
+  }
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 0,
+  "n": 83,
+  "rate": 0.0
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.356,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.03795499727129936,
+ "patch": {
+  "elements_changed": 29346232,
+  "elements_total": 752393024,
+  "share_of_unique_params": 0.039003859769970436,
+  "tensors_changed": 10
+ },
+ "heretic_chosen_trial": {
+  "trial": 90,
+  "refusal_score": 0.15,
+  "kl": 0.049925923347473145,
+  "rule": "min refusal with KL<=0.1",
+  "pareto_trials": [
+   {
+    "trial": 10,
+    "refusal_score": 0.0375,
+    "kl": 0.3767702579498291
+   },
+   {
+    "trial": 44,
+    "refusal_score": 0.0625,
+    "kl": 0.1696818321943283
+   },
+   {
+    "trial": 48,
+    "refusal_score": 0.0,
+    "kl": 1.0263193845748901
+   },
+   {
+    "trial": 57,
+    "refusal_score": 0.125,
+    "kl": 0.12793271243572235
+   },
+   {
+    "trial": 61,
+    "refusal_score": 0.1,
+    "kl": 0.16258284449577332
+   },
+   {
+    "trial": 66,
+    "refusal_score": 0.25,
+    "kl": 0.04592638090252876
+   },
+   {
+    "trial": 67,
+    "refusal_score": 0.1625,
+    "kl": 0.048792365938425064
+   },
+   {
+    "trial": 90,
+    "refusal_score": 0.15,
+    "kl": 0.049925923347473145
+   },
+   {
+    "trial": 99,
+    "refusal_score": 0.05,
+    "kl": 0.2279832810163498
+   }
+  ]
+ },
+ "copy_check": {
+  "missing_in_saved": [],
+  "unexpected_in_saved": [],
+  "n_missing": 0,
+  "n_unexpected": 0
+ }
+}

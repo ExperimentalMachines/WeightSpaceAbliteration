@@ -1,0 +1,85 @@
+{
+ "model": "Gemma-4-E2B-it",
+ "cond": "Heretic-ARA",
+ "arms": {
+  "val_eval": {
+   "n": 60,
+   "empty": 0
+  },
+  "sr_dev": {
+   "n": 267,
+   "empty": 0
+  },
+  "d3": {
+   "n": 98,
+   "empty": 0
+  }
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 0,
+  "n": 83,
+  "rate": 0.0
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.522,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.03700011223554611,
+ "patch": {
+  "elements_changed": 255493163,
+  "elements_total": 5104297504,
+  "share_of_unique_params": 0.050054520293886066,
+  "tensors_changed": 28
+ },
+ "heretic_chosen_trial": {
+  "trial": 73,
+  "refusal_score": 0.0375,
+  "kl": 0.048056453466415405,
+  "rule": "min refusal with KL<=0.1",
+  "pareto_trials": [
+   {
+    "trial": 10,
+    "refusal_score": 0.025,
+    "kl": 0.308647096157074
+   },
+   {
+    "trial": 53,
+    "refusal_score": 0.0,
+    "kl": 9.18196964263916
+   },
+   {
+    "trial": 73,
+    "refusal_score": 0.0375,
+    "kl": 0.048056453466415405
+   },
+   {
+    "trial": 81,
+    "refusal_score": 0.05,
+    "kl": 0.04415437579154968
+   },
+   {
+    "trial": 83,
+    "refusal_score": 0.0625,
+    "kl": 0.039452433586120605
+   },
+   {
+    "trial": 92,
+    "refusal_score": 0.0875,
+    "kl": 0.037132274359464645
+   }
+  ]
+ },
+ "copy_check": {
+  "missing_in_saved": [],
+  "unexpected_in_saved": [],
+  "n_missing": 0,
+  "n_unexpected": 0
+ }
+}

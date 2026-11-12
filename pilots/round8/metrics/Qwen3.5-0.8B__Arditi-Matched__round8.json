@@ -96,7 +96,6 @@
     "kept": true
    }
   ],
-  "direction_norm": 0.8848504424095154,
   "hook_vs_weight": {
    "harmful_selection": {
     "tv_mean": 0.0396924689412117,
@@ -112,6 +111,7 @@
     "refusal_mass_weight": 0.009793886914849281,
     "max_abs_logp_diff": 1.7503986358642578
    }
-  }
+  },
+  "direction_norm": 0.8848504424095154
  }
 }

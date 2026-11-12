@@ -1,0 +1,130 @@
+{
+ "model": "MiniCPM5-2B",
+ "cond": "Heretic-ARA",
+ "arms": {
+  "val_eval": {
+   "n": 60,
+   "empty": 0
+  },
+  "sr_dev": {
+   "n": 267,
+   "empty": 0
+  },
+  "d3": {
+   "n": 98,
+   "empty": 0
+  }
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 18,
+  "n": 83,
+  "rate": 0.21686746987951808
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.708,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.6956110596656799,
+ "patch": {
+  "elements_changed": 274796885,
+  "elements_total": 2516756480,
+  "share_of_unique_params": 0.10918691863266802,
+  "tensors_changed": 34
+ },
+ "heretic_chosen_trial": {
+  "trial": 40,
+  "refusal_score": 0.0375,
+  "kl": 0.05925885960459709,
+  "rule": "min refusal with KL<=0.1",
+  "pareto_trials": [
+   {
+    "trial": 15,
+    "refusal_score": 0.0,
+    "kl": 12.38563346862793
+   },
+   {
+    "trial": 19,
+    "refusal_score": 0.025,
+    "kl": 0.3203764855861664
+   },
+   {
+    "trial": 24,
+    "refusal_score": 0.0875,
+    "kl": 0.03424252197146416
+   },
+   {
+    "trial": 40,
+    "refusal_score": 0.0375,
+    "kl": 0.05925885960459709
+   },
+   {
+    "trial": 48,
+    "refusal_score": 0.1375,
+    "kl": 0.021557576954364777
+   },
+   {
+    "trial": 51,
+    "refusal_score": 0.075,
+    "kl": 0.03633701056241989
+   },
+   {
+    "trial": 64,
+    "refusal_score": 0.125,
+    "kl": 0.022826887667179108
+   },
+   {
+    "trial": 69,
+    "refusal_score": 0.1125,
+    "kl": 0.02457665465772152
+   },
+   {
+    "trial": 75,
+    "refusal_score": 0.2125,
+    "kl": 0.018296482041478157
+   },
+   {
+    "trial": 78,
+    "refusal_score": 0.0625,
+    "kl": 0.040589720010757446
+   },
+   {
+    "trial": 82,
+    "refusal_score": 0.375,
+    "kl": 0.012212259694933891
+   },
+   {
+    "trial": 84,
+    "refusal_score": 0.3,
+    "kl": 0.012947546318173409
+   },
+   {
+    "trial": 86,
+    "refusal_score": 0.2,
+    "kl": 0.021173840388655663
+   },
+   {
+    "trial": 92,
+    "refusal_score": 0.225,
+    "kl": 0.016148366034030914
+   },
+   {
+    "trial": 93,
+    "refusal_score": 0.275,
+    "kl": 0.014264965429902077
+   }
+  ]
+ },
+ "copy_check": {
+  "missing_in_saved": [],
+  "unexpected_in_saved": [],
+  "n_missing": 0,
+  "n_unexpected": 0
+ }
+}

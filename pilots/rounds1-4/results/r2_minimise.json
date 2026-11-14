@@ -1,0 +1,118 @@
+{
+ "direction": {
+  "l": 8,
+  "p": 8,
+  "lam": 1.0,
+  "alpha": 1.0
+ },
+ "rows": [
+  {
+   "config": "full: all writers + embedding",
+   "matrices": 48,
+   "embedding": true,
+   "benign_regex_pp": -3.125,
+   "benign_guard_pp": -3.0,
+   "harm_regex_pp": -1.0,
+   "harm_unsafe_pp": -2.0,
+   "safe": true,
+   "changed": 119133912,
+   "rank1_bytes": 274432
+  },
+  {
+   "config": "all writers, no embedding",
+   "matrices": 48,
+   "embedding": false,
+   "benign_regex_pp": -2.625,
+   "benign_guard_pp": -3.75,
+   "harm_regex_pp": 0.0,
+   "harm_unsafe_pp": -2.6666666666666665,
+   "safe": true,
+   "changed": 119133912,
+   "rank1_bytes": 272384
+  },
+  {
+   "config": "layers>=8, no embedding",
+   "matrices": 32,
+   "embedding": false,
+   "benign_regex_pp": -1.0,
+   "benign_guard_pp": -2.875,
+   "harm_regex_pp": 0.0,
+   "harm_unsafe_pp": -0.3333333333333333,
+   "safe": true,
+   "changed": 79196696,
+   "rank1_bytes": 182272
+  },
+  {
+   "config": "layers 8-15, no embedding",
+   "matrices": 16,
+   "embedding": false,
+   "benign_regex_pp": 0.375,
+   "benign_guard_pp": -1.375,
+   "harm_regex_pp": 0.6666666666666666,
+   "harm_unsafe_pp": 0.3333333333333333,
+   "safe": true,
+   "changed": 39711714,
+   "rank1_bytes": 92160
+  },
+  {
+   "config": "layers 8-11, no embedding",
+   "matrices": 8,
+   "embedding": false,
+   "benign_regex_pp": 0.75,
+   "benign_guard_pp": 0.875,
+   "harm_regex_pp": 0.6666666666666666,
+   "harm_unsafe_pp": -0.3333333333333333,
+   "safe": true,
+   "changed": 19904798,
+   "rank1_bytes": 47104
+  },
+  {
+   "config": "layers>=8, mlp only",
+   "matrices": 16,
+   "embedding": false,
+   "benign_regex_pp": 0.125,
+   "benign_guard_pp": 0.25,
+   "harm_regex_pp": -0.3333333333333333,
+   "harm_unsafe_pp": -1.0,
+   "safe": true,
+   "changed": 50411649,
+   "rank1_bytes": 116736
+  },
+  {
+   "config": "layers 8-15, mlp only",
+   "matrices": 8,
+   "embedding": false,
+   "benign_regex_pp": 0.0,
+   "benign_guard_pp": 0.25,
+   "harm_regex_pp": -0.3333333333333333,
+   "harm_unsafe_pp": -1.3333333333333333,
+   "safe": true,
+   "changed": 25291309,
+   "rank1_bytes": 59392
+  },
+  {
+   "config": "layers<=7, no embedding",
+   "matrices": 16,
+   "embedding": false,
+   "benign_regex_pp": -1.75,
+   "benign_guard_pp": -1.25,
+   "harm_regex_pp": 1.6666666666666667,
+   "harm_unsafe_pp": -2.3333333333333335,
+   "safe": true,
+   "changed": 39937216,
+   "rank1_bytes": 92160
+  }
+ ],
+ "chosen_minimal": {
+  "config": "all writers, no embedding",
+  "matrices": 48,
+  "embedding": false,
+  "benign_regex_pp": -2.625,
+  "benign_guard_pp": -3.75,
+  "harm_regex_pp": 0.0,
+  "harm_unsafe_pp": -2.6666666666666665,
+  "safe": true,
+  "changed": 119133912,
+  "rank1_bytes": 272384
+ }
+}

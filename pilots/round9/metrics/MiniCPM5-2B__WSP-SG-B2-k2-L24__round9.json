@@ -1,0 +1,67 @@
+{
+ "model": "MiniCPM5-2B",
+ "cond": "WSP-SG-B2-k2-L24",
+ "arms": {
+  "val_eval": {
+   "n": 60,
+   "empty": 1
+  },
+  "sr_dev": {
+   "n": 267,
+   "empty": 3
+  },
+  "d3": {
+   "n": 98,
+   "empty": 1
+  }
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 5,
+  "n": 83,
+  "rate": 0.060240963855421686
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.846,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 2.177248001098633,
+ "elements_changed": 641336531,
+ "unique_parameters": 2516756480,
+ "share_of_unique_params": 0.25482661357844205,
+ "tensors_changed": 84,
+ "seconds": 722,
+ "subspace": {
+  "spec": {
+   "builder": "B2",
+   "k": 2,
+   "layer": 24,
+   "pos": -1,
+   "null_m": 0,
+   "alpha": 1.0,
+   "n_fit": 250,
+   "alias": "WSP-SG-B2-k2-L24"
+  },
+  "rank_requested": 2,
+  "rank_before_null": 2,
+  "rank": 2,
+  "cos_to_b1": [
+   0.9991113764062466
+  ],
+  "energy_top": {
+   "1": 0.6434305310249329,
+   "2": 0.7070582509040833,
+   "4": 0.7790690064430237,
+   "8": 0.8284838795661926
+  },
+  "matrices": 84,
+  "rank_sum": 168,
+  "factor_bytes": 4128768
+ }
+}

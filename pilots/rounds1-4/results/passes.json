@@ -1,0 +1,184 @@
+[
+ {
+  "pass": 1,
+  "kind": "read",
+  "n": 335,
+  "note": "harmful_ext states, layers 1-23, last 9 positions",
+  "t": 1794277458
+ },
+ {
+  "pass": 2,
+  "kind": "read",
+  "n": 335,
+  "note": "harmless_ext states, layers 1-23, last 9 positions",
+  "t": 1794277459
+ },
+ {
+  "pass": 3,
+  "kind": "first_logp",
+  "n": 830,
+  "note": "baseline first-token log-probs, all four prompt sets, full vocabulary",
+  "t": 1794277508
+ },
+ {
+  "pass": 4,
+  "kind": "first_logp",
+  "n": 960,
+  "note": "scan A | harmful_val x K candidates",
+  "t": 1794277542
+ },
+ {
+  "pass": 5,
+  "kind": "first_logp",
+  "n": 960,
+  "note": "scan A | harmless_val x K candidates (full vocab, KL)",
+  "t": 1794277544
+ },
+ {
+  "pass": 6,
+  "kind": "read_modules",
+  "n": 335,
+  "note": "module outputs, harmful_ext, last position",
+  "t": 1794277581
+ },
+ {
+  "pass": 7,
+  "kind": "read_modules",
+  "n": 335,
+  "note": "module outputs, harmless_ext, last position",
+  "t": 1794277582
+ },
+ {
+  "pass": 8,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "top7_pre14 | harmful_val",
+  "t": 1794277615
+ },
+ {
+  "pass": 9,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "top7_pre14 | harmless_val KL",
+  "t": 1794277616
+ },
+ {
+  "pass": 10,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "top7+post4 | harmful_val",
+  "t": 1794277616
+ },
+ {
+  "pass": 11,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "top7+post4 | harmless_val KL",
+  "t": 1794277616
+ },
+ {
+  "pass": 12,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "all_pre14(28) | harmful_val",
+  "t": 1794277616
+ },
+ {
+  "pass": 13,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "all_pre14(28) | harmless_val KL",
+  "t": 1794277616
+ },
+ {
+  "pass": 14,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "all_writers(48) | harmful_val",
+  "t": 1794277616
+ },
+ {
+  "pass": 15,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "all_writers(48) | harmless_val KL",
+  "t": 1794277617
+ },
+ {
+  "pass": 16,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "baseline refusal flags, harmful_val",
+  "t": 1794277644
+ },
+ {
+  "pass": 17,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "top7_pre14 refusal flags, harmful_val",
+  "t": 1794277648
+ },
+ {
+  "pass": 18,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "top7+post4 refusal flags, harmful_val",
+  "t": 1794277651
+ },
+ {
+  "pass": 19,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "all_pre14(28) refusal flags, harmful_val",
+  "t": 1794277654
+ },
+ {
+  "pass": 20,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "all_writers(48) refusal flags, harmful_val",
+  "t": 1794277657
+ },
+ {
+  "pass": 21,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "top14_pre14 | harmful_val",
+  "t": 1794277685
+ },
+ {
+  "pass": 22,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "top14_pre14 | harmless_val KL",
+  "t": 1794277685
+ },
+ {
+  "pass": 23,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "top14_pre14 refusal flags, harmful_val",
+  "t": 1794277685
+ },
+ {
+  "pass": 24,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "top20_pre14 | harmful_val",
+  "t": 1794277688
+ },
+ {
+  "pass": 25,
+  "kind": "first_logp",
+  "n": 80,
+  "note": "top20_pre14 | harmless_val KL",
+  "t": 1794277689
+ },
+ {
+  "pass": 26,
+  "kind": "gen_harmful",
+  "n": 80,
+  "note": "top20_pre14 refusal flags, harmful_val",
+  "t": 1794277689
+ }
+]

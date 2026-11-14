@@ -1,0 +1,34 @@
+{
+ "chosen": [
+  "13.mlp.down_proj",
+  "13.linear_attn.out_proj",
+  "12.mlp.down_proj",
+  "12.linear_attn.out_proj",
+  "11.mlp.down_proj",
+  "11.self_attn.o_proj",
+  "9.linear_attn.out_proj",
+  "10.mlp.down_proj",
+  "9.mlp.down_proj",
+  "7.self_attn.o_proj",
+  "5.linear_attn.out_proj",
+  "10.linear_attn.out_proj",
+  "7.mlp.down_proj",
+  "3.self_attn.o_proj",
+  "8.mlp.down_proj",
+  "2.linear_attn.out_proj",
+  "3.mlp.down_proj",
+  "6.linear_attn.out_proj",
+  "6.mlp.down_proj",
+  "1.linear_attn.out_proj"
+ ],
+ "flags_harmful_val": {
+  "baseline": 73,
+  "top7_pre14": 15,
+  "top7+post4": 14,
+  "all_pre14(28)": 0,
+  "all_writers(48)": 0,
+  "top14_pre14": 8,
+  "top20_pre14": 0
+ },
+ "factor_bytes": 111616
+}

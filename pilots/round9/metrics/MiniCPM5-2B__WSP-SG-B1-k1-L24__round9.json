@@ -1,0 +1,61 @@
+{
+ "model": "MiniCPM5-2B",
+ "cond": "WSP-SG-B1-k1-L24",
+ "arms": {
+  "val_eval": {
+   "n": 60,
+   "empty": 0
+  },
+  "sr_dev": {
+   "n": 267,
+   "empty": 0
+  },
+  "d3": {
+   "n": 98,
+   "empty": 0
+  }
+ },
+ "generation": {
+  "max_new_tokens": 512,
+  "decoding": "greedy",
+  "thinking": false,
+  "system_prompt": null
+ },
+ "over_refusal_dev": {
+  "refused": 26,
+  "n": 83,
+  "rate": 0.3132530120481928
+ },
+ "gsm8k_train500": {
+  "accuracy": 0.73,
+  "n": 500,
+  "max_new_tokens": 320
+ },
+ "kl_first_token_vs_parent": 0.805054247379303,
+ "elements_changed": 566005455,
+ "unique_parameters": 2516756480,
+ "share_of_unique_params": 0.22489480388662791,
+ "tensors_changed": 84,
+ "seconds": 695,
+ "subspace": {
+  "spec": {
+   "builder": "B1",
+   "k": 1,
+   "layer": 24,
+   "pos": -1,
+   "null_m": 0,
+   "alpha": 1.0,
+   "n_fit": 250,
+   "alias": "WSP-SG-B1-k1-L24"
+  },
+  "rank_requested": 1,
+  "rank_before_null": 1,
+  "rank": 1,
+  "cos_to_b1": [
+   1.0000000021560878
+  ],
+  "matrices": 84,
+  "rank_sum": 84,
+  "factor_bytes": 2064384
+ }
+}

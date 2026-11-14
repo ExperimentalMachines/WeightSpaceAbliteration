@@ -1,0 +1,154 @@
+{
+ "baseline": {
+  "benign": 0.42,
+  "harmful": 0.69
+ },
+ "dir_layer": 18,
+ "alpha": 0.75,
+ "rows": [
+  {
+   "config": "layers>=22",
+   "matrices": 4,
+   "benign_refusal": 0.44,
+   "harmful_refusal": 0.69,
+   "accepted": true,
+   "changed_elements": 9285408,
+   "rank1_bytes": 24576
+  },
+  {
+   "config": "layers>=20",
+   "matrices": 8,
+   "benign_refusal": 0.435,
+   "harmful_refusal": 0.69,
+   "accepted": true,
+   "changed_elements": 18584768,
+   "rank1_bytes": 47104
+  },
+  {
+   "config": "layers>=18",
+   "matrices": 12,
+   "benign_refusal": 0.415,
+   "harmful_refusal": 0.68,
+   "accepted": true,
+   "changed_elements": 27932822,
+   "rank1_bytes": 69632
+  },
+  {
+   "config": "layers>=16",
+   "matrices": 16,
+   "benign_refusal": 0.425,
+   "harmful_refusal": 0.68,
+   "accepted": true,
+   "changed_elements": 37329668,
+   "rank1_bytes": 92160
+  },
+  {
+   "config": "layers>=14",
+   "matrices": 20,
+   "benign_refusal": 0.405,
+   "harmful_refusal": 0.69,
+   "accepted": true,
+   "changed_elements": 46708163,
+   "rank1_bytes": 114688
+  },
+  {
+   "config": "layers>=12",
+   "matrices": 24,
+   "benign_refusal": 0.4,
+   "harmful_refusal": 0.68,
+   "accepted": true,
+   "changed_elements": 56165261,
+   "rank1_bytes": 137216
+  },
+  {
+   "config": "layers>=8",
+   "matrices": 32,
+   "benign_refusal": 0.38,
+   "harmful_refusal": 0.7,
+   "accepted": true,
+   "changed_elements": 75135181,
+   "rank1_bytes": 182272
+  },
+  {
+   "config": "layers>=4",
+   "matrices": 40,
+   "benign_refusal": 0.41,
+   "harmful_refusal": 0.72,
+   "accepted": true,
+   "changed_elements": 94052241,
+   "rank1_bytes": 227328
+  },
+  {
+   "config": "layers<=18",
+   "matrices": 38,
+   "benign_refusal": 0.32,
+   "harmful_refusal": 0.61,
+   "accepted": false,
+   "changed_elements": 89873075,
+   "rank1_bytes": 216064
+  },
+  {
+   "config": "layers<=14",
+   "matrices": 30,
+   "benign_refusal": 0.34,
+   "harmful_refusal": 0.62,
+   "accepted": false,
+   "changed_elements": 71072050,
+   "rank1_bytes": 171008
+  },
+  {
+   "config": "all layers, mlp.down_proj only",
+   "matrices": 24,
+   "benign_refusal": 0.42,
+   "harmful_refusal": 0.76,
+   "accepted": true,
+   "changed_elements": 71855945,
+   "rank1_bytes": 174080
+  },
+  {
+   "config": "all layers, attention writers only",
+   "matrices": 24,
+   "benign_refusal": 0.285,
+   "harmful_refusal": 0.54,
+   "accepted": false,
+   "changed_elements": 41234642,
+   "rank1_bytes": 100352
+  },
+  {
+   "config": "layers>=12, mlp only",
+   "matrices": 12,
+   "benign_refusal": 0.45,
+   "harmful_refusal": 0.7,
+   "accepted": true,
+   "changed_elements": 35695862,
+   "rank1_bytes": 88064
+  },
+  {
+   "config": "layers 12-19, all kinds",
+   "matrices": 16,
+   "benign_refusal": 0.355,
+   "harmful_refusal": 0.68,
+   "accepted": true,
+   "changed_elements": 37580493,
+   "rank1_bytes": 92160
+  },
+  {
+   "config": "all layers, all kinds (reference)",
+   "matrices": 48,
+   "benign_refusal": 0.35,
+   "harmful_refusal": 0.68,
+   "accepted": true,
+   "changed_elements": 113090587,
+   "rank1_bytes": 272384
+  }
+ ],
+ "chosen": {
+  "config": "layers 12-19, all kinds",
+  "matrices": 16,
+  "benign_refusal": 0.355,
+  "harmful_refusal": 0.68,
+  "accepted": true,
+  "changed_elements": 37580493,
+  "rank1_bytes": 92160
+ }
+}

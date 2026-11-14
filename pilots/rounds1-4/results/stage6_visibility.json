@@ -1,0 +1,446 @@
+{
+ "edited_matrices": 16,
+ "rows": [
+  {
+   "matrix": "model.layers.0.linear_attn.out_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0015129691455513239,
+   "energy_along_r_after": 0.0015129691455513239
+  },
+  {
+   "matrix": "model.layers.0.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0014819023199379444,
+   "energy_along_r_after": 0.0014819023199379444
+  },
+  {
+   "matrix": "model.layers.1.linear_attn.out_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0018039785791188478,
+   "energy_along_r_after": 0.0018039785791188478
+  },
+  {
+   "matrix": "model.layers.1.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0014826917322352529,
+   "energy_along_r_after": 0.0014826917322352529
+  },
+  {
+   "matrix": "model.layers.2.linear_attn.out_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0015913255047053099,
+   "energy_along_r_after": 0.0015913255047053099
+  },
+  {
+   "matrix": "model.layers.2.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0016400215681642294,
+   "energy_along_r_after": 0.0016400215681642294
+  },
+  {
+   "matrix": "model.layers.3.self_attn.o_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0014765581581741571,
+   "energy_along_r_after": 0.0014765581581741571
+  },
+  {
+   "matrix": "model.layers.3.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0012715946650132537,
+   "energy_along_r_after": 0.0012715946650132537
+  },
+  {
+   "matrix": "model.layers.4.linear_attn.out_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0014799333875998855,
+   "energy_along_r_after": 0.0014799333875998855
+  },
+  {
+   "matrix": "model.layers.4.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.001298851682804525,
+   "energy_along_r_after": 0.001298851682804525
+  },
+  {
+   "matrix": "model.layers.5.linear_attn.out_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0013518300838768482,
+   "energy_along_r_after": 0.0013518300838768482
+  },
+  {
+   "matrix": "model.layers.5.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.00136077671777457,
+   "energy_along_r_after": 0.00136077671777457
+  },
+  {
+   "matrix": "model.layers.6.linear_attn.out_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.001240316778421402,
+   "energy_along_r_after": 0.001240316778421402
+  },
+  {
+   "matrix": "model.layers.6.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0012003968004137278,
+   "energy_along_r_after": 0.0012003968004137278
+  },
+  {
+   "matrix": "model.layers.7.self_attn.o_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.001119698747061193,
+   "energy_along_r_after": 0.001119698747061193
+  },
+  {
+   "matrix": "model.layers.7.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0013472933787852526,
+   "energy_along_r_after": 0.0013472933787852526
+  },
+  {
+   "matrix": "model.layers.8.linear_attn.out_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0013331207446753979,
+   "energy_along_r_after": 0.0013331207446753979
+  },
+  {
+   "matrix": "model.layers.8.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0012807742459699512,
+   "energy_along_r_after": 0.0012807742459699512
+  },
+  {
+   "matrix": "model.layers.9.linear_attn.out_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0012380486587062478,
+   "energy_along_r_after": 0.0012380486587062478
+  },
+  {
+   "matrix": "model.layers.9.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0014128516195341945,
+   "energy_along_r_after": 0.0014128516195341945
+  },
+  {
+   "matrix": "model.layers.10.linear_attn.out_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0011748322285711765,
+   "energy_along_r_after": 0.0011748322285711765
+  },
+  {
+   "matrix": "model.layers.10.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0013774118851870298,
+   "energy_along_r_after": 0.0013774118851870298
+  },
+  {
+   "matrix": "model.layers.11.self_attn.o_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.00111442303750664,
+   "energy_along_r_after": 0.00111442303750664
+  },
+  {
+   "matrix": "model.layers.11.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0013450926635414362,
+   "energy_along_r_after": 0.0013450926635414362
+  },
+  {
+   "matrix": "model.layers.12.linear_attn.out_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.02593585103750229,
+   "top_singular_energy_share": 0.996299147605896,
+   "cos_change_direction_vs_r": 1.0002458095550537,
+   "energy_along_r_before": 0.0011919653043150902,
+   "energy_along_r_after": 7.470601849490777e-05
+  },
+  {
+   "matrix": "model.layers.12.mlp.down_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.026322297751903534,
+   "top_singular_energy_share": 0.9963688254356384,
+   "cos_change_direction_vs_r": 1.0000863075256348,
+   "energy_along_r_before": 0.001227544853463769,
+   "energy_along_r_after": 7.688273763051257e-05
+  },
+  {
+   "matrix": "model.layers.13.linear_attn.out_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.025602564215660095,
+   "top_singular_energy_share": 0.9962042570114136,
+   "cos_change_direction_vs_r": 1.0000885725021362,
+   "energy_along_r_before": 0.00116113165859133,
+   "energy_along_r_after": 7.271888898685575e-05
+  },
+  {
+   "matrix": "model.layers.13.mlp.down_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.02693008817732334,
+   "top_singular_energy_share": 0.9965390563011169,
+   "cos_change_direction_vs_r": 1.0000934600830078,
+   "energy_along_r_before": 0.0012850164202973247,
+   "energy_along_r_after": 8.046876610023901e-05
+  },
+  {
+   "matrix": "model.layers.14.linear_attn.out_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.025545237585902214,
+   "top_singular_energy_share": 0.9961992502212524,
+   "cos_change_direction_vs_r": 1.0002485513687134,
+   "energy_along_r_before": 0.0011558482656255364,
+   "energy_along_r_after": 7.237314275698736e-05
+  },
+  {
+   "matrix": "model.layers.14.mlp.down_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.027159428223967552,
+   "top_singular_energy_share": 0.9966288805007935,
+   "cos_change_direction_vs_r": 1.0001113414764404,
+   "energy_along_r_before": 0.0013071335852146149,
+   "energy_along_r_after": 8.186025661416352e-05
+  },
+  {
+   "matrix": "model.layers.15.self_attn.o_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.02380642667412758,
+   "top_singular_energy_share": 0.9956398606300354,
+   "cos_change_direction_vs_r": 1.0002065896987915,
+   "energy_along_r_before": 0.0010034928563982248,
+   "energy_along_r_after": 6.286674033617601e-05
+  },
+  {
+   "matrix": "model.layers.15.mlp.down_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.026314934715628624,
+   "top_singular_energy_share": 0.9963951110839844,
+   "cos_change_direction_vs_r": 1.000220775604248,
+   "energy_along_r_before": 0.0012270439183339477,
+   "energy_along_r_after": 7.687820470891893e-05
+  },
+  {
+   "matrix": "model.layers.16.linear_attn.out_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.02790350280702114,
+   "top_singular_energy_share": 0.9967895150184631,
+   "cos_change_direction_vs_r": 1.000217318534851,
+   "energy_along_r_before": 0.0013801383320242167,
+   "energy_along_r_after": 8.646822243463248e-05
+  },
+  {
+   "matrix": "model.layers.16.mlp.down_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.026223719120025635,
+   "top_singular_energy_share": 0.9963867664337158,
+   "cos_change_direction_vs_r": 1.000220775604248,
+   "energy_along_r_before": 0.001218380406498909,
+   "energy_along_r_after": 7.630812615389004e-05
+  },
+  {
+   "matrix": "model.layers.17.linear_attn.out_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.027363967150449753,
+   "top_singular_energy_share": 0.9966561198234558,
+   "cos_change_direction_vs_r": 1.0000979900360107,
+   "energy_along_r_before": 0.0013270667986944318,
+   "energy_along_r_after": 8.31361539894715e-05
+  },
+  {
+   "matrix": "model.layers.17.mlp.down_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.026553191244602203,
+   "top_singular_energy_share": 0.9964420199394226,
+   "cos_change_direction_vs_r": 1.000218391418457,
+   "energy_along_r_before": 0.0012493443209677935,
+   "energy_along_r_after": 7.826432556612417e-05
+  },
+  {
+   "matrix": "model.layers.18.linear_attn.out_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.028957584872841835,
+   "top_singular_energy_share": 0.9969838261604309,
+   "cos_change_direction_vs_r": 1.0002272129058838,
+   "energy_along_r_before": 0.0014864412369206548,
+   "energy_along_r_after": 9.309368761023507e-05
+  },
+  {
+   "matrix": "model.layers.18.mlp.down_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.026047563180327415,
+   "top_singular_energy_share": 0.9963008165359497,
+   "cos_change_direction_vs_r": 1.0002148151397705,
+   "energy_along_r_before": 0.0012021067086607218,
+   "energy_along_r_after": 7.531370647484437e-05
+  },
+  {
+   "matrix": "model.layers.19.self_attn.o_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.02400411106646061,
+   "top_singular_energy_share": 0.9956739544868469,
+   "cos_change_direction_vs_r": 1.0002272129058838,
+   "energy_along_r_before": 0.0010202610865235329,
+   "energy_along_r_after": 6.391682109097019e-05
+  },
+  {
+   "matrix": "model.layers.19.mlp.down_proj.weight",
+   "edited": true,
+   "rel_frobenius_change": 0.024958333000540733,
+   "top_singular_energy_share": 0.9960106611251831,
+   "cos_change_direction_vs_r": 1.0002424716949463,
+   "energy_along_r_before": 0.001103168586269021,
+   "energy_along_r_after": 6.907931674504653e-05
+  },
+  {
+   "matrix": "model.layers.20.linear_attn.out_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0013111510779708624,
+   "energy_along_r_after": 0.0013111510779708624
+  },
+  {
+   "matrix": "model.layers.20.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.001045488752424717,
+   "energy_along_r_after": 0.001045488752424717
+  },
+  {
+   "matrix": "model.layers.21.linear_attn.out_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0011356152826920152,
+   "energy_along_r_after": 0.0011356152826920152
+  },
+  {
+   "matrix": "model.layers.21.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0009907758794724941,
+   "energy_along_r_after": 0.0009907758794724941
+  },
+  {
+   "matrix": "model.layers.22.linear_attn.out_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.001173009630292654,
+   "energy_along_r_after": 0.001173009630292654
+  },
+  {
+   "matrix": "model.layers.22.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0010147730354219675,
+   "energy_along_r_after": 0.0010147730354219675
+  },
+  {
+   "matrix": "model.layers.23.self_attn.o_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0010365964844822884,
+   "energy_along_r_after": 0.0010365964844822884
+  },
+  {
+   "matrix": "model.layers.23.mlp.down_proj.weight",
+   "edited": false,
+   "rel_frobenius_change": 0.0,
+   "top_singular_energy_share": NaN,
+   "cos_change_direction_vs_r": NaN,
+   "energy_along_r_before": 0.0011506499722599983,
+   "energy_along_r_after": 0.0011506499722599983
+  }
+ ],
+ "summary": {
+  "rel_change_min": 0.02380642667412758,
+  "rel_change_max": 0.028957584872841835,
+  "top_singular_energy_min": 0.9956398606300354,
+  "cos_min": 1.0000863075256348,
+  "energy_along_r_before_mean": 0.001221630271174945,
+  "energy_along_r_after_mean_edited": 7.652094473087345e-05,
+  "energy_along_r_mean_unedited": 0.0013060860765108373
+ }
+}

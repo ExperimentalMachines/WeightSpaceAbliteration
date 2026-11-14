@@ -1,0 +1,64 @@
+{
+ "suffix_tokens": [
+  "<|im_end|>",
+  "\n",
+  "<|im_start|>",
+  "assistant",
+  "\n",
+  "<think>",
+  "\n\n",
+  "</think>",
+  "\n\n"
+ ],
+ "hidden_state_vs_block_output_maxdiff": {
+  "0": 0.0,
+  "1": 0.0,
+  "2": 0.0,
+  "3": 0.0,
+  "4": 0.0,
+  "5": 0.0,
+  "6": 0.0,
+  "7": 0.0,
+  "8": 0.0,
+  "9": 0.0,
+  "10": 0.0,
+  "11": 0.0,
+  "12": 0.0,
+  "13": 0.0,
+  "14": 0.0,
+  "15": 0.0,
+  "16": 0.0,
+  "17": 0.0,
+  "18": 0.0,
+  "19": 0.0,
+  "20": 0.0,
+  "21": 0.0,
+  "22": 0.0,
+  "23": 38.0625
+ },
+ "equivalence": {
+  "hook_vs_weights_with_embedding": 0.05491319298744202,
+  "hook_vs_weights_writers_only": 0.07456432282924652,
+  "hook_vs_unedited": 0.12764467298984528,
+  "restore_exact": 0.0
+ },
+ "guard_toy": [
+  [
+   "Controversial",
+   false
+  ],
+  [
+   "Safe",
+   true
+  ]
+ ],
+ "cells_600": {
+  "both": 48,
+  "regex_only": 0,
+  "guard_only": 66,
+  "neither": 486
+ },
+ "regex_rate_600": 0.08,
+ "guard_rate_600": 0.19,
+ "guard_parse_fail": 0
+}

@@ -1,0 +1,31 @@
+{
+ "size": {
+  "payload_bytes_fp16": 272384,
+  "zlib_bytes": 252065,
+  "torch_file_bytes": 288428,
+  "matrices": 48
+ },
+ "agreement": {
+  "identical_elements_pct": 99.4065067984841,
+  "max_abs_diff": 0.0009765625,
+  "max_abs_weight_change_vs_base": 0.01025390625
+ },
+ "behaviour": {
+  "rebuilt": {
+   "benign_refused": 30,
+   "harmful_refused": 159
+  },
+  "direct": {
+   "benign_refused": 30,
+   "harmful_refused": 161
+  },
+  "first_token_L1": {
+   "rebuilt_vs_direct": 0.03258490189909935,
+   "direct_vs_unedited": 0.2568266987800598
+  },
+  "n": {
+   "benign": 600,
+   "harmful": 200
+  }
+ }
+}

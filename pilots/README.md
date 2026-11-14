@@ -9,9 +9,13 @@ and edited models were never run on the study's frozen arms. Each pilot has its 
 | `gemma-4-e2b-it/` | Gemma-4-E2B-it | 7 | `round7_prereg.md` |
 | `minicpm5-2b/` | MiniCPM5-2B | 7 | `round7_prereg.md` |
 | `round8/` | all three | 8 | `round8_prereg.md` |
+| `rounds1-4/` | Qwen3.5-0.8B | 1 to 4 | `notes/prereg_round2.md`, `notes/prereg_round3.md`, `notes/prereg_round4.md` |
+| `round9/` | MiniCPM5-2B | 9 | none (exploratory, not preregistered) |
 
 Round 7 (WSP-Full and WSP-Compact on the two small registered models) has one preregistration and one summary for both models: `round7_prereg.md`, `round7_summary.md`.
 Round 8 (completing the matrix: Arditi, Heretic and the missing WSP-Compact cells) lives in `round8/`, separate from the published Qwen3.5-0.8B files so that nothing published is overwritten; its summary is `round8_summary.md` there.
+Rounds 1 to 4 (the earlier Qwen3.5-0.8B pilots: over-refusal edits in rounds 1 to 3, the first four-method refusal-removal benchmark in round 4) are in `rounds1-4/`; its `README.md` lists what each round was and what was left out.
+Round 9 (fixed rank-k weight edits, WSP-SG, on MiniCPM5-2B; exploratory, no preregistration) is in `round9/`; its summary is `round9_summary.md` there. WSP-SG is a WSP method with no LLM editor and no selection step, so its rows are not comparable to WSP-Full and WSP-Compact as "what an editor chose".
 
 ## Names
 Test sets: **StrongREJECT-267**, **HarmBench-Val-60**, **JBB+MI-98**. Conditions: **Parent**, **Arditi-Paper**, **Arditi-Matched**, **Heretic-Abliteration**, **Heretic-ARA**, **WSP-Full**, **WSP-Compact**.

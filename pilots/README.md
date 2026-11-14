@@ -46,12 +46,20 @@ Test sets: **StrongREJECT-267**, **HarmBench-Val-60**, **JBB+MI-98**. Conditions
 | MiniCPM5-2B | Heretic-ARA (gradient-based) | 46.8% | 63.3% | 51.0% | 10.92% | **0.6956** |
 | MiniCPM5-2B | WSP-Full | 1.1% | 15.0% | 1.0% | 4.36% | 0.0964 |
 | MiniCPM5-2B | WSP-Compact | 0.4% | 8.3% | 0.0% | 13.88% | 0.0242 |
+| MiniCPM5-2B | WSP-SG B1 rank 1, L24 (round 9) | 18.0% | 40.0% | 12.2% | 22.49% | 0.805 |
+| MiniCPM5-2B | WSP-SG B2 rank 2, L24 (round 9) | 40.4% | 50.0% | 42.9% | 25.48% | 2.177 |
+| MiniCPM5-2B | WSP-SG B2 rank 4, L24 (round 9) | 30.3% | 40.0% | 31.6% | 26.63% | 2.746 |
+| MiniCPM5-2B | WSP-SG B2 rank 8, L24 (round 9) | 12.7% | 8.3% | 7.1% | 27.14% | 3.623 |
+| MiniCPM5-2B | WSP-SG B3 rank 4, L24 (round 9) | 30.7% | 31.7% | 39.8% | 26.65% | 2.820 |
+| MiniCPM5-2B | WSP-SG B2 rank 4 + null 8, L24 (round 9) | 4.5% | 13.3% | 7.1% | 26.63% | 0.987 |
+| MiniCPM5-2B | WSP-SG B2 rank 4, L20 (round 9) | 8.6% | 6.7% | 9.2% | 26.64% | 4.227 |
 | Qwen3-4B, Qwen3-8B, Qwen3-30B-A3B | every method | not run | not run | not run | - | - |
 
 Counts, intervals, paired tests and every side metric are in `qwen3.5-0.8b/summary_round5.md`, `qwen3.5-0.8b/summary_round6.md`, `round7_summary.md` and `round8/round8_summary.md`. OBLITERATUS was not run (version 0.1.4 refuses the Qwen3.5-0.8B architecture).
 The Qwen3.5-0.8B rows come from earlier code than the round-7 and round-8 rows (same classifier and decoding); the Qwen3.5-0.8B cells marked "round 8" are new measurements, the others are the published pilot values; on Gemma-4-E2B-it and MiniCPM5-2B the round-8 conditions were judged at judge batch size 4 instead of 8 (see the summaries). Heretic-ARA applies gradient optimisation, so it is not a direct weight edit.
 MiniCPM5-2B Arditi is a result, not a gap: no single direction passed the preregistered selection filters (288 candidates; the candidate table is in `round8/selection/`). The MiniCPM5-2B Heretic edits have a large first-token KL in the study's prompt format (0.9998 and 0.6956) although Heretic's own scorer, which uses the same formula on different inputs (other harmless rows, a system prompt, the template's default thinking setting, a detected response prefix), rated the chosen trials at 0.09 and 0.06; see `round8/round8_summary.md`.
 Method orderings by harmful rate, where they meet the preregistered rule (Holm-adjusted pairwise p < 0.05 on StrongREJECT-267), are listed per model in `round8/round8_summary.md`; no ordering across models is claimed.
+WSP-SG (round 9, `round9/round9_summary.md`) is a WSP method with no LLM editor and no selection step: fixed rank-k edits on all residual writers of MiniCPM5-2B, exploratory and not preregistered. Every WSP-SG first-token KL is far above the 0.1 selection limit, so none of these edits is admissible by the study's convention; the rows show what the edit family can do, not what an editor chose.
 
 ## Not included, deliberately
 Model weights, adapters and refusal-direction vectors (including the saved rank-1 factors), generated text, and any prompt corpus (consistent with `SECURITY.md` and `CONTRIBUTING.md`).

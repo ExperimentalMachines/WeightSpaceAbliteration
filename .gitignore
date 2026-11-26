@@ -1,4 +1,4 @@
-# Local environment and workstation metadata
+# Local environment, workstation metadata, and private research notes (.omp/upstream-notes/)
 .omp/
 .gdkit/*.local
 
@@ -65,3 +65,7 @@ runs/*/logs/
 
 # Full host record: contains GPU UUIDs and absolute paths. The ledger carries the hash and the summary.
 runs/*/host.json
+# Immutable session hosts and raw diagnostics contain private machine metadata.
+runs/*/hosts/
+# Failure diagnostics may contain private exception paths; publish curated summaries instead.
+runs/*/failures/

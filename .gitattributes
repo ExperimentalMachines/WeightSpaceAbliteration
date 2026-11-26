@@ -29,3 +29,20 @@ datasets/inventory/*.md linguist-documentation=true
 runs/**/paper_lookups/*.json -text
 # The split manifest is hashed byte-for-byte in the split_build / split_rebuild entries.
 runs/**/splits/manifest.json -text
+# A gate receipt hashes harness.json as written (CRLF on Windows) in its inputs; keep the bytes the receipt saw.
+runs/**/harness.json -text
+# New execution-contract artifacts are hashed as persisted bytes, not normalized text.
+runs/**/hosts/** -text
+runs/**/execution/*.json -text
+runs/**/failures/*.json -text
+# The tensor inventory is hashed as stored bytes by its ledger entry.
+runs/**/tensor_inventory.json -text
+# Off-run consultation and audit manifests are hashed as written bytes.
+docs/protocol/**/metadata.json -text
+docs/protocol/**/paper_lookups/*.json -text
+docs/protocol/**/lookup_manifest.json -text
+docs/protocol/**/receipt_integrity.json -text
+docs/protocol/**/text_redactions.json -text
+docs/protocol/**/text_cleanup_verification.json -text
+docs/protocol/**/prompt_redaction.json -text
+docs/protocol/**/*.metadata.json -text

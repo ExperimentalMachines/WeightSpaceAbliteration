@@ -1,8 +1,11 @@
-"""The append-only check's one exception: restoring a raw pwc response to the bytes its own entry recorded.
+"""The append-only check's two exceptions: restoring a file git stored with converted line endings.
+
+A raw pwc response may be restored to the bytes its own ledger entry recorded; another run file (``harness.json``)
+to the bytes a schema-0 receipt, named by a ``gate_log`` entry, hashed as its input.
 
 Each test builds a throwaway git repository with ``core.autocrlf=false`` and the ``-text`` attribute, so the bytes
-git stores are exactly the bytes written. The fixture response has CRLF line endings and a non-ASCII character,
-like a pwc response written on Windows.
+git stores are exactly the bytes written. The fixture files have CRLF line endings and a non-ASCII character,
+like files written on Windows.
 """
 
 from __future__ import annotations
@@ -98,8 +101,94 @@ def test_an_entry_appended_in_the_same_change_cannot_authorise_the_rewrite(repo)
     assert _check(repo) == 1
 
 
-def test_files_outside_paper_lookups_get_no_exception(repo):
+def test_files_outside_paper_lookups_need_a_receipt_to_be_restored(repo):
     _stage(repo, f"{RUN}/harness.json", RAW)  # bytes the ledger does record, but not for this file
+    assert _check(repo) == 1
+
+
+# The receipt-input exception (harness.json). HARNESS is what a gate hashed on Windows; git stored it with LF.
+HARNESS = "{\r\n  \"judge\": \"Café judge\",\r\n  \"stage\": \"split\"\r\n}\r\n".encode("utf-8")
+
+
+def _receipt(harness: bytes, *, schema: int | None = None) -> dict:
+    """A gate receipt whose inputs hash ``harness`` for harness.json; schema 0 unless ``schema`` is given."""
+    from gdkit.gates import receipt_hash
+
+    body = {"cheap": True, "gate": "split_integrity", "gate_code_hash": "0" * 64, "ledger_head": "1" * 64,
+            "run_id": "r1", "inputs": {"harness.json": hashlib.sha256(harness).hexdigest()},
+            "result": {"ok": True, "passed": True}}
+    if schema is not None:
+        body["receipt_schema"] = schema
+    body["receipt_hash"] = receipt_hash(body)
+    return body
+
+
+def _gate_log(receipt: dict) -> bytes:
+    entry = {"seq": 3, "op": "gate_log", "params": {"gate": receipt["gate"], "inputs": ["harness.json"],
+                                                    "receipt_sha256": receipt["receipt_hash"]}}
+    return (json.dumps(entry, sort_keys=True) + "\n").encode("utf-8")
+
+
+def _commit_receipt(repo: Path, receipt: dict | None, *, gate_log: dict | None = None) -> None:
+    """Commit harness.json as LF (what git stored), the receipt, and a gate_log entry naming ``gate_log``."""
+    (repo / ".gitattributes").write_bytes(b"runs/**/paper_lookups/*.json -text\nruns/**/harness.json -text\n")
+    (repo / RUN / "harness.json").write_bytes(HARNESS.replace(b"\r\n", b"\n"))
+    if receipt is not None:
+        (repo / RUN / "receipts").mkdir(exist_ok=True)
+        (repo / RUN / "receipts" / "split_integrity.json").write_bytes(json.dumps(receipt, indent=2).encode())
+    if gate_log is not None:
+        ledger = repo / RUN / "ledger.jsonl"
+        ledger.write_bytes(ledger.read_bytes() + _gate_log(gate_log))
+    _git(repo, "add", "-A")
+    _git(repo, "commit", "-qm", "receipt")
+
+
+def test_restoring_the_bytes_a_logged_schema_0_receipt_hashed_passes_staged_and_in_ci(repo):
+    receipt = _receipt(HARNESS)
+    _commit_receipt(repo, receipt, gate_log=receipt)
+    _stage(repo, f"{RUN}/harness.json", HARNESS)
+    assert _check(repo) == 0
+    base = subprocess.run(["git", "rev-parse", "HEAD"], cwd=repo, capture_output=True, text=True).stdout.strip()
+    _git(repo, "commit", "-qm", "restore")
+    assert _check(repo, "--base", base) == 0
+
+
+def test_a_schema_1_receipt_cannot_authorise_a_restore(repo):
+    # Schema-1 receipts write no gate_log entry. Even with one added by hand, the rule does not trust them.
+    receipt = _receipt(HARNESS, schema=1)
+    _commit_receipt(repo, receipt, gate_log=receipt)
+    _stage(repo, f"{RUN}/harness.json", HARNESS)
+    assert _check(repo) == 1
+
+
+def test_a_receipt_whose_body_no_longer_matches_its_hash_cannot_authorise(repo):
+    receipt = _receipt(b"other bytes\r\n")
+    _commit_receipt(repo, {**receipt, "inputs": {"harness.json": hashlib.sha256(HARNESS).hexdigest()}},
+                    gate_log=receipt)  # the gate_log names the real hash; the inputs were edited afterwards
+    _stage(repo, f"{RUN}/harness.json", HARNESS)
+    assert _check(repo) == 1
+
+
+def test_a_receipt_no_gate_log_entry_names_cannot_authorise(repo):
+    _commit_receipt(repo, _receipt(HARNESS))
+    _stage(repo, f"{RUN}/harness.json", HARNESS)
+    assert _check(repo) == 1
+
+
+def test_a_receipt_added_in_the_same_change_cannot_authorise(repo):
+    receipt = _receipt(HARNESS)
+    _commit_receipt(repo, None, gate_log=receipt)
+    (repo / RUN / "receipts").mkdir()
+    (repo / RUN / "receipts" / "split_integrity.json").write_bytes(json.dumps(receipt, indent=2).encode())
+    _stage(repo, f"{RUN}/harness.json", HARNESS)
+    assert _check(repo) == 1
+
+
+def test_a_change_beyond_line_endings_is_refused_even_when_a_receipt_hashed_it(repo):
+    edited = HARNESS.replace(b"split", b"probe")
+    receipt = _receipt(edited)
+    _commit_receipt(repo, receipt, gate_log=receipt)
+    _stage(repo, f"{RUN}/harness.json", edited)
     assert _check(repo) == 1
 
 

@@ -9,6 +9,33 @@ This implements the single-direction refusal ablation in Arditi et al., *Refusal
 Mediated by a Single Direction*, arXiv:2406.11717. It does not reproduce later multi-direction, search,
 or optimization variants.
 
+**Declared differences from the paper.** The paper's §4.1 orthogonalizes "the embedding matrix, the
+positional embedding matrix, attention out matrices, and MLP out matrices … as well as any output
+biases" against one direction $\hat{\mathbf r}$. This method differs in two ways, both stated here so it
+is not read as a bit-exact reproduction:
+
+1. **Layer-wise direction.** The paper uses one direction for every matrix. This study consumes the
+   `direction_derivation` gate's per-layer difference-in-means vectors unchanged — one unit vector per
+   residual-stream boundary, index 0 at the embedding output — and applies vector $i+1$ to block $i$'s
+   writers. The paper's equivalence between inference-time ablation and weight orthogonalization is
+   argued for a single global direction; making the direction layer-specific is a generalization of the
+   rule, not a restatement of the paper.
+2. **Writers left unchanged.** The embedding matrix, the positional embedding matrix, and all biases,
+   including attention and MLP output biases, are not edited. The direction at index 0 corresponds to
+   the embedding output, so orthogonalizing the embedding matrix with it would be the consistent
+   extension; it is omitted here because the pilot's edits and this module's target list exclude it.
+   Adding it is a different candidate with a different manifest, and must be declared as one. The
+   `tensor_inventory` entry records, for each of the three, whether the checkpoint actually contains
+   the tensor and whether the word embeddings are tied, so "absent" and "deliberately skipped" stay
+   distinguishable in the evidence.
+
+The consequence is the method reviewed here: **single-direction refusal ablation applied layer-wise to
+the output projection of every residual-writing block writer — the mixer's output projection and the
+MLP's output projection — with embedding, positional and bias writers excluded.** The target rule is
+functional ("the matrix that writes this block's mixer or MLP output into the residual stream") rather
+than architectural, so it covers softmax attention and gated linear attention under the same rule. It
+fails closed on any model whose blocks it cannot enumerate.
+
 ## 2. Direction contract
 
 The method consumes the `direction` array from `direction_derivation` unchanged. It validates the
@@ -34,7 +61,16 @@ linear attention, dense and expert MLPs). Routers
 The implementation rejects missing, noncontiguous, mixed, malformed, or dimension-incompatible targets.
 
 **Known gaps (the method fails closed on these; it does not skip them):**
-- **Linear-attention coverage is a definition decision.** `linear_attn.out_proj` was added after review so the module can run on Qwen3.5-0.8B (registered after the module was written; 18 of its 24 blocks are linear attention). The change follows from the method's rule (project the direction out of every matrix that writes into the residual stream) and from the pilot's own edits, which included these matrices. Whether the study's "abliteration" definition includes them is the owner's call; if it does not, remove the `linear_attn` pattern and the module reverts to failing closed on that model. The tensor name and shape (`[1024, 2048]`) were read from Qwen3.5-0.8B @ `2fc06364` as loaded in the pilot, not from a fresh load with the pinned toolchain.
+- **Linear-attention output projections are in scope.** Decided 2026-11-24, with the consultation and
+  source checks in `docs/protocol/consultation_20261124/`. `linear_attn.out_proj` is the mixer output
+  projection in the 18 gated linear-attention blocks of Qwen3.5-0.8B; it replaces `self_attn.o_proj`
+  rather than adding a second writer, so including it keeps the six registered architectures under one
+  rule instead of dropping a registered model. Excluding it made the module fail closed on that model.
+  The tensor name and shape (`[1024, 2048]`) were read from Qwen3.5-0.8B @ `2fc06364` as loaded in the
+  pilot; the pinned-toolchain re-read belongs to the `tensor_inventory` entry.
+  A reviewer should note the risk this carries: recurrent state in linear-attention blocks may respond
+  more strongly to a rank-1 projection than softmax attention does, so per-model edited-parameter
+  fractions are reported with the candidate's results.
 - **Expert layouts are tested on toy tensors only.** The two layouts above are exercised with synthetic state dictionaries. They have **not** been checked against the pinned `Qwen/Qwen3-30B-A3B` checkpoint as loaded by the pinned `transformers`, whose state-dict names may differ by version. A reviewer should list the actual tensor names for each registered model before admission.
 - Gemma-4-E2B and MiniCPM5 layouts have not been inspected.
 
@@ -93,6 +129,12 @@ the projection would make no representable weight change. It returns no partial 
 actual state-dict key names for each registered model (Qwen3.5-0.8B, Qwen3-30B-A3B, and the other
 three named in the pre-registration) must be dumped from the pinned `transformers` version and
 recorded as a `tensor_inventory` ledger entry before admission.
+
+`scripts/record_tensor_inventory.py --run runs/<id>` produces that entry: the resolved target names,
+shapes and dtypes, the per-kind counts, the edited and total parameter counts with the edited
+fraction, the tied-embedding flag, and a census of the three excluded writers (embedding, positional,
+biases) with their actual shapes. It fails rather than recording a partial target set, a block count
+that disagrees with the model's declared layers, or a second inventory for the same run.
 
 **Code-enforced:** `require_tensor_inventory` in `harness/preflight.py` refuses method admission
 until this entry exists. See `docs/PROVENANCE.md` § Tensor inventory.

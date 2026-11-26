@@ -1,0 +1,46 @@
+{
+  "cheap": false,
+  "contract_version": 2,
+  "gate": "kl_divergence",
+  "gate_code_hash": "9716450122340f4a40b1a97deafb66209119c5b1bd9de608790f8388d6f365c0",
+  "host_check": {
+    "checked": false,
+    "reason": "the run has no host entry"
+  },
+  "inputs": {
+    "harness.json": "bafc7eaa2db83defad77d450cf01ade52e222fd04ea25a2564ff3b75e7ec52b6",
+    "splits/derivation.jsonl": "cbae5795a398745e9fee2ae7f2d34c0d6e5acf8ba508891b2223b9c4a72fbf51",
+    "splits/enriched.jsonl": "e899a1706f94161a7d01ab0eeb85e91df9d14876a37619f6aea21bd42ee0b9fa",
+    "splits/harmbench_val.jsonl": "5b09934543f07a25ac07bf0b53112dd1853ad571a15e65be034fee7096040d15",
+    "splits/harmless.jsonl": "2a633bfd71eb4ab46edaa60941ecf3186513bca0eaf936c94622eb068ef2a279",
+    "splits/large.jsonl": "54e84b9f40741f60bfea1256f670abb9729f503b6dc1a0956faad237a43caf4b",
+    "splits/over_refusal.jsonl": "898ee8b652b9b214ae9f15db9e1548957c5de322309a0c98dbd24a3e2e558d87",
+    "splits/primary.jsonl": "93ab40e3bb29f1477037f5c3b97f9c74ebcf0cb77b0e57c3fe03af30909d3864",
+    "splits/probe_heldout.jsonl": "359d8abf254a9de6c2365ef5cafe371f8c854f05943a70d370624b4c24f7b851",
+    "splits/probe_neg.jsonl": "898ee8b652b9b214ae9f15db9e1548957c5de322309a0c98dbd24a3e2e558d87",
+    "splits/probe_pos.jsonl": "4f13192ef5e5ff5d84a166f0d93feb7845887ffd1dacb63d7c214828f5083024",
+    "splits/treadon.jsonl": "2398b5bc4b28c25d9d7a2e9b47912a3bbe12b9262f7eb8637f46bf1982ccae39",
+    "splits/zaakirio.jsonl": "7c8844dc162bf17d620f9e16c48f76c6cb007bf4b38c57081c5072827235641b"
+  },
+  "ledger_head": "e39d722bff532568003474448b9b9f8875641caab2d55a6cb68a78616ce9ecd5",
+  "log": {
+    "bytes": 1354,
+    "finalised": "renamed",
+    "gdkit_stream_encoding": "utf-8",
+    "locale_encoding": "utf-8",
+    "partial_left": false,
+    "path": "logs/kl_divergence.log",
+    "platform": "linux",
+    "sha256": "6f1d19b97c9d392b93283cd0739611f39551944d7a6b5b43f84f373850850e30"
+  },
+  "receipt_hash": "133c0ac2fcef03d06f5e9eaf6b7171ce971ea5f8a1ac65946f89ab45a5b9318b",
+  "receipt_schema": 1,
+  "result": {
+    "kl": 0.0,
+    "method": "F.kl_div(..., reduction='batchmean', log_target=True)",
+    "n": 100,
+    "passed": true,
+    "result_sha256": "4a874ce94bb51f71a63c42654acd015a04343a7def77f0fd3d613466daad22f8"
+  },
+  "run_id": "20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b"
+}

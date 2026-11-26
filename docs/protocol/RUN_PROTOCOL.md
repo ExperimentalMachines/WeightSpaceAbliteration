@@ -14,10 +14,10 @@ else exists on disk.
 | step | command | entry | enforced by |
 |---|---|---|---|
 | freeze the answers | `python tools/start_run.py --model <slug>` | `preregistration` | `gdkit.prereg.freeze_run` |
-| record the machine | `python scripts/record_host.py --run <run>` | `host_provisioned` | `harness/preflight.py:require_host` |
+| record the machine | `python scripts/record_host.py --run <run>` | canonical `host` event for contract 3; historical `host_provisioned` entries retained | `harness/preflight.py:require_host` |
 | build the split | `python harness/build_splits.py --run-id <run>` | `split_build` | `harness/build_splits.py` |
 | check wiring | `python -m harness.gates --run <run> --smoke` | none | — |
-| run a gate | `python -m harness.gates --run <run> --gate <name>` | receipt with its `log` hash (schema 1); `gate_log` for schema 0 receipts | `harness/gates.py` |
+| run a gate | `python -m harness.gates --run <run> --gate <name> --release <release>` | manifest-bound receipt and log (contract 3); old receipt formats retained | `harness/gates.py` |
 | record compute | run method once, record timing | `compute_evidence` | `harness/preflight.py:require_compute_evidence` |
 | record tensor inventory | dump state-dict keys from pinned model | `tensor_inventory` | `harness/preflight.py:require_tensor_inventory` |
 | admit a method | review, then one entry | `method_selected` | `harness/gates.py:require_admitted` |
@@ -29,9 +29,16 @@ else exists on disk.
 
 ### `host-before-gates`
 
-A gate may run only if the run holds a `host_provisioned` entry whose fingerprint matches the machine
-running now. The fingerprint covers GPU identity, driver, CUDA and cuDNN versions, the torch build and
-the Python version.
+For local contract-3 execution, a gate needs a canonical `host` event whose immutable
+session snapshot passes gdkit's same-host check. Producer and preflight use the same
+schema; an unchecked host is a refusal. Requested probe stdout/stderr bytes are retained
+privately, with hashes bound through the host event. CPU-only collection is the default;
+GPU execution entrypoints explicitly require successful GPU and CUDA/cuDNN probes.
+
+Historical `host_provisioned` entries used a separate fingerprint convention. They remain
+unchanged and are not silently upgraded to canonical verification. Normal host recording
+refuses legacy-run migration; the owner selected a future fresh linked run instead.
+This local implementation does not authorize deployment, a new run, or measurements.
 
 *Threat:* results that depend on hardware, driver or library versions cannot be distinguished from
 effects of the method unless the environment is fixed per run. Recording once and later running on a
@@ -39,7 +46,7 @@ different machine is the case the fingerprint exists to catch.
 
 *Enforced by:* `harness/preflight.py:require_host`, called at the start of every gate.
 
-*Refusal:*
+*Historical refusal form (legacy contract):*
 ```
 ProtocolViolation[host-before-gates]: no host_provisioned entry
   run:    runs/<id>
@@ -98,7 +105,14 @@ Ledgers may only grow. Receipts, logs, attestations and scope files may be added
 deleted. `splits/manifest.json` may be replaced, because a rebuild carries its own ledger entry. One
 narrow exception: a raw pwc response under `paper_lookups/` may be rewritten to the exact bytes that its
 own `paper_lookup` entry, already in the ledger before the change, recorded by path and sha256. This
-repairs a file git stored with converted line endings and cannot introduce unrecorded content.
+repairs a file git stored with converted line endings and cannot introduce unrecorded content. A second,
+weaker exception: another run file (such as `harness.json`) may be rewritten from LF to the CRLF bytes a
+gate hashed as its input. Only a schema-0 receipt can authorise it: one that existed before the change and
+is unchanged by it, whose `receipt_hash` recomputes from its body, whose `inputs` give the new bytes'
+sha256 for that file, and whose hash a `gate_log` entry already in the ledger names as `receipt_sha256`.
+Schema-1 receipts write no `gate_log` entry, so they cannot authorise a restore. The rule is weaker than the
+lookup rule because its voucher is a receipt, and receipts can be rewritten; the `gate_log` anchor ties it
+back to the ledger, and only line endings may change.
 
 *Threat:* an editable history is not a history. The chain of hashes detects an edit; the append-only
 check prevents one from being committed in the first place.
@@ -221,6 +235,54 @@ Each of those is detectable, and the detection is the point: an entry that does 
 worse than a missing entry, because it looks like evidence.
 
 ## Recorded deviations
+
+### 2026-11-24 — `capability_suite` runs once per registered seed
+
+*Applies to:* both runs, `20261107T112342Z-weightspace-abliteration` and
+`20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b`. Each ledger has a `deviation` entry for it.
+Neither run had a `capability_suite` receipt when the gate changed, so no reported number changes.
+
+*Decided by:* Arjhine (operator), after consulting Gemini 4 Neon; record in
+`docs/protocol/consultation_20261124/`.
+
+*What was wrong.* The gate built one `lm_eval` command and passed no `--seed`. lm_eval defaults to
+`0,1234,1234,1234`, and its fourth slot seeds the few-shot sampler (`_cli/run.py` passes `cfg.seed[3]`
+to `fewshot_random_seed`, `evaluator.py` calls `task.set_fewshot_seed`, `task.fewshot_examples` draws
+through that generator). `harness.json` declares capability seeds 0, 1 and 2, so the unseeded command
+would have produced three identical runs and the capability margin would have been read against a
+single draw.
+
+*What the gate now does.* One `lm_eval` run per registered seed into `results/lm_eval/seed-<s>/`, each
+with its own stdout and stderr, so a failure names its seed. `results/capability_suite.json` records
+`per_seed`, the cross-seed `mean`, and the sample `sd` over numeric metrics — `null`, never zero, when
+one seed ran. lm_eval's per-run `*_stderr` values stay per seed and are not aggregated. Tasks,
+few-shot count, model revision, dtype and every decision rule are unchanged.
+
+*Residual.* `--seed` broadcasts to all four RNG slots, so python, numpy and torch seeds move with the
+few-shot seed. At temperature 0 with greedy decoding the observable variance is few-shot exemplar
+choice. `tests/test_capability_seeds.py` pins the seed on the command, the aggregation and the
+per-seed failure path.
+
+### 2026-11-14 — `harness.json` restored to the bytes its receipt hashed
+
+*Applies to:* `20261107T112342Z-weightspace-abliteration`, which has a `deviation` entry for it. The
+Qwen run's `harness.json` was written with LF and already matches its receipt.
+
+*Decided by:* Experimental Machines (owner_signer).
+
+*What happened:* `harness.json` was written on Windows with CRLF line endings, and the `split_integrity`
+gate hashed it as written (`receipts/split_integrity.json`, `inputs["harness.json"]`). `*.json text
+eol=lf` made git store it with LF, so on a fresh clone `gdkit.audit.verify_run` reported
+`split_integrity: input harness.json changed`. The working copy that wrote the receipt still matched.
+
+*Decided:* mark `runs/**/harness.json -text` and recommit the exact bytes the receipt recorded; only line
+endings change. `scripts/check_append_only.py` allows this restore under the receipt rule in
+[`runs-append-only`](#runs-append-only), which covers only schema-0 receipts named by a `gate_log` entry.
+
+*Not restored:* `.gdkit/project.yaml` is stored with LF, but entries 17 and 18 of this run's ledger and entry
+2 of the Qwen run's record the sha256 of its CRLF form (`026e6045…`) as `input_hash`. The committed file
+converted to CRLF hashes to exactly that value. Nothing re-checks these hashes, and the pre-registration file
+is not rewritten; to match them, hash the committed file with LF replaced by CRLF.
 
 ### 2026-11-11 — `probe_train`: layer chosen on validation, AUC corrected, interval and baselines added
 

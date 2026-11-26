@@ -1,0 +1,37 @@
+{
+  "utc_recorded": "2026-11-24T07:27:01.187881+00:00",
+  "cli": "agy 1.5.16",
+  "model_requested": "gemini-4-neon-high",
+  "alias_caveat": "Requested model identifier only; this record does not independently prove the resolved backend version.",
+  "started_utc": "2026-11-24T07:17:50Z",
+  "finished_utc": "2026-11-24T07:20:06Z",
+  "exit_code": 0,
+  "stdout_bytes": 3536,
+  "stderr_bytes": 0,
+  "prompt_kind": "verbatim operator-authored prompt; no repo files, run artifacts, raw replies or study prompts uploaded",
+  "verification_sources": [
+    {
+      "what": "Arditi et al. target matrices and the embedding/bias sentence",
+      "how": "firecrawl scrape of arxiv.org/html/2406.11717v3, excerpt retained as paper-checks/arditi-extract.md"
+    },
+    {
+      "what": "arXiv identities of the three cited papers",
+      "how": "pwc paper info 2406.11717 / 2412.06464 / 2406.10229; titles and authors observed, not archived"
+    },
+    {
+      "what": "lm_eval --seed arity, default and few-shot slot",
+      "how": "local read of the pinned d6de8164 tree: _cli/run.py, evaluator.py, api/task.py, config/evaluate_config.py"
+    }
+  ],
+  "unverified_in_consultation": [
+    "the 1.5-2.0 point few-shot variance figure attributed to arXiv:2406.10229",
+    "Zenodo identifier quoted for lm-evaluation-harness"
+  ],
+  "files_sha256": {
+    "neon.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "neon.stdout.txt": "ed6a31a20666276a04619ab6b0c5143de906f235111985b7966bf3801c86742e",
+    "paper-checks/arditi-extract.md": "2ada1ad4ca4cb13a55e5c1dcdb4f7c101c1d75054d663ed320015b9482440715",
+    "prompt.txt": "11b6f04a6392fda9889741352fbcf3ebb0dc445172e48db72ea530d18f7b04fa",
+    "reconciliation.md": "0c191c83fc5a97f36c4cef376d28b290522e995e02262e103d7e8832b11eb40a"
+  }
+}

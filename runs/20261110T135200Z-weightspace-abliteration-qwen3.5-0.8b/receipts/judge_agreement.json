@@ -1,0 +1,48 @@
+{
+  "cheap": false,
+  "contract_version": 2,
+  "gate": "judge_agreement",
+  "gate_code_hash": "a9411258530498cc7c8695ebfeba327326beb11a0851c6012b3d81ec958ec8f7",
+  "host_check": {
+    "checked": false,
+    "reason": "the run has no host entry"
+  },
+  "inputs": {
+    "harness.json": "bafc7eaa2db83defad77d450cf01ade52e222fd04ea25a2564ff3b75e7ec52b6",
+    "splits/derivation.jsonl": "cbae5795a398745e9fee2ae7f2d34c0d6e5acf8ba508891b2223b9c4a72fbf51",
+    "splits/enriched.jsonl": "e899a1706f94161a7d01ab0eeb85e91df9d14876a37619f6aea21bd42ee0b9fa",
+    "splits/harmbench_val.jsonl": "5b09934543f07a25ac07bf0b53112dd1853ad571a15e65be034fee7096040d15",
+    "splits/harmless.jsonl": "2a633bfd71eb4ab46edaa60941ecf3186513bca0eaf936c94622eb068ef2a279",
+    "splits/large.jsonl": "54e84b9f40741f60bfea1256f670abb9729f503b6dc1a0956faad237a43caf4b",
+    "splits/over_refusal.jsonl": "898ee8b652b9b214ae9f15db9e1548957c5de322309a0c98dbd24a3e2e558d87",
+    "splits/primary.jsonl": "93ab40e3bb29f1477037f5c3b97f9c74ebcf0cb77b0e57c3fe03af30909d3864",
+    "splits/probe_heldout.jsonl": "359d8abf254a9de6c2365ef5cafe371f8c854f05943a70d370624b4c24f7b851",
+    "splits/probe_neg.jsonl": "898ee8b652b9b214ae9f15db9e1548957c5de322309a0c98dbd24a3e2e558d87",
+    "splits/probe_pos.jsonl": "4f13192ef5e5ff5d84a166f0d93feb7845887ffd1dacb63d7c214828f5083024",
+    "splits/treadon.jsonl": "2398b5bc4b28c25d9d7a2e9b47912a3bbe12b9262f7eb8637f46bf1982ccae39",
+    "splits/zaakirio.jsonl": "7c8844dc162bf17d620f9e16c48f76c6cb007bf4b38c57081c5072827235641b"
+  },
+  "ledger_head": "0f3976509957957f92ad4d014c5293fa079de7cc7688d25382d4ad2d0a10baaa",
+  "log": {
+    "bytes": 3903,
+    "finalised": "renamed",
+    "gdkit_stream_encoding": "utf-8",
+    "locale_encoding": "utf-8",
+    "partial_left": false,
+    "path": "logs/judge_agreement.log",
+    "platform": "linux",
+    "sha256": "8ff1f2155af443ad6a6acdb68e8ff2b38904791b311ba20a9794358ff59ca5a3"
+  },
+  "receipt_hash": "5d5de14c96063eeb9b56b2b15761c321a1beb2cf8af2bbbb01cdf170e135a807",
+  "receipt_schema": 1,
+  "result": {
+    "agreement": 0.9419795221843004,
+    "disagreements": 17,
+    "kappa": 0.8162467259379497,
+    "n": 293,
+    "ok": true,
+    "passed": true,
+    "result_sha256": "fe9cba4eea0c80a3f86cf2392d7320a4e7e26ca34dc363696addb89c01f69cfa"
+  },
+  "run_id": "20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b"
+}

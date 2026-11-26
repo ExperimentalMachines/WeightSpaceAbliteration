@@ -1,0 +1,29 @@
+You are advising a pre-registered study of weight-space abliteration. Two decisions are open. Answer both directly, mark which parts are published fact versus judgment call, and cite arXiv IDs where a claim rests on a paper. Do not invent citations.
+
+## Fixed context (cannot be changed)
+- Pre-registration is frozen: splits, exclusion instrument, endpoint arms (primary 313 prompts, large 16,612), judges (HarmBench Llama-2-13b-cls and Mistral-7b-val-cls), capability margin, and decision rules expressed as rates. The **method is deliberately not frozen**: it becomes the method only via a ledger entry, and a different method means a different candidate/run.
+- Primary method: Arditi et al., "Refusal in Language Models Is Mediated by a Single Direction" (arXiv:2406.11717). We implement single-direction refusal ablation: rank-1 projection per target matrix, W' = W - s*r*(r^T W), s = 1.0, no search, no optimization against any score.
+- Six models are registered, including Qwen/Qwen3.5-0.8B @ 2fc06364. It has 24 transformer blocks: 6 full-attention blocks with `self_attn.o_proj` and 18 linear-attention (gated delta-net style hybrid) blocks with `linear_attn.out_proj` of shape [1024, 2048]. There is no `self_attn.o_proj` in those 18 blocks.
+
+## Question 1 — method definition: linear-attention output projections
+Our method's stated rule is "project the refusal direction out of every matrix that writes into the residual stream": attention output projection plus MLP down projection, per block, per expert. A reviewer flagged that including `linear_attn.out_proj` in the 18 hybrid blocks is a *definition decision*, not implied by the paper, because the paper's models are all standard softmax attention.
+
+Options:
+A. Include `linear_attn.out_proj` (current code). Method = "every residual-writing matrix". Runs on Qwen3.5-0.8B as registered; fails closed on architectures we have not enumerated.
+B. Exclude it. Then the method fails closed on Qwen3.5-0.8B entirely, which effectively removes a registered model from the study unless the method is redefined.
+C. Include it but declare the method scope explicitly as "single-direction ablation on residual-writing output projections, including gated linear-attention output projections", with the deviation from the paper's target set stated in the method document and in the paper.
+
+Which is most defensible for a pre-registered comparison whose claim is about abliteration as a family of methods rather than bit-exact reproduction of one paper on one architecture? Consider: comparability across the six registered models (different attention/MLP layouts), whether an unreviewable "whatever looks right" target set is worse than an explicit wider rule, and the risk that a wider target set silently becomes a stronger intervention (more edits, larger capability cost) that is then compared against a narrower baseline.
+
+## Question 2 — capability suite seeds
+`capability_suite` shells out to `python -m lm_eval` with 13 tasks, num_fewshot 5, on parent then candidate. The pre-registration declares capability seeds 0, 1, 2. The current gate does **not** pass a seed to lm_eval, so all three declared seeds would produce identical runs. Runs live in an append-only, hash-chained ledger; gate results become receipts and cannot be edited afterwards, only superseded by a recorded deviation. Modifying gate code is itself a major decision requiring a documented consultation.
+
+Options:
+A. Run as-is (three identical runs), record the defect as a limitation.
+B. Fix the gate to pass each seed, rerun three times, record a deviation. Cost: 3x GPU time for parent, 3x for candidate.
+C. Run once, record that single run as the capability measurement, and record a deviation that the other two declared seeds were not executed, with the gate defect as the reason.
+D. Fix the gate and run one seed now, adding the other two only if the parent-candidate margin turns out to be inside the noise band.
+
+What does a seed actually control in lm_eval for these 13 tasks (few-shot sampling, task ordering, generation sampling at temperature 0, bootstrap for stderr)? Which option preserves the pre-registered comparison best at acceptable cost, and what must be written down in each case?
+
+Answer as: (1) Q1 recommendation with reasoning and residual risk; (2) Q2 recommendation with reasoning and residual risk; (3) a short list of claims you are not confident about. Keep it under 500 words.

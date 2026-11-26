@@ -1,0 +1,18 @@
+**(1) Q1 — Recommendation: Option C** *(Judgment call)*
+
+- **Published fact:** Arditi et al. (`arXiv:2406.11717`) orthogonalize all matrices writing to the residual stream—embeddings, softmax-attention output projections, MLP down-projections, and biases—evaluated on softmax-attention models. Hybrid gated delta-net layers (Yang et al., `arXiv:2412.06464`) replace softmax attention with linear-attention mixers whose `out_proj` writes directly into the residual stream.
+- **Reasoning *(Judgment call)*:** For a method-family comparison across six architectures, a functional, explicitly enumerated rule ("every token-mixer and MLP residual-writing projection, fail-closed on unlisted architectures") beats silently expanding scope (A) or effectively dropping a registered model (B). Explicit per-architecture enumeration avoids an unreviewable ad-hoc target set. Because `linear_attn.out_proj` *replaces* `self_attn.o_proj` in 18/24 blocks rather than adding extra matrices, including and declaring it in the method document and ledger best preserves cross-model comparability.
+- **Residual risk *(Judgment call)*:** Linear-attention blocks have recurrent state dynamics that may react more strongly to rank-1 projection than softmax attention, inflating capability loss and confounding cross-architecture comparisons. Report edited-parameter fractions per model; if needed, register a separate softmax-only sensitivity run later.
+
+**(2) Q2 — Recommendation: Option B** *(Judgment call; fallback: C; reject A and D)*
+
+- **What `--seed` controls *(Published/documented fact)*:** In `lm-evaluation-harness` (Gao et al., Zenodo:10256836), `--seed` sets Python, NumPy, PyTorch, and few-shot RNGs (default `0,1234,1234`, plus `fewshot_random_seed`). On these 13 tasks under greedy/temperature-0 decoding or log-likelihood scoring, generation adds no sampling variance; `--seed` primarily controls **few-shot exemplar sampling** (for tasks drawing random 5-shot prompts) and, where used, bootstrap stderr—not deterministic item scoring. Few-shot selection variance can rival 1.5–2.0 pt margins (Madaan et al., `arXiv:2406.10229`).
+- **Reasoning *(Judgment call)*:** Reject **A** (3× cost for identical outputs) and **D** (data-dependent optional stopping invalidates pre-registered error rates). **B** best preserves the pre-registered 3-seed mean±SD comparison. **C** is defensible only if 3× GPU cost is prohibitive: paired parent–candidate evaluation on one fixed seed cancels main exemplar-difficulty effects, but not edit×exemplar interaction variance.
+- **Required records *(Judgment call)*:** For **B**: consultation record, patch commit SHA, ledger `deviation` documenting the `--seed` fix, and per-seed plus mean±SD results. For **C**: ledger `deviation` citing the unpatched gate for omitting seeds 1–2, default seed recorded, and unmeasured interaction variance noted.
+- **Residual risk *(Judgment call)*:** Patching requires re-running any prior unseeded capability gates for comparability; under **C**, single-draw exemplar noise can cause false margin breaches on small tasks (e.g., `gpqa_diamond`).
+
+**(3) Claims with lower confidence**
+
+- Exact `--seed` arity (3 vs. 4 values) and which of the 13 tasks ignore `--num_fewshot 5` (e.g., `ifeval`) or use seeded bootstrap vs. analytical stderr at your pinned `lm_eval` commit.
+- Whether omitting embeddings and biases is already recorded as a deviation from `arXiv:2406.11717`.
+- Empirical magnitude of edit×exemplar interaction variance on Qwen3.5-0.8B.

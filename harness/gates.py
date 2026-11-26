@@ -74,6 +74,7 @@ def _generate(model, tokenizer, prompts: list[str], *, max_new_tokens: int, thin
     return judge_fix.generate_length_sorted(
         model, tokenizer, prompts, max_new_tokens=max_new_tokens,
         thinking=thinking, batch=max(batch, 64),
+        render_fn=lambda p: _render(tokenizer, p, thinking),
     )
 
 
@@ -952,7 +953,13 @@ def _execute_gate(run_dir: Path, name: str, run_id: str | None, release_dir: Pat
     return 0 if receipt["result"].get("passed") is True else 1
 
 
-# Freeze the real helper references before accepting any execution request.
+# When run as ``python -m harness.gates`` the module name is ``__main__``, not
+# ``harness.gates``.  judge_fix.py does ``from harness.gates import _render``
+# inside generate_length_sorted, which would import this file a second time under
+# the canonical name and call register_module("harness.gates") mid-gate — adding
+# entries to _REGISTERED after the pre-execution snapshot, failing the post-check.
+# Aliasing here prevents the second import.
+sys.modules.setdefault("harness.gates", sys.modules[__name__])
 register_module(__name__)
 
 

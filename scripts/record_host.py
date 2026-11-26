@@ -34,7 +34,7 @@ PACKAGES = (
 # and which of these ran is itself part of the host record.
 VENDOR_PROBES = {
     "nvidia-smi": ["nvidia-smi", "--query-gpu=name,driver_version,memory.total", "--format=csv,noheader"],
-    "amd-smi": ["amd-smi", "static", "--json"],
+    "amd-smi": ["amd-smi", "static", "--asic", "--bus", "--board", "--json"],
     "rocm-smi": ["rocm-smi", "--showproductname", "--showdriverversion", "--json"],
 }
 

@@ -121,6 +121,86 @@ When filing an issue or PR upstream, include:
 * **Minimal reproducer.** Self-contained script. Not a reference to this study.
 * **Expected vs actual behaviour.** Concrete values, not "it doesn't work."
 * **Pinned checkpoint or dataset.** If the bug is model-specific, the exact revision.
+* **Observed use case.** What study operation encountered the failure, the relevant configuration,
+  and the measured impact. Say when a finding came only from source inspection or automated analysis.
+* **Text diagnostics.** Complete traceback, relevant stdout/stderr, exact launch command and config.
+  Logs support the report; they do not replace a runnable reproducer.
+* **Validation.** Exact commands, versions/commits, and before/after results; identify checks not run.
+
+### Upstream evidence requirements
+
+Checked against official GitHub guides and templates on 2026-11-17 using Firecrawl.
+These are submission requirements, not changes to this study's protocol. Recheck the current
+target templates before filing; do not upgrade the registered environment to satisfy them.
+
+| Project | Evidence requested by its guide/template |
+|---|---|
+| [TRL guide](https://github.com/huggingface/trl/blob/bf38f3358474e384917fe7f620621c9e45604d96/CONTRIBUTING.md) and [bug form](https://github.com/huggingface/trl/blob/main/.github/ISSUE_TEMPLATE/bug-report.yml) | Actual training workload, configuration and practical cost; explicitly identify analysis-only discoveries. Short self-contained reproducer (guide requests under 30 seconds), complete text traceback, and `trl env` output. The form rejects screenshots as substitutes for code/errors. |
+| [Transformers guide](https://github.com/huggingface/transformers/blob/a8d43b20622149fab30762129c59a2b1ba829364/CONTRIBUTING.md) and [bug form](https://github.com/huggingface/transformers/blob/a8d43b20622149fab30762129c59a2b1ba829364/.github/ISSUE_TEMPLATE/bug-report.yml) | Runnable reproducer on latest release or `main`, using a published checkpoint, default config, or documented workflow; `transformers env`, relevant Trainer/TRL/PEFT/DeepSpeed configs, expected behavior and textual error/traceback. Long traces belong in a collapsible details block. A standalone bug-fix PR needs a script failing on `main` and passing with the fix. |
+| [Accelerate guide](https://github.com/huggingface/accelerate/blob/ad419b8669d34b41304ee50a37346e12164f7882/CONTRIBUTING.md) and [bug form](https://github.com/huggingface/accelerate/blob/main/.github/ISSUE_TEMPLATE/bug-report.yml) | Actual workflow and impact; minimal runnable code, launch command/config, full text traceback, hardware and device/machine counts. Capture `accelerate env`, or `accelerate env --config_file path/to/config.yaml` for the configuration actually used. Check latest release or `main` separately. |
+| [PyTorch bug form](https://github.com/pytorch/pytorch/blob/8ab9c868e14a239ab4588917f35efa5bb8f72d16/.github/ISSUE_TEMPLATE/bug-report.yml) | Minimal self-contained example without downloadable artifacts, observed versus expected results, full traceback, and output from its linked `torch/utils/collect_env.py` script. Inspect downloaded scripts before executing. If possible, check the latest nightly separately. Numerical/reproducibility reports must explain why the discrepancy is not an expected documented limitation. |
+
+Public model/checkpoint references are appropriate for the Hugging Face workflows above;
+PyTorch's general bug form instead asks for a reproduction without downloaded artifacts.
+Do not impose one project's reproduction format on all dependencies.
+
+For performance fixes, Transformers and Accelerate request before/after measurements on a
+representative workload with hardware/configuration, not only an isolated microbenchmark.
+Retain measurement commands and outputs privately; publish the relevant results and limitations.
+Latest/main/nightly checks are separate off-run work and still require any existing execution
+approval. If unavailable, say so rather than implying the current release was tested.
+
+Submission procedures also differ: TRL's current guide requires first-time contributors to
+obtain an assigned issue before a PR; Transformers permits qualifying issue-linked or
+evidence-backed standalone PRs and does not assign issues. PyTorch's
+[PR lifecycle](https://github.com/pytorch/pytorch/blob/main/CONTRIBUTING.md#pr-lifecycle)
+requires an actionable issue or the applicable maintainer approval/access.
+Do not submit automatically based on a locally documented finding.
+
+Follow each project's disclosure and review rules. TRL's
+[PR template](https://github.com/huggingface/trl/blob/e8bf8d05991468a99e34026155b835e4f68e2a88/.github/PULL_REQUEST_TEMPLATE.md)
+asks for the level of AI involvement; its guide declines fully AI-generated first-time PRs.
+PyTorch's [AI policy](https://github.com/pytorch/pytorch/blob/main/AI_POLICY.md) requires
+AI-generated material to be disclosed and clearly separated, with human commentary, and
+does not accept fully autonomous contributions. Accelerate requires an actual use case,
+exact validation commands/results and unrun-test limitations; its guide limits authored
+PR descriptions to 250 words and directs longer logs/reproducers/benchmarks to links.
+
+### Public research record versus private working evidence
+
+The study's goal and trustworthy results take priority. These records support reproducible
+research and transparent handling of dependency failures. Reporting a genuine encountered
+bug may benefit upstream, but generating reports or PRs is not a study deliverable.
+
+Do not divert study work into speculative bug hunting or construct invalid inputs,
+unsupported configurations, or artificial internal states just to manufacture a failure.
+A minimal reproducer is a reduction of an observed study failure: keep its causal conditions
+and verify that the same failure remains. Small models or synthetic data may simplify a
+real case; a different exception created by the reduction is not evidence of the original
+bug. Record unsuccessful reductions and uncertainty honestly.
+
+Useful public findings are broader than bug reports. Maintain informative research docs
+for model quirks, compatibility requirements, environment constraints, failed approaches,
+negative results, and operational lessons. Classify expected behavior, local integration
+errors, and suspected dependency defects separately; do not imply every surprise is upstream's
+fault. Include setup/evidence, interpretation and uncertainty, mitigation, and scope limits.
+Clearly distinguish smoke checks or rough timings from validated benchmark results.
+The operator's [model-quirks example](https://github.com/arjhinety/small-mind-companion/blob/2e7c393cb9f82e11f3dc0082800896a66c997d60/docs/model_quirks.md)
+illustrates this documentation style; its findings are not evidence about this study's models.
+
+| Location | Appropriate content |
+|---|---|
+| Public study docs and required ledger records | Confirmed observations, explicitly qualified hypotheses, affected methods/results, severity, workaround and resolution, concise verification evidence, and material limitations. Keep required run links inside study records, not in upstream bug reports. |
+| Public upstream report or PR | Relevant actual use case, sanitized minimal reproducer, required environment/configuration, complete relevant textual error/traceback, expected/actual behavior, and exercised validation. Link longer sanitized evidence when the project requests it. |
+| Local `.omp/upstream-notes/` | Exploratory notes, captured references, drafts, full stdout/stderr, environment dumps, and diagnostic artifacts not suitable for publication. This path is gitignored and excluded from Modal uploads; never force-add it. |
+
+Private storage is not permission to hide adverse results, misstate discovery provenance,
+omit required AI disclosures, or replace mandatory run records with unpublished notes.
+Do not publish speculative contribution lists or private correspondence. Preserve raw
+evidence privately and publish labeled sanitized derivatives where needed, without altering
+immutable originals. Gitignore prevents ordinary staging, not access or data loss; retain
+private backups and keep credentials out of all captures.
+
 
 ### What never goes upstream
 

@@ -1,0 +1,25 @@
+{
+  "scope": "git-tracked and nonignored untracked UTF-8 text; binary files and .omp excluded",
+  "editable_text_matches": [],
+  "protected_historical_exceptions": [
+    {
+      "file": "runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/ledger.jsonl",
+      "category": "personal_context",
+      "lines": [
+        19
+      ]
+    },
+    {
+      "file": "runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/ledger.jsonl",
+      "category": "private_account_alias",
+      "lines": [
+        19
+      ]
+    }
+  ],
+  "text_files_inspected": 356,
+  "immutable_and_runtime_snapshot_comparisons": 39,
+  "redacted_copy_hashes_verified": true,
+  "raw_paper_response_hashes_verified": true,
+  "no_runtime_or_run_artifact_changes": true
+}

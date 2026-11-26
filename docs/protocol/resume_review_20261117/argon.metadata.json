@@ -1,0 +1,7 @@
+{
+  "reviewer_requested": "argon",
+  "started_utc": "2026-11-17T12:11:08.791063+00:00",
+  "ended_utc": "2026-11-17T12:16:17.357633+00:00",
+  "returncode": 0,
+  "requested_model": "gemini-4-argon"
+}

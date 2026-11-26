@@ -31,8 +31,8 @@ RULES: dict[str, Rule] = {
     for rule in (
         Rule(
             "host-before-gates",
-            "A gate may run only if the run holds a host_provisioned entry whose fingerprint "
-            "matches the machine running now.",
+            "A new-contract gate needs a canonical host event and immutable session snapshot "
+            "whose gdkit host check matches the machine running now.",
             "harness/preflight.py:require_host",
         ),
         Rule(

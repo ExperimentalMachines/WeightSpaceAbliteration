@@ -1,0 +1,99 @@
+[
+  {
+    "path": "runs/20261107T112342Z-weightspace-abliteration/receipts/arm_counts.json",
+    "file_sha256": "1be86810c410562bf1a045616f8958036f2a88e8de3a64efb84db5ef3fd114a2",
+    "receipt_hash_valid": true
+  },
+  {
+    "path": "runs/20261107T112342Z-weightspace-abliteration/receipts/exclusions_applied.json",
+    "file_sha256": "6a7ce1bd6f2fff2f4c0c384cced2bbd531f989471dda1f3999c3b2f468c75d7f",
+    "receipt_hash_valid": true
+  },
+  {
+    "path": "runs/20261107T112342Z-weightspace-abliteration/receipts/split_integrity.json",
+    "file_sha256": "6879c22ccc3a7ca22a990fdada4c6d91a064ba887a8ea4e1ecc36f414de01d40",
+    "receipt_hash_valid": true
+  },
+  {
+    "path": "runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/receipts/activation_extraction.json",
+    "file_sha256": "f7de25a867cd4fb3ee3869072f8b64f24cd9473a1088eb6afbd0fb64a4c5f63b",
+    "receipt_hash_valid": true,
+    "log_exists": true,
+    "log_hash_valid": true,
+    "result_file_byte_hash_matches": false,
+    "result_without_final_lf_matches": true
+  },
+  {
+    "path": "runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/receipts/arm_counts.json",
+    "file_sha256": "3b625b7034bd34d80fb873b8bf50f75d0f591ee1f4a2b2a019fb318f8cc4bcd9",
+    "receipt_hash_valid": true,
+    "log_exists": true,
+    "log_hash_valid": true
+  },
+  {
+    "path": "runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/receipts/direction_derivation.json",
+    "file_sha256": "9c910e5ee37568c7ffbe1588e710bac0cf6d4f8ca081cc14f604435afc6613c6",
+    "receipt_hash_valid": true,
+    "log_exists": true,
+    "log_hash_valid": true,
+    "result_file_byte_hash_matches": false,
+    "result_without_final_lf_matches": true
+  },
+  {
+    "path": "runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/receipts/exclusions_applied.json",
+    "file_sha256": "2bdc8d18a1990da63ebbbb0e1dfb0e6a6ef2be2a084db10cb59933cc563d9d35",
+    "receipt_hash_valid": true,
+    "log_exists": true,
+    "log_hash_valid": true
+  },
+  {
+    "path": "runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/receipts/judge_agreement.json",
+    "file_sha256": "d100247b2fe401a785167700bad7456b9b7521849cb72f6c3c5e14b1467a4837",
+    "receipt_hash_valid": true,
+    "log_exists": true,
+    "log_hash_valid": true,
+    "result_file_byte_hash_matches": false,
+    "result_without_final_lf_matches": true
+  },
+  {
+    "path": "runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/receipts/kl_divergence.json",
+    "file_sha256": "5b0de1c4cb9096ce215c1b24320b34fe163fa9272a5e104e35ee413e1ef05582",
+    "receipt_hash_valid": true,
+    "log_exists": true,
+    "log_hash_valid": true,
+    "result_file_byte_hash_matches": false,
+    "result_without_final_lf_matches": true
+  },
+  {
+    "path": "runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/receipts/over_refusal_eval.json",
+    "file_sha256": "9a11e930baddccdf487aaf82edda490e256debb6ff3a9605830772f86bc31a9d",
+    "receipt_hash_valid": true,
+    "log_exists": true,
+    "log_hash_valid": true
+  },
+  {
+    "path": "runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/receipts/probe_train.json",
+    "file_sha256": "c080244e9f798997ed9434e4d41659a9fbbb870b4be44e0645e1f5f098c8ef6a",
+    "receipt_hash_valid": true,
+    "log_exists": true,
+    "log_hash_valid": true,
+    "result_file_byte_hash_matches": false,
+    "result_without_final_lf_matches": true
+  },
+  {
+    "path": "runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/receipts/refusal_eval.json",
+    "file_sha256": "1e808c9256249f90210476a1db547b26f9150bea028282cf231c656c7b94f7b4",
+    "receipt_hash_valid": true,
+    "log_exists": true,
+    "log_hash_valid": true,
+    "result_file_byte_hash_matches": false,
+    "result_without_final_lf_matches": true
+  },
+  {
+    "path": "runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/receipts/split_integrity.json",
+    "file_sha256": "791fb80c1d4ff6d85a5a2461f512eac86016c66208a9ce5146fd405ee385bdd5",
+    "receipt_hash_valid": true,
+    "log_exists": true,
+    "log_hash_valid": true
+  }
+]

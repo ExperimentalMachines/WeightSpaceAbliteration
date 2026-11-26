@@ -17,6 +17,16 @@ Compute evidence and tensor inventory are also refused before admission.
 | document | covers |
 |---|---|
 | [`RUN_PROTOCOL.md`](RUN_PROTOCOL.md) | the lifecycle, every rule, and the deviation route |
+| [`evidence_inventory_20261117.md`](evidence_inventory_20261117.md) | read-only local/Modal comparison, historical evidence gaps, and execution limits |
+| [`recovery_plan_20261117.md`](recovery_plan_20261117.md) | owner-selected A1/B1/C1 scope and staged recovery plan |
+| [`local_provenance_contract_20261117.md`](local_provenance_contract_20261117.md) | locally verified contract-3 implementation, failures corrected, and deployment limits |
+| [`dependency_image_audit_20261117.md`](dependency_image_audit_20261117.md) | recorded package evidence and the pinning options presented for selection |
+| [`dependency_update_20261117.md`](dependency_update_20261117.md) | adopted workflow/Python target, isolated installation/import checks, and remaining image limits |
+| [`judge_invocation_20261118.md`](judge_invocation_20261118.md) | per-checkpoint judge prompt, truncation and verdict comparisons; limits on historical agreement |
+| [`judge_spec_draft_20261118.md`](judge_spec_draft_20261118.md) | prospective per-card diagnostic contract; off-run prototype only, refusal decisions held |
+| [`primary_context_provenance_20261118.md`](primary_context_provenance_20261118.md) | which historical primary IDs support text judging, which lack target context, and which require another route |
+| [`primary_input_routing_draft_20261118.md`](primary_input_routing_draft_20261118.md) | proposed fresh-run target inputs, per-item evidence and diagnostic applicability; design only |
+| [`explicit_refusal_calibration_draft_20261118.md`](explicit_refusal_calibration_draft_20261118.md) | proposed human refusal rubric, parent-primary 200-item design, uncertainty and approval boundaries; no selection |
 | [`../PROVENANCE.md`](../PROVENANCE.md) | the provenance model: immutability, digests, non-vacuity, contract versions |
 | [`../upstream_issues/README.md`](../upstream_issues/README.md) | recording and filing upstream dependency bugs |
 | [`../README.md`](../../README.md) | what the repository is, in one page |
@@ -27,7 +37,7 @@ Compute evidence and tensor inventory are also refused before admission.
 
 | slug | in one line | enforced by |
 |---|---|---|
-| `host-before-gates` | a gate needs a host entry whose fingerprint matches this machine | `harness/preflight.py:require_host` |
+| `host-before-gates` | new execution needs an immutable canonical host session and a successful same-host check | `harness/preflight.py:require_host` |
 | `admission-before-candidate` | candidates wait for `method_selected` | `harness/gates.py:require_admitted` |
 | `stage-from-ledger` | the ledger decides the stage; `harness.json` is a checked cache | `harness/preflight.py:require_stage_consistency` |
 | `one-model-one-run` | a run binds one model | `harness/preflight.py:require_run_model` |

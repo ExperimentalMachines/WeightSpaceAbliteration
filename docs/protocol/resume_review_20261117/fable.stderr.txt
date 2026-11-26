@@ -1,0 +1,1 @@
+ml-side-notes: its prompt.compose hook was skipped. "cc-plugin-sec-default" runs first and sent the event on past it.

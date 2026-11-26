@@ -1,0 +1,98 @@
+[Editorial status: privacy-redacted and technically edited consultation copy; see text_redactions.json. Substantive claims remain consultant statements, not accepted findings.]
+
+# Resumption review: hold measurement, fix the record and the judge first
+
+## What I found (read-only; nothing changed)
+
+**Directly verified in the files**
+- **Receipts were never protected by the append-only check.** Only `split_integrity.json` is tracked at HEAD. The other nine receipts, all ten logs and 13 ledger lines are untracked or uncommitted, and the check is git-based.
+- **The original `split_integrity` receipt was overwritten in place.** HEAD holds the schema-0 version (ledger head `df107fd…`); the working copy is a schema-1 rerun (ledger head `880c993…`). The original is recoverable from git only.
+- **The broken-judge receipts and logs (34.1%, κ=0.129) are gone locally.** Current receipts bind to ledger head `0f39765…`, after the judge deviation at ledger index 26. That deviation records no hashes of what it superseded. I inspected 9 of 32 unreachable git objects: an old `gates.py`, an older ledger, lookups, no receipts. These are prunable by `git gc`.
+- **Deviation 26 misdescribes the code that ran.** It says `model.generate(max_new_tokens=1)`, batch 16. `judge_fix.py` does a raw forward pass with argmax, batch 32.
+- **The stop rule was triggered and then worked around inside the same run.** The pre-registration says a parent outside 60–95% means "the run stops and the harness is treated as broken". The first measurement was outside; the fix and rerun reused the same receipt names.
+- **Denominators differ from the pre-registration.** It names 313 primary items, a ≤12/313 bar and a 16,612-item large arm; the manifest has 293 and 15,640. I found no deviation covering this.
+- **"10/11 ✅" mixes completion with passing.** Seven gates return `passed: True` unconditionally, and baseline KL of 0.0 compares the model with itself.
+- **The second judge is not independent.** `patch_gates` routes it through the same Llama-2 template, so κ=0.816 partly reflects shared invocation.
+- **Over-refusal cannot be audited.** No per-item over-refusal responses are saved. `refusal_primary.jsonl` does hold responses (`id`, `response`, `refusal`).
+- **Code defects stand as you listed.** I confirmed the `gates_optimized.py` syntax error, the `_free_model` no-op, and the capability gate problems at `gates.py:725-748`.
+
+**Strongly suggested**
+- 239/293 lands exactly on the 81.6% prior quoted in the pre-registration. "In window, so the harness works" is circular.
+
+**Unknown**
+- What 239/293 measures.
+- Whether truncation at 2048 tokens ever cut the `Answer: [/INST]` suffix.
+- What the Modal volume still holds.
+
+## 1. What first
+
+Provenance and judge validity come before the capability gate. A capability baseline for a parent whose refusal baseline is unvalidated does not resolve the identified measurement-validity issues, and would add more receipts to an unprotected namespace. A zero-GPU order:
+
+1. **Freeze.** No uploads, pulls or gates.
+2. **Inventory.** Write a hash inventory of the current run folder and the unreachable git objects, outside `runs/`.
+3. **Volume listing.** List the Modal volume without downloading over local files. This needs your approval.
+4. **Human calibration.** Start the pre-registered 200-item hand-labelling on the saved primary responses. Fix the sampling plan blind to judge verdicts, stratify the 80 copyright items, and use three labels: explicit refusal, harmful compliance, other.
+5. **Off-run code tests** (section 4).
+6. **Decide the namespace** (section 2).
+
+## 2. Preserving provenance
+
+A verifying ledger chain proves that the recorded lines are intact and ordered. It proves nothing about receipts or logs, which are plain files; `RUN_PROTOCOL.md` itself says "receipts can be rewritten". A deviation records a decision; it does not authorise overwriting, and the protocol lists editing a receipt among forbidden responses.
+
+**Proposal only:**
+- Commit the current working state as-is by merge commit, so today's evidence gets git protection. This needs your decision on how the modified `split_integrity.json` is handled, since the check will refuse it.
+- Do not `git checkout` the old receipt; that destroys the current one. Export the HEAD blob to a quarantine path outside `runs/` instead.
+- Append a deviation stating which receipts were overwritten, which are unrecoverable, and that deviation 26's description differs from the code.
+- Take any future measurement in a fresh run ID, with a sync that refuses to overwrite existing files.
+
+## 3. Retract or qualify in the execution log
+
+Your 2026-11-17 entry already covers the refusal-rate, over-refusal, kappa, optimized-module and controls-v2 corrections. Still missing:
+
+- **"The stop rule is NO LONGER triggered. The harness is working correctly."** Retract. The rule was triggered, the code does not enforce it, and the in-window value is not validation.
+- **"Mathematically identical outputs", "10-20x faster", "~4-6x", "~20x".** Unmeasured; withdraw.
+- **"10/11 gates ✅" and "KL ✅".** Restate as completed, not passed.
+- **"Unaffected receipts" in deviation 26.** They were rerun under the same names anyway.
+- **"Corpus confound is invariant… so AUC collapse is causally attributable to the edit."** This is an assumption, not a result.
+- **The 293 vs 313 denominator.** State it openly.
+- **The copyright items.** HarmBench uses a separate hashing-based classifier for copyright behaviours, so the Llama judge's verdicts on those 80 items are outside its design.
+
+## 4. Off-run preparation
+
+Yes, if it happens in a branch with temporary directories, never touches `runs/`, and passing tests are not called validation.
+
+**Capability tests (stubbed subprocess):**
+- argv contains the pinned revision, each seed and the thinking policy;
+- the output path is absolute;
+- results are discovered fresh per seed, never "lexicographically last";
+- empty or missing tasks and metrics fail the gate.
+
+**Judge tests (tiny CPU model):**
+- no item is truncated, with truncation side checked explicitly;
+- the raw first token is saved, with a census of yes / no / other, and "other" is never silently False;
+- batch-1 unpadded verdicts equal batched left-padded verdicts;
+- each judge uses its own template.
+
+**Memory:** the caller must drop its own reference, and peak allocation is measured only at GPU validation.
+
+**Construct:** tests cannot fix it. "Not HarmBench-yes" needs a separate refusal measure or the human calibration, and safe-prompt over-refusal needs its own instrument.
+
+## 5. Options
+
+**Recommended — A: hold, preserve, calibrate, then a fresh run.** Do the six steps above. It costs time, and the current baseline numbers become exploratory. I would change my view if the volume listing shows the old receipts intact and calibration shows the complement tracks explicit refusal closely.
+
+**B: continue this run with a full disclosure deviation.** Keeps continuity. The record then permanently contains a stop-rule breach and overwritten receipts, which is hard to defend as registered.
+
+**C: reclassify the Qwen run as a pilot.** This documents the run status without additional measurement resources, and the registered claim then waits for a new run.
+
+**Unresolved decisions for you:** the denominators and absolute bar, the copyright route, the refusal construct, the stop-rule consequence, the seeds wording, and label-constant controls (implement v2 as written; do not loosen it).
+
+## Sources (via pwc)
+
+- **2402.04249**, *HarmBench: A Standardized Evaluation Framework for Automated Red Teaming and Robust Refusal*, https://arxiv.org/abs/2402.04249v2. Abstract and full-text lines read: the Llama-2-13B classifier covers non-copyright behaviours, copyright uses a hashing-based classifier, and the classifier was validated against manual labels.
+- **2402.10260**, *A StrongREJECT for Empty Jailbreaks*, https://arxiv.org/abs/2402.10260v2. Abstract only: automated evaluators can overstate success relative to human judgment.
+- Feng, Card and Madaan are named in the pre-registration; I did not verify them.
+
+## What I need from you
+
+Choose A, B or C, and say whether the read-only volume listing and the as-is preservation commit are approved.

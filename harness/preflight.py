@@ -13,8 +13,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import subprocess
-import sys
 from pathlib import Path
 
 from harness.protocol_rules import ProtocolViolation
@@ -34,48 +32,20 @@ def last_entry(run_dir: Path, op: str) -> dict | None:
     return None
 
 
-def host_fingerprint() -> str:
-    """What makes this machine this machine, as far as the numbers are concerned."""
-    parts = []
+def require_host(run_dir: Path) -> dict:
+    """New execution requires an intact canonical session actually checked by gdkit."""
+    from gdkit.host import HostError
+    from gdkit.ledger import LedgerError
+    from harness.artifact_guard import ArtifactConflict
+    from harness.host import require_current_host
+
     try:
-        smi = subprocess.run(
-            ["nvidia-smi", "--query-gpu=name,uuid,driver_version,memory.total,compute_cap",
-             "--format=csv,noheader"],
-            capture_output=True, text=True, timeout=20,
-        )
-        parts.append(smi.stdout.strip() if smi.returncode == 0 else "nvidia-smi unavailable")
-    except (OSError, subprocess.SubprocessError):
-        parts.append("nvidia-smi unavailable")
-    try:
-        import torch
-
-        parts.append(f"torch {torch.__version__} cuda {torch.version.cuda} cudnn {torch.backends.cudnn.version()}")
-    except Exception:
-        parts.append("torch unavailable")
-    parts.append(f"python {sys.version.split()[0]} {sys.platform}")
-    return hashlib.sha256("\n".join(parts).encode()).hexdigest()
-
-
-def require_host(run_dir: Path) -> None:
-    entry = last_entry(run_dir, "host_provisioned")
-    if entry is None:
+        return require_current_host(run_dir)
+    except (HostError, LedgerError, ArtifactConflict, OSError, ValueError, KeyError, TypeError) as exc:
         raise ProtocolViolation(
-            "host-before-gates", run_dir, "no host_provisioned entry",
-            f"python scripts/record_host.py --run {run_dir.as_posix()}",
-        )
-    recorded = entry.get("params", {}).get("fingerprint")
-    current = host_fingerprint()
-    if recorded is None:
-        raise ProtocolViolation(
-            "host-before-gates", run_dir, "host entry carries no fingerprint",
-            f"python scripts/record_host.py --run {run_dir.as_posix()}",
-        )
-    if recorded != current:
-        raise ProtocolViolation(
-            "host-before-gates", run_dir,
-            f"fingerprint {current[:12]} does not match the recorded {recorded[:12]}",
-            f"python scripts/record_host.py --run {run_dir.as_posix()}",
-        )
+            "host-before-gates", run_dir, str(exc),
+            "use a fresh linked run for legacy evidence; record a canonical session before new gates",
+        ) from exc
 
 
 def ledger_stage(run_dir: Path) -> str:
@@ -282,7 +252,7 @@ ADMISSION_CHECKS = (
 
 REQUIRED_ORDER = (
     ("preregistration", "the answers are frozen"),
-    ("host_provisioned", "the machine is recorded"),
+    ("host", "the canonical machine session is recorded (legacy host_provisioned is not checked)"),
     ("split_build", "the split is built and hashed"),
     ("compute_evidence", "compute cost is measured (before admission)"),
     ("tensor_inventory", "target tensors verified against pinned model (before admission)"),

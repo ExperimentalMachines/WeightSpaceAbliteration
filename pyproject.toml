@@ -11,13 +11,27 @@ dependencies = [
     "pyyaml>=6",
     "numpy>=1.26",
     "torch>=2.3",
-    "transformers>=4.44",
+    "transformers[sentencepiece,tiktoken]>=4.44",
     "pyarrow>=15",
-    "lm-eval>=0.4",
+    "lm-eval[hf,ifeval]>=0.4",
+    "accelerate==1.15.0",
+    "sentence-transformers==6.3.0",
+    "tiktoken==0.14.0",
+    "sentencepiece==0.2.3",
+    "protobuf==7.36.2",
 ]
 
 [project.optional-dependencies]
 test = ["pytest>=8"]
+cuda = ["torch>=2.3"]
+rocm = [
+    "torch==2.15.0+rocm10.2.0",
+    "triton; sys_platform == 'linux'",
+    "rocm[libraries]; sys_platform == 'linux'",
+    "rocm-sdk-core; sys_platform == 'linux'",
+    "rocm-sdk-libraries; sys_platform == 'linux'",
+    "rocm-bootstrap; sys_platform == 'linux'",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -28,3 +42,30 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+
+[tool.uv]
+required-version = "==0.12.18"
+build-constraint-dependencies = [
+    { requirement = "setuptools==84.2.1", hashes = ["sha256:3ff8b3b5492a0aa66960f4419365a86b84e013070d4313e4d4a6894f5d64d6bc", "sha256:ca140b45d5325a9478f880e351484f62fef15f336462e449ca0c03c873d589c2"] }
+]
+conflicts = [[{ extra = "cuda" }, { extra = "rocm" }]]
+
+[tool.uv.sources]
+torch = [
+    { index = "pypi", extra = "cuda" },
+    { index = "rocm", extra = "rocm" },
+]
+triton = [{ index = "rocm", extra = "rocm" }]
+rocm = [{ index = "rocm", extra = "rocm" }]
+rocm-sdk-core = [{ index = "rocm", extra = "rocm" }]
+rocm-sdk-libraries = [{ index = "rocm", extra = "rocm" }]
+rocm-bootstrap = [{ index = "rocm", extra = "rocm" }]
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+
+[[tool.uv.index]]
+name = "rocm"
+url = "https://stable.repo.amd.com/rocm/whl-next/"
+explicit = true

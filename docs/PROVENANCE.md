@@ -235,10 +235,15 @@ exists in the run's ledger, recording:
 * GPU model and count
 * Wall-clock seconds for one `apply()` call on the registered model
 * Peak GPU memory (MB)
-* The host fingerprint that matches the run's `host_provisioned` entry
+* The execution's host identity: a historical `host_provisioned` fingerprint for legacy records,
+  or a canonical immutable session reference for new-contract execution.
 
 **Enforced by:** `harness/preflight.py:require_compute_evidence`, called by
 `harness/gates.py:require_admitted`.
+
+The current admission check enforces presence of a `compute_evidence` entry, not validation
+of every measurement field. Candidate-specific evidence validation remains a separate
+prerequisite; the local contract-3 work does not certify candidate admission or promotion.
 
 ### Tensor inventory
 

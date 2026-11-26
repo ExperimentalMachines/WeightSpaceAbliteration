@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "hash_algorithm": "SHA256",
+  "files": [
+    {
+      "file": "docs/protocol/resume_review_20261117/argon.stdout.txt",
+      "original_byte_sha256": "b549558ac8505b8ac8f3fa1cfea68b3da92a7611d539a07ad4adbe89df1645cd",
+      "saved_byte_sha256": "b364074f3024495475d6a8be38440715ad524c348d750576be63320e0bb5cf50",
+      "transformation_categories": [
+        "repository_relative_links",
+        "technical_register_neutralization",
+        "editorial_copy_label"
+      ],
+      "verbatim": false,
+      "technical_claims_changed": false
+    },
+    {
+      "file": "docs/protocol/resume_review_20261117/fable.stdout.txt",
+      "original_byte_sha256": "34990a177f8a723a62afe6b68184c6f694b20eb1e0f8476f17c705e8fa189414",
+      "saved_byte_sha256": "949cd1da3d467c6e7c7dc726a22a6973da1c6b82d99cd93889e6ccbdfc62ef8f",
+      "transformation_categories": [
+        "technical_register_neutralization",
+        "editorial_copy_label"
+      ],
+      "verbatim": false,
+      "technical_claims_changed": false
+    },
+    {
+      "file": "docs/protocol/resume_review_20261117/paper_lookups/lookup_manifest.json",
+      "original_byte_sha256": "c021fec7e3c086731b7ab4813b5a7f314fa9340747cc09297c4a69b7e0e39737",
+      "saved_byte_sha256": "63a5c3049a86e634f1762d8969e0c73733840b4a74c4b5d895c55d20ff30386e",
+      "transformation_categories": [
+        "executable_command_path_normalization"
+      ],
+      "verbatim": false,
+      "technical_claims_changed": false,
+      "command_provenance": "command[0] normalized to pwc; command is not byte-exact original argv. Other fields are unchanged."
+    },
+    {
+      "file": "_tmp_findings.txt",
+      "original_byte_sha256": "d0cb267095d1866dd0a4c1101fc75e5e2a1f1114972774304db9df33ad69a4d1",
+      "saved_byte_sha256": "3b98557f1729153c114c2a2ffbf0a13c1e8ceb7e0e69cf5e9874cba23bd692f3",
+      "transformation_categories": [
+        "numerical_exceedance_wording",
+        "methodological_recommendation_wording",
+        "editorial_prompt_copy_label"
+      ],
+      "verbatim": false,
+      "technical_claims_changed": false
+    },
+    {
+      "file": "_tmp_prompt.txt",
+      "original_byte_sha256": "e15d032cbb9e1afb369cf2029065a44d7e36a3f9147d7cabb5a54349e8d5af93",
+      "saved_byte_sha256": "4d983af3afb8cb9fcaeeb6c0290e4f27ddbf2bad0822759322336cf11e27167e",
+      "transformation_categories": [
+        "literature_supported_definition_with_limitations",
+        "editorial_prompt_copy_label"
+      ],
+      "verbatim": false,
+      "technical_claims_changed": false
+    }
+  ]
+}

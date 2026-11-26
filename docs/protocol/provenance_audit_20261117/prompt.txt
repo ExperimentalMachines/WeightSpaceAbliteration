@@ -1,0 +1,43 @@
+Perform a READ-ONLY REPOSITORY PROVENANCE AUDIT before implementing overwrite-safe downloads. Audit broadly, but recommend one minimal protective change first and a short prioritized queue. Do not implement anything.
+
+MANDATORY CONSTRAINTS
+- No edits, writes, restores, deletions, staging, commits, checkout, resets, git gc/prune, gates, builds, tests, model loads, Modal functions, deployments, uploads, downloads, or external mutations. Return findings via stdout only. Parent process saves your response.
+- Read-only local source inspection and read-only git queries are permitted. Do not scan .omp, secrets, environment/credential files, raw harmful prompt/response corpora, or unrelated projects. Do not include private tool installation locations in your report. Use repository-relative source paths.
+- Do not change .gdkit/project.yaml, runs/* artifacts, or existing protocol decisions. Do not propose restoring a runs/ file over current bytes. Ledger entries may only grow through approved tooling; receipt/log replacement remains forbidden even after a deviation.
+- No extra model consultations/subagents. Do not stop at a general discussion: inspect the real implementation and show file:line evidence.
+- If you consult papers/docs, prefer primary sources and pwc CLI; describe what was actually verified. Avoid a literature detour; this is a software traceability audit.
+
+GOAL
+Identify ways current code can overwrite, omit, lose, misattribute, or fail to cryptographically bind experimental evidence. Classify current defects separately from plausible risks and future hardening. Explain how to fix traceability without erasing the record or changing scientific outcomes.
+
+KNOWN STARTING FACTS (verify and extend; do not simply echo)
+- HEAD d225055649e4e8ec53489b867a1ef28946c1c973, branch fix-harness-json-bytes, substantial staged/unstaged/untracked work.
+- Two ledger chains verify (22/29 entries), but Qwen split_integrity receipt differs in content from HEAD; later behavioral reruns reused fixed paths and pull_results overwrote them. A verifying ledger does not prove preservation of all old receipts/logs. Present schema-1 receipt/log hashes match, not historical completeness.
+- We have preserved a local-only snapshot separately from runs; it is not a full backup of datasets/results. Do not assume missing historical receipts cannot be recovered elsewhere.
+- modal_runner.py upload_repo uses force=True filesystem upload; pull_results directly writes existing run files. Older excluded files may persist remotely; force=True does not mean mirror deletion.
+- gdkit Gate.code_hash hashes the top-level check function source. Runtime helper monkey patches in judge_fix.py affect behavior but may not be bound to that hash.
+- gates.py inputs list split JSONLs and harness.json but downstream gates also consume activations.npz, refusal_primary.jsonl, templates and model/judge dependencies. Check whether manifests and actual result bytes are bound.
+- _save hashes serialized JSON before appending newline to the saved file. Distinguish canonical payload hash from exact file hash; don't silently rewrite old hashes.
+- record_host overwrites host.json; multiple host_provisioned entries exist. Check preservation of older host records, raw environment evidence, head associations, and package/image/source provenance without disclosing hardware IDs/private paths.
+- baseline_session/fast_session stop on subprocess exit code but gates.main may exit 0 when result.passed=false. Inspect failure semantics, captured logs, partial writes and crash consistency.
+- Optimized module has syntax error and model-release bug; this audit should focus on how unvalidated/offline code and active execution are distinguished, not implement optimization.
+- Controls v2 was amended AFTER parent measurement. Do not loosen controls. A preserved v1 file may be a summary rather than byte-exact original; verify what can be established, avoid claiming verbatim preservation without proof.
+- Paper citations in docs are not necessarily accompanied by raw lookup records in the registered ledger. New resumption consultation and independently hashed pwc responses are under docs/protocol/resume_review_20261117.
+- Denominator changes DO have a documented basis: original run seq16 split_rebuild and seq17 rate-based decision; Qwen seq3 records rebuilt counts. Check cross-run linkage rather than claiming no decision exists.
+
+FILES TO INSPECT AS NEEDED
+modal_runner.py; harness/gates.py; harness/judge_fix.py; harness/fast_inference.py; harness/gates_optimized.py; harness/preflight.py; harness/verification/; scripts/record_host.py; scripts/check_append_only.py; scripts/verify_ledger.py; tools/start_run.py; tools/record_lookups.py; docs/PROVENANCE.md; docs/protocol/RUN_PROTOCOL.md; docs/protocol/controls_passing*.md; relevant tests; .gitattributes; .gitignore; .githooks/pre-commit; .github/workflows/; run ledgers/receipt metadata (not prompt corpora). Installed gdkit source may be inspected read-only to establish receipt/hash implementation.
+
+AUDIT DIMENSIONS
+1. Overwrite protection in both upload and pull, untracked receipts, new-vs-identical-vs-conflicting data, append-only ledger checks, concurrency/TOCTOU, symlinks/path traversal, atomic writes and partial downloads.
+2. Per-attempt identities, historical receipts/logs/results/host snapshots, failed/aborted attempts, local persistence during credit loss, full source/config/env provenance.
+3. Hash coverage, code/helper/patch provenance, input/output bindings, byte vs canonical hash conventions, receipt validation scope, effective dependencies.
+4. Semantic status (completed/passed/validated/admitted), accurate timing/operator/model attribution, result-to-decision links, consultation/citation provenance.
+5. Enforcement gaps: staged-only hooks, untracked ignored artifacts, CI limitations, mutation guards before execution, evidence snapshots and recovery.
+
+DELIVERABLE (keep prioritized, ~1200-1800 words max)
+- Findings table: ID/severity; actual defect vs risk; file:line; failure scenario; smallest safe fix; how to test with synthetic/local fixtures; whether owner decision or protocol deviation is required.
+- Recommend ONE first fix. Is protecting pull_results alone enough, or must upload/producer overwrite guard be covered by the same change? State minimal boundary, not a giant rewrite.
+- Distinguish preventable future loss from historical recovery work. No false promises to restore lost bytes from hashes.
+- Short list of things NOT to change now.
+- All recommendations are proposals. Explicitly state that no changes or executions were performed.

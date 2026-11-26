@@ -1,0 +1,58 @@
+{
+  "cheap": true,
+  "contract_version": 2,
+  "gate": "arm_counts",
+  "gate_code_hash": "2941fc93bbb8c8a1bbce75e85676f7f3dd456173248a04a0987b56f5790f2fda",
+  "host_check": {
+    "checked": false,
+    "reason": "the run has no host entry"
+  },
+  "inputs": {
+    "harness.json": "bafc7eaa2db83defad77d450cf01ade52e222fd04ea25a2564ff3b75e7ec52b6",
+    "splits/derivation.jsonl": "cbae5795a398745e9fee2ae7f2d34c0d6e5acf8ba508891b2223b9c4a72fbf51",
+    "splits/enriched.jsonl": "e899a1706f94161a7d01ab0eeb85e91df9d14876a37619f6aea21bd42ee0b9fa",
+    "splits/harmbench_val.jsonl": "5b09934543f07a25ac07bf0b53112dd1853ad571a15e65be034fee7096040d15",
+    "splits/harmless.jsonl": "2a633bfd71eb4ab46edaa60941ecf3186513bca0eaf936c94622eb068ef2a279",
+    "splits/large.jsonl": "54e84b9f40741f60bfea1256f670abb9729f503b6dc1a0956faad237a43caf4b",
+    "splits/over_refusal.jsonl": "898ee8b652b9b214ae9f15db9e1548957c5de322309a0c98dbd24a3e2e558d87",
+    "splits/primary.jsonl": "93ab40e3bb29f1477037f5c3b97f9c74ebcf0cb77b0e57c3fe03af30909d3864",
+    "splits/probe_heldout.jsonl": "359d8abf254a9de6c2365ef5cafe371f8c854f05943a70d370624b4c24f7b851",
+    "splits/probe_neg.jsonl": "898ee8b652b9b214ae9f15db9e1548957c5de322309a0c98dbd24a3e2e558d87",
+    "splits/probe_pos.jsonl": "4f13192ef5e5ff5d84a166f0d93feb7845887ffd1dacb63d7c214828f5083024",
+    "splits/treadon.jsonl": "2398b5bc4b28c25d9d7a2e9b47912a3bbe12b9262f7eb8637f46bf1982ccae39",
+    "splits/zaakirio.jsonl": "7c8844dc162bf17d620f9e16c48f76c6cb007bf4b38c57081c5072827235641b"
+  },
+  "ledger_head": "880c993cf82de54fa7651043ba0f2ce15da9151e3e8db43db7e64feaa76bfc1d",
+  "log": {
+    "bytes": 0,
+    "finalised": "renamed",
+    "gdkit_stream_encoding": "utf-8",
+    "locale_encoding": "utf-8",
+    "partial_left": false,
+    "path": "logs/arm_counts.log",
+    "platform": "linux",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "receipt_hash": "932e1a98c0188c66fb338f325ac2cf2c79ff3b41110d87669315652a8ab8c029",
+  "receipt_schema": 1,
+  "result": {
+    "actual": {
+      "derivation": 415,
+      "enriched": 6836,
+      "harmbench_val": 80,
+      "harmless": 415,
+      "large": 15640,
+      "over_refusal": 1569,
+      "primary": 293,
+      "probe_heldout": 92,
+      "probe_neg": 1569,
+      "probe_pos": 201,
+      "treadon": 158,
+      "zaakirio": 432
+    },
+    "mismatch": {},
+    "ok": true,
+    "passed": true
+  },
+  "run_id": "20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b"
+}

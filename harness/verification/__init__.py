@@ -11,6 +11,9 @@ See ``docs/PROVENANCE.md`` § Verifier contract versions.
 """
 
 # v1 (implicit): gate assertions only; no census, no non-vacuity proof.
-# v2: every required population is examined and passed, with an explicit census.
-#     Contract version recorded in every receipt. Census checked after every gate.
-CONTRACT_VERSION = 2
+# v2: census accounting was introduced, but was not wired into every gate. A
+#     historical version number alone is not proof of population completeness.
+# v3: local release/source, canonical host, immutable execution manifest, bounded
+#     callable bindings, declared input/output closure and gdkit log binding.
+#     This does not repair historical measurement semantics or certify promotion.
+CONTRACT_VERSION = 3

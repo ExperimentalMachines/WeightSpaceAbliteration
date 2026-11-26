@@ -1,0 +1,86 @@
+[Editorial status: privacy-redacted and technically edited consultation copy; see text_redactions.json. Substantive claims remain consultant statements, not accepted findings.]
+
+### 1. First Priority: Audit, Provenance Recovery & Construct Validation Before Any GPU Run
+
+**Audit/provenance recovery and judge construct validation must precede `capability_suite` or any further measurement.** Running `capability_suite` now would consume GPU resources to append receipts onto a run directory with overwritten historical artifacts and unvalidated behavioral measurements.
+
+**Minimal conservative zero-GPU sequence:**
+1. **Freeze & Archive Working State (Non-Destructive):** Without `git checkout`, deleting, or rewriting `runs/`, snapshot all current working-tree bytes, staged/unstaged diffs, and recoverable git object blobs (`git cat-file blob HEAD:<path>`) into an external/off-run audit archive.
+2. **Audit Receipt/Log Provenance:** Document the exact divergence between `HEAD` (`d225055`) and working copy (specifically `runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/receipts/split_integrity.json` content changes and the behavioral receipts/logs overwritten in-place during Session 4 reruns + `pull_results()`).
+3. **Human Calibration & Construct Audit (CPU/Off-Run):** Draw the required 200-item stratified sample from saved `refusal_primary.jsonl`, `refusal_large.jsonl`, and `over_refusal` generations to audit what fraction of `NOT-HARMBENCH-YES` outputs are explicit refusals vs. benign compliance, incoherence, or safe answers.
+4. **Off-Run Code Fixes & Unit Tests:** Fix `capability_suite`, `gates_optimized.py`, `judge_fix.py`, and label-constant controls (`probe_train`) in isolated unit-tested modules before any GPU session is authorized.
+
+---
+
+### 2. Preserving Current and Superseded Artifacts with Documented Provenance
+
+- **Ledger Chain vs. Receipt/Log Immutability:** `scripts/verify_ledger.py` only verifies that `ledger.jsonl` hashes form a valid append-only prefix chain (`HEAD` 22 and 29 entries). Under schema 1 ([RUN_PROTOCOL.md](../../../docs/protocol/RUN_PROTOCOL.md#L79-L93)), gates no longer write `gate_log` entries into `ledger.jsonl`; instead, each receipt binds its own log hash. Therefore, **a valid ledger chain does NOT prove historical receipts or logs survived**. Furthermore, [scripts/check_append_only.py](../../../scripts/check_append_only.py#L144-L150) uses `git diff --cached` by default, missing unstaged working-tree overwrites, and cannot protect untracked receipts that were overwritten by `modal_runner.py::pull_results` ([modal_runner.py](../../../modal_runner.py#L105-L145)) before ever being committed.
+- **A Deviation Does Not Authorize Overwriting Receipts.** Per [AGENTS.md](../../../AGENTS.md) and [RUN_PROTOCOL.md](../../../docs/protocol/RUN_PROTOCOL.md#L219-L228), receipts and logs are strictly append-only; rerunning `--gate` on an existing run folder overwrites evidence in place and is forbidden even with a deviation entry.
+- **Proposal for Owner Decision:**
+  1. Preserve the committed `HEAD` blob of `split_integrity.json` alongside the current working-tree bytes by copying the working-tree version to a clearly labeled diagnostic path outside `runs/` (e.g., `docs/protocol/resume_review_20261117/`) before restoring the tracked path to match `HEAD`, or leave `runs/` untouched and record an abandonment deviation.
+  2. Because Session 4 behavioral gates (`refusal_eval`, `judge_agreement`, `over_refusal_eval`) overwrote the Session 3 untracked receipts/logs in-place inside `20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b`, we recommend **proposing a fresh measurement run namespace** (or formally recording a `deviation` marking the current Qwen folder as a diagnostic run with documented provenance violations) rather than mutating or claiming clean provenance for overwritten files.
+
+---
+
+### 3. Required Retractions & Qualifications in `EXECUTION_LOG.md`
+
+The following claims in [EXECUTION_LOG.md](../../../EXECUTION_LOG.md) must be explicitly retracted or qualified:
+1. **"Parent refuses 81.6% / 79.8% of harmful prompts" ([EXECUTION_LOG.md](../../../EXECUTION_LOG.md#L353-L356)):** Retract as refusal rates. `judge_is_refusal` ([judge_fix.py](../../../harness/judge_fix.py#L121-L129)) computes `not judge_harmbench(...)` (`NOT-HARMBENCH-YES`). HarmBench (`2402.04249`) classifies *unambiguous harmful compliance* (attack success), not refusal. Non-harmful outputs include benign answers, topic deflections, and incoherent text.
+2. **"Genuine over-refusal on safe prompts (61.3%) ... property of the model, not the harness" ([EXECUTION_LOG.md](../../../EXECUTION_LOG.md#L358-L367)):** Retract completely. Applying `not judge_harmbench` to safe prompts from XSTest (`2308.01263`) and OR-Bench (`2405.20947`) labels every **safe, helpful compliance** (`No`, not harmful) as `True` ("refusal"). Thus 61.3% (962/1,569) measures *non-harmful responses to safe prompts* (and implies 38.7% were judged harmful), not over-refusal.
+3. **"Stop rule is NO LONGER triggered" ([EXECUTION_LOG.md](../../../EXECUTION_LOG.md#L360-L361)):** Qualify: code in [harness/gates.py](../../../harness/gates.py#L262) unconditionally returns `"passed": True` upon completion of `check_refusal_eval`; the 60–95% parent refusal window is neither verified by a valid refusal classifier nor enforced by gate code.
+4. **"κ=0.816 confirming the behavioral measurements are reliable" ([EXECUTION_LOG.md](../../../EXECUTION_LOG.md#L357-L370)):** Qualify: inter-judge agreement between two classifiers sharing the same prompt template and `not harmful` inversion proves consistency of the inverted proxy, not construct validity or human calibration.
+5. **"`gates_optimized.py` ready for next run" ([EXECUTION_LOG.md](../../../EXECUTION_LOG.md#L425)):** Retract: it fails `ast.parse` at line 52 and does not free VRAM.
+6. **"Controls v2" ([EXECUTION_LOG.md](../../../EXECUTION_LOG.md#L388-L410), [controls_passing.md](../../../docs/protocol/controls_passing.md)):** Must be explicitly labeled a **post-baseline amendment** adopted after observing parent probe AUC (0.9992) and random-direction `q975` (0.9364), not an untouched pre-registration. Per Elazar et al. (`2006.00995`) and Zhao et al. (`2507.11878`), probe changes under source-aliased splits cannot support causal refusal-erasure claims.
+
+---
+
+### 4. Off-Run Code Preparation, Unit Testing & Technical Assessment
+
+**Yes, we may prepare and unit-test code off-run (on CPU/synthetic fixtures) while scientific execution is held**, provided no gates are executed against `runs/` and any eventual adoption in a run is preceded by owner approval and a recorded deviation.
+
+**Technical Assessment of Code Bugs & Construct Concerns:**
+- **`harness/gates_optimized.py`:**
+  - *Verifiable bug:* Line 52 (`from harness.gates import ..., LLAMA2_CLS_PROMPT if ... else None`) is a `SyntaxError` in Python (`ast.parse` fails).
+  - *Verifiable bug:* `_free_model(model)` ([gates_optimized.py](../../../harness/gates_optimized.py#L31-L40)) executes `del model` on the local parameter binding while the caller scope (`check_refusal_eval_sequential` lines 89, 123; `check_over_refusal_eval_sequential` lines 156, 170) retains `model` / `judge` references, keeping weights pinned in VRAM during Phase 2.
+- **`harness/judge_fix.py` & Construct Validity:**
+  - *Construct error:* HarmBench classifiers test harmful compliance (`Yes` = harmful). Inverting `Yes` (`not harmful`) conflates refusal with safe helpful answers (breaking `over_refusal_eval` completely) and with incoherent/irrelevant completions on harmful prompts. Safe-prompt over-refusal requires a dedicated refusal judge or lexical/calibrated refusal detector (per XSTest `2308.01263` / OR-Bench `2405.20947`), and copyright items require their separate hash/overlap route.
+  - *Template & Logit equivalence:* `judge_fix.py` applies `LLAMA2_CLS_PROMPT` (`[INST] <<SYS>>...`) to both `cais/HarmBench-Llama-2-13b-cls` and `cais/HarmBench-Mistral-7b-val-cls` (`judge_alt` in [harness.json](../../../runs/20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b/harness.json#L22-L25)), which uses a different chat/system prompt format. Also, left-padded batched forward passes (`out.logits[:, -1, :]`) without explicit `position_ids` handling or verification against single-item unpadded `.generate(max_new_tokens=1)` can suffer from padding-induced logit drift in bfloat16.
+- **`check_capability_suite` ([harness/gates.py](../../../harness/gates.py#L725-L748)):**
+  - *Verifiable bugs:* (1) Omits `revision={cfg['model']['revision']}` in `--model_args`; (2) ignores `cfg["seeds"]["capability"]` (`[0, 1, 2]`); (3) passes `--apply_chat_template` without pinning `enable_thinking=False` policy; (4) runs with `cwd=str(run_dir)` while passing relative `out_dir = run_dir / "results" / "lm_eval"`, creating nested `runs/<id>/runs/<id>/results/lm_eval` paths; (5) globs `sorted(out_dir.glob("**/results*.json"))[-1]`, which can silently pick stale JSONs from prior runs or return `{}` with `"passed": True` if empty (violating `gate-non-vacuity`).
+- **`modal_runner.py` Synchronization:**
+  - `upload_repo` uses `batch_upload(force=True)`, overwriting remote files without deleting stale volume artifacts (such as older `.omp` files), and `pull_results` overwrites without a pre-write hash check local `runs/` files with `write_bytes()`. `pull_results` needs a pre-write hash check that refuses to overwrite any existing receipt/log with differing bytes.
+
+**Minimal CPU Unit Tests Required Before Any GPU Validation:**
+1. AST/import test across all `harness/*.py` modules and caller-side weakref test proving GPU tensors are unreachable (`gc.collect()`) before Phase 2 loads.
+2. Subprocess mock test for `check_capability_suite` verifying exact CLI args (`revision`, per-seed invocation `[0,1,2]`, path resolution under `cwd`, and failure on empty/missing task metrics).
+3. Synthetic activation test for the v2 label-constant controls (5-fold salted item-ID CV for Topic and Source controls in `probe_report`).
+4. Batched vs. unpadded batch-1 forward equivalence test on a tiny CPU model verifying identical token argmax and `position_ids` alignment.
+
+---
+
+### 5. Owner Options: Conservative Recommendation & Materially Different Alternatives
+
+#### Classification of Issues
+- **Verifiable Bugs (Code/Provenance):** `gates_optimized.py:52` syntax error; `_free_model` reference retention; `over_refusal_eval` measuring `not harmful` on safe prompts; `capability_suite` missing `revision`, `seeds`, path duplication, and vacuous pass; `split_integrity.json` working-tree content mismatch vs. `HEAD`; `modal_runner.py` overwrites without pre-write hash checks.
+- **Plausible Hypotheses (Require Verification):** Padding/bfloat16 drift in `judge_harmbench`; `LLAMA2_CLS_PROMPT` mismatch on `HarmBench-Mistral-7b-val-cls`; fraction of `NOT-HARMBENCH-YES` (81.6%) that are genuine refusals vs. incoherent/benign outputs; source-aliasing driving probe AUC after weight edits.
+- **Unresolved Protocol Decisions (Owner Only):** How to close or quarantine the overwritten Qwen run artifacts; which construct/instrument defines refusal on safe prompts (`over_refusal_eval`) and whether to require a 3-way distinction (refusal / harmful compliance / benign non-refusal) on harmful prompts; completion of the 200-item human calibration set.
+
+#### Options for Arjhine
+
+| Option | Description | Pros / Cons |
+|---|---|---|
+| **Option A (Recommended — Conservative New Run Namespace)** | **1.** Freeze & archive current working tree/git blobs; restore tracked `runs/` to `HEAD` and record a deviation abandoning/closing `20261110T135200Z-weightspace-abliteration-qwen3.5-0.8b` due to overwritten untracked receipts.<br>**2.** Complete 200-item human calibration on already-generated JSONLs (0 GPU cost) and separate *harmful compliance* (`judge_harmbench`) from *explicit refusal* (especially for `over_refusal_eval`).<br>**3.** Fix and unit-test `capability_suite`, `gates_optimized.py`, label-constant probe controls, and append-only `pull_results` guards locally.<br>**4.** Start a fresh Qwen run ID with clean schema-1 receipts. | **Pros:** Zero provenance ambiguity; honours `runs-append-only` without exception; prevents invalid 61.3% over-refusal from failing promotion for the wrong reason.<br>**Cons:** Requires re-running baseline gates (~1–2 GPU hrs once optimized) in the new run namespace. |
+| **Option B (Salvage Non-Behavioral Baseline in Current Run + Versioned Gate Namespace)** | Keep `direction_derivation`, `kl_divergence`, `activation_extraction`, and `probe_train` in the current Qwen run; restore `split_integrity.json` to `HEAD`; record a comprehensive retroactive deviation documenting the overwritten Session 3 behavioral receipts and deprecating the uncalibrated behavioral receipts; write repaired behavioral and capability gates to new contract-versioned receipt names without overwriting existing files. | **Pros:** Saves re-running activation extraction and generation on the parent model.<br>**Cons:** Leaves overwritten behavioral receipts in the run history and requires modifying `gdkit`/harness receipt lookup to support versioned receipt filenames. |
+| **Option C (Minimal Patch & Run `capability_suite` Now — Not Recommended)** | Restore `split_integrity.json` to `HEAD`, fix only `capability_suite` bugs, and run `capability_suite` on the existing Qwen run while deferring judge construct validation until candidate evaluation. | **Pros:** Completes 11/11 baseline gates fastest.<br>**Cons:** Locks in invalid `over_refusal_eval` (61.3% `not harmful`) and uncalibrated `refusal_eval` numbers into the baseline record, risking candidate GPU resource use without valid baseline measurements. |
+
+---
+
+### Verified Paper Citations (`pwc` CLI with `PYTHONUTF8=1`)
+
+- **`2402.04249`** — Mantas Mazeika et al., *"HarmBench: A Standardized Evaluation Framework for Automated Red Teaming and Robust Refusal"*, https://arxiv.org/abs/2402.04249v2 (Verified: **metadata & abstract** via `pwc paper info 2402.04249`; establishes HarmBench as an automated red-teaming / attack-success evaluation framework).
+- **`2308.01263`** — Paul Röttger et al., *"XSTest: A Test Suite for Identifying Exaggerated Safety Behaviours in Large Language Models"*, https://arxiv.org/abs/2308.01263v3 (Verified: **metadata & abstract** via `pwc paper info 2308.01263`; defines 250 safe prompts that well-calibrated models should *not* refuse, contrasting with unsafe prompts).
+- **`2405.20947`** — Justin Cui et al., *"OR-Bench: An Over-Refusal Benchmark for Large Language Models"*, https://arxiv.org/abs/2405.20947v3 (Verified: **metadata & abstract** via `pwc paper info 2405.20947`; defines innocuous prompts including ~1,000 hard prompts designed to measure false rejections of safe requests).
+- **`2507.11878`** — Jiachen Zhao et al., *"LLMs Encode Harmfulness and Refusal Separately"*, https://arxiv.org/abs/2507.11878 (Verified: **metadata & abstract** via `pwc paper info 2507.11878`; demonstrates harmfulness is encoded along a separate latent direction from refusal and persists even when refusal signals are reduced).
+- **`2102.12452`** — Yonatan Belinkov, *"Probing Classifiers: Promises, Shortcomings, and Advances"*, https://arxiv.org/abs/2102.12452v4 (Verified: **metadata & abstract** via `pwc paper info 2102.12452`; reviews methodological limitations of probing classifiers and necessity of control tasks/baselines).
+- **`2006.00995`** — Yanai Elazar et al., *"Amnesic Probing: Behavioral Explanation with Amnesic Counterfactuals"*, https://arxiv.org/abs/2006.00995 (Verified: **metadata & abstract** via `pwc paper info 2006.00995`; demonstrates conventional probing performance does not establish behavioral or causal task utility without causal intervention checks).
+- *(Note: `2601.20727` and `2311.18807` returned HTTP 404 `paper_not_in_catalog` in `pwc paper info` and are therefore not cited as `pwc`-verified.)*

@@ -1,0 +1,110 @@
+[
+  {
+    "identifier": "2402.04249",
+    "command": [
+      "pwc",
+      "paper",
+      "info",
+      "2402.04249",
+      "--json"
+    ],
+    "timestamp_utc": "2026-11-17T12:16:47.125852+00:00",
+    "exit_code": 0,
+    "raw_path": "docs/protocol/resume_review_20261117/paper_lookups/2402.04249.json",
+    "sha256": "7bfd5aa221921bdacdee26ff2450b3a3147f2f228657e009abcfe8641a3744fc",
+    "verification_scope": "catalog metadata and abstract only; not full-text claim verification",
+    "title": "HarmBench: A Standardized Evaluation Framework for Automated Red Teaming and Robust Refusal",
+    "url": "https://arxiv.org/abs/2402.04249v2",
+    "abstract": "Automated red teaming holds substantial promise for uncovering and mitigating the risks associated with the malicious use of large language models (LLMs), yet the field lacks a standardized evaluation framework to rigorously assess new methods. To address this issue, we introduce HarmBench, a standardized evaluation framework for automated red teaming. We identify several desirable properties previously unaccounted for in red teaming evaluations and systematically design HarmBench to meet these criteria. Using HarmBench, we conduct a large-scale comparison of 18 red teaming methods and 33 target LLMs and defenses, yielding novel insights. We also introduce a highly efficient adversarial training method that greatly enhances LLM robustness across a wide range of attacks, demonstrating how HarmBench enables codevelopment of attacks and defenses. We open source HarmBench at https://github.com/centerforaisafety/HarmBench."
+  },
+  {
+    "identifier": "2308.01263",
+    "command": [
+      "pwc",
+      "paper",
+      "info",
+      "2308.01263",
+      "--json"
+    ],
+    "timestamp_utc": "2026-11-17T12:16:47.124457+00:00",
+    "exit_code": 0,
+    "raw_path": "docs/protocol/resume_review_20261117/paper_lookups/2308.01263.json",
+    "sha256": "a1045f3a4f0817c97c74c54e99a6ebcce287ea0a2d6ad17485de8562a3ed0857",
+    "verification_scope": "catalog metadata and abstract only; not full-text claim verification",
+    "title": "XSTest: A Test Suite for Identifying Exaggerated Safety Behaviours in Large Language Models",
+    "url": "https://arxiv.org/abs/2308.01263v3",
+    "abstract": "Without proper safeguards, large language models will readily follow malicious instructions and generate toxic content. This risk motivates safety efforts such as red-teaming and large-scale feedback learning, which aim to make models both helpful and harmless. However, there is a tension between these two objectives, since harmlessness requires models to refuse to comply with unsafe prompts, and thus not be helpful. Recent anecdotal evidence suggests that some models may have struck a poor balance, so that even clearly safe prompts are refused if they use similar language to unsafe prompts or mention sensitive topics. In this paper, we introduce a new test suite called XSTest to identify such eXaggerated Safety behaviours in a systematic way. XSTest comprises 250 safe prompts across ten prompt types that well-calibrated models should not refuse to comply with, and 200 unsafe prompts as contrasts that models, for most applications, should refuse. We describe XSTest's creation and composition, and then use the test suite to highlight systematic failure modes in state-of-the-art language models as well as more general challenges in building safer language models."
+  },
+  {
+    "identifier": "2405.20947",
+    "command": [
+      "pwc",
+      "paper",
+      "info",
+      "2405.20947",
+      "--json"
+    ],
+    "timestamp_utc": "2026-11-17T12:16:47.125852+00:00",
+    "exit_code": 0,
+    "raw_path": "docs/protocol/resume_review_20261117/paper_lookups/2405.20947.json",
+    "sha256": "b830fc91687a54cce207cd72f2629dd043b3368b50264dc6c1dbdb74f26c6ba0",
+    "verification_scope": "catalog metadata and abstract only; not full-text claim verification",
+    "title": "OR-Bench: An Over-Refusal Benchmark for Large Language Models",
+    "url": "https://arxiv.org/abs/2405.20947v3",
+    "abstract": "Large Language Models (LLMs) require careful safety alignment to prevent malicious outputs. While significant research focuses on mitigating harmful content generation, the enhanced safety often come with the side effect of over-refusal, where LLMs may reject innocuous prompts and become less helpful. Although the issue of over-refusal has been empirically observed, a systematic measurement is challenging due to the difficulty of crafting prompts that can elicit the over-refusal behaviors of LLMs. This study proposes a novel method for automatically generating large-scale over-refusal datasets. Leveraging this technique, we introduce OR-Bench, the first large-scale over-refusal benchmark. OR-Bench comprises 80,000 over-refusal prompts across 10 common rejection categories, a subset of around 1,000 hard prompts that are challenging even for state-of-the-art LLMs, and an additional 600 toxic prompts to prevent indiscriminate responses. We then conduct a comprehensive study to measure the over-refusal of 32 popular LLMs across 8 model families. Our datasets are publicly available at https://huggingface.co/bench-llms and our codebase is open-sourced at https://github.com/justincui03/or-bench. We hope this benchmark can help the community develop better safety aligned models."
+  },
+  {
+    "identifier": "2102.12452",
+    "command": [
+      "pwc",
+      "paper",
+      "info",
+      "2102.12452",
+      "--json"
+    ],
+    "timestamp_utc": "2026-11-17T12:16:49.402377+00:00",
+    "exit_code": 0,
+    "raw_path": "docs/protocol/resume_review_20261117/paper_lookups/2102.12452.json",
+    "sha256": "05dfcf33ada914e397e41a5600d8db53c24e34cd2f1efabaf582fb039b77bf9c",
+    "verification_scope": "catalog metadata and abstract only; not full-text claim verification",
+    "title": "Probing Classifiers: Promises, Shortcomings, and Advances",
+    "url": "https://arxiv.org/abs/2102.12452v4",
+    "abstract": "Probing classifiers have emerged as one of the prominent methodologies for interpreting and analyzing deep neural network models of natural language processing. The basic idea is simple -- a classifier is trained to predict some linguistic property from a model's representations -- and has been used to examine a wide variety of models and properties. However, recent studies have demonstrated various methodological limitations of this approach. This article critically reviews the probing classifiers framework, highlighting their promises, shortcomings, and advances."
+  },
+  {
+    "identifier": "2006.00995",
+    "command": [
+      "pwc",
+      "paper",
+      "info",
+      "2006.00995",
+      "--json"
+    ],
+    "timestamp_utc": "2026-11-17T12:16:51.134421+00:00",
+    "exit_code": 0,
+    "raw_path": "docs/protocol/resume_review_20261117/paper_lookups/2006.00995.json",
+    "sha256": "0ab759d2be2837811085f93aef6210e4a16849e0c8bc1091161b30f8ff81cb0b",
+    "verification_scope": "catalog metadata and abstract only; not full-text claim verification",
+    "title": "Amnesic Probing: Behavioral Explanation with Amnesic Counterfactuals",
+    "url": "https://arxiv.org/abs/2006.00995",
+    "abstract": "A growing body of work makes use of probing to investigate the working of neural models, often considered black boxes. Recently, an ongoing debate emerged surrounding the limitations of the probing paradigm. In this work, we point out the inability to infer behavioral conclusions from probing results and offer an alternative method that focuses on how the information is being used, rather than on what information is encoded. Our method, Amnesic Probing, follows the intuition that the utility of a property for a given task can be assessed by measuring the influence of a causal intervention that removes it from the representation. Equipped with this new analysis tool, we can ask questions that were not possible before, e.g. is part-of-speech information important for word prediction? We perform a series of analyses on BERT to answer these types of questions. Our findings demonstrate that conventional probing performance is not correlated to task importance, and we call for increased scrutiny of claims that draw behavioral or causal conclusions from probing results."
+  },
+  {
+    "identifier": "2507.11878",
+    "command": [
+      "pwc",
+      "paper",
+      "info",
+      "2507.11878",
+      "--json"
+    ],
+    "timestamp_utc": "2026-11-17T12:16:51.137940+00:00",
+    "exit_code": 0,
+    "raw_path": "docs/protocol/resume_review_20261117/paper_lookups/2507.11878.json",
+    "sha256": "d4e21d3d1e99a605be85d724a4ab45277de2d2398a5162f81c9094f0756be09b",
+    "verification_scope": "catalog metadata and abstract only; not full-text claim verification",
+    "title": "LLMs Encode Harmfulness and Refusal Separately",
+    "url": "https://arxiv.org/abs/2507.11878",
+    "abstract": "LLMs are trained to refuse harmful instructions, but do they truly understand harmfulness beyond just refusing? Prior work has shown that LLMs' refusal behaviors can be mediated by a one-dimensional subspace, i.e., a refusal direction. In this work, we identify a new dimension to analyze safety mechanisms in LLMs, i.e., harmfulness, which is encoded internally as a separate concept from refusal. There exists a harmfulness direction that is distinct from the refusal direction. As causal evidence, steering along the harmfulness direction can lead LLMs to interpret harmless instructions as harmful, but steering along the refusal direction tends to elicit refusal responses directly without reversing the model's judgment on harmfulness. Furthermore, using our identified harmfulness concept, we find that certain jailbreak methods work by reducing the refusal signals without reversing the model's internal belief of harmfulness. We also find that adversarially finetuning models to accept harmful instructions has minimal impact on the model's internal belief of harmfulness. These insights lead to a practical safety application: The model's latent harmfulness representation can serve as an intrinsic safeguard (Latent Guard) for detecting unsafe inputs and reducing over-refusals that is robust to finetuning attacks. For instance, our Latent Guard achieves performance comparable to or better than Llama Guard 3 8B, a dedicated finetuned safeguard model, across different jailbreak methods. Our findings suggest that LLMs' internal understanding of harmfulness is more robust than their refusal decision to diverse input instructions, offering a new perspective to study AI safety"
+  }
+]

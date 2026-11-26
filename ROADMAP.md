@@ -10,8 +10,15 @@ Status as of 2026-11-07. Nothing here is a promise; the pre-registration is the 
    and `probe_heldout` now exist, and `--smoke` reports nine gates ready.
 3. ~~Fix the gate/split contract~~ — done; cheap gates re-run against the rebuilt split.
 4. **Implement a method** — one of `abliteration`, `heretic_style`, `obliteratus_style` — answer the
-   review checklist, and admit it with a `method_selected` entry.
+   review checklist, and admit it with a `method_selected` entry. Scope for `abliteration` is decided
+   (2026-11-24): linear-attention output projections are in, embedding/positional/bias writers are out,
+   and both differences from arXiv:2406.11717 are declared in `harness/methods/abliteration.md`. What
+   remains is measurement, not definition: `scripts/record_tensor_inventory.py` (CPU, needs the
+   checkpoint) and `compute_evidence` (GPU, one `apply()` call).
 5. **Run the expensive gates** on the parent first, then on the candidate. Attest each receipt.
+   Parent is missing `capability_suite` only. A canonical `host` session must be recorded on the
+   execution machine first: preflight refuses new gates with `host-before-gates` while only legacy
+   `host_provisioned` entries exist.
 
 ## Known defects
 
@@ -20,6 +27,9 @@ Status as of 2026-11-07. Nothing here is a promise; the pre-registration is the 
 - The harness assumes `device_map="auto"` and bf16, which is a guess until the host exists.
 - Resolved: the split is built with bge-small-en-v1.5, and the decision rules were restated as rates
   (≤11/293, ≤594/15,640) rather than counts. Recorded in ledger entry 17 and `decision_rules.json`.
+- Resolved 2026-11-24: `capability_suite` passed no `--seed`, so the registered capability seeds 0–2
+  were three identical runs. It now runs once per seed and records per-seed results with cross-seed
+  mean and sample SD. Deviation in both ledgers; `docs/protocol/RUN_PROTOCOL.md#recorded-deviations`.
 
 ## Decided on 2026-11-07
 
@@ -54,8 +64,7 @@ Status as of 2026-11-07. Nothing here is a promise; the pre-registration is the 
 - Attest and promote. `promote` re-runs the cheap gates and checks every receipt.
 - Record the result as a gate receipt plus a results directory, and update the README status table from
   "no result" to the actual numbers, including the interval.
-- If the answer is *no*, say so in the abstract. The pre-registration was written to make that a
-  publishable outcome.
+- Report a negative finding explicitly in the abstract.
 
 ## Not planned
 

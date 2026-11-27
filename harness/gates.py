@@ -708,6 +708,7 @@ def check_probe_train(run_dir: Path) -> dict:
 _FEWSHOT_CAP: dict[str, int] = {
     "gpqa_diamond_n_shot": 3,
     "leaderboard_gpqa_diamond": 0,
+    "bbh": 3,
 }
 
 
@@ -751,13 +752,18 @@ def _run_capability_seed(cfg: dict, out_dir: Path, seed: int | None, run_dir: Pa
     main_tasks = [t for t in all_tasks if t not in capped]
     merged: dict[str, Any] = {}
 
-    for group_tasks, group_fewshot, suffix in [
-        (main_tasks, num_fewshot, ""),
-        (list(capped.keys()), None, "-capped"),
-    ]:
+    # Group capped tasks by their cap value so each runs at the right num_fewshot.
+    cap_groups: dict[int, list[str]] = {}
+    for t, cap in capped.items():
+        cap_groups.setdefault(cap, []).append(t)
+
+    invocations: list[tuple[list[str], int, str]] = [(main_tasks, num_fewshot, "")]
+    for cap_val, cap_tasks in sorted(cap_groups.items()):
+        invocations.append((cap_tasks, cap_val, f"-capped-{cap_val}"))
+
+    for group_tasks, fs, suffix in invocations:
         if not group_tasks:
             continue
-        fs = group_fewshot if group_fewshot is not None else max(capped[t] for t in group_tasks)
         group_dir = out_dir / f"seed-{label}{suffix}"
         group_dir.mkdir(parents=True, exist_ok=True)
         proc = subprocess.run(

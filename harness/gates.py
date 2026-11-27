@@ -701,25 +701,80 @@ def check_probe_train(run_dir: Path) -> dict:
     return {"passed": True, **out, "result_sha256": digest}
 
 
-def _capability_command(cfg: dict, out_dir: Path, seed: int | None) -> list[str]:
+# Tasks whose public fewshot pools are smaller than the registered num_fewshot.
+# Each entry maps to the largest feasible num_fewshot for that task in the pinned
+# lm_eval version.  A separate invocation per seed runs these at their capped value
+# and the results are merged, so the deviation is confined to the affected task.
+_FEWSHOT_CAP: dict[str, int] = {
+    "gpqa_diamond_n_shot": 3,
+    "leaderboard_gpqa_diamond": 0,
+}
+
+
+def _capability_command(
+    cfg: dict, out_dir: Path, seed: int | None, *, tasks: list[str] | None = None,
+    num_fewshot: int | None = None,
+) -> list[str]:
     """One lm-evaluation-harness invocation.
 
     ``--seed`` takes one integer, broadcast to lm_eval's four RNG slots (python, numpy, torch,
     few-shot), or a comma list. The fourth slot chooses few-shot exemplars, so omitting the flag
     left every declared capability seed drawing the same examples — three runs, one measurement.
     """
+    if tasks is None:
+        tasks = cfg["capability"]["tasks"]
+    if num_fewshot is None:
+        num_fewshot = cfg["capability"].get("num_fewshot", 5)
     command = [
         sys.executable, "-m", "lm_eval",
         "--model", "hf",
         "--model_args", f"pretrained={cfg['model']['id']},revision={cfg['model'].get('revision')},dtype={cfg['model'].get('dtype','bfloat16')}",
-        "--tasks", ",".join(cfg["capability"]["tasks"]),
-        "--num_fewshot", str(cfg["capability"].get("num_fewshot", 5)),
+        "--tasks", ",".join(tasks),
+        "--num_fewshot", str(num_fewshot),
         "--output_path", str(out_dir),
         "--apply_chat_template",
     ]
     if seed is not None:
         command += ["--seed", str(seed)]
     return command
+
+
+def _run_capability_seed(cfg: dict, out_dir: Path, seed: int | None, run_dir: Path) -> dict | dict:
+    """Run one seed, splitting fewshot-limited tasks into a second invocation.
+
+    Returns the merged results dict on success, or a failure dict with ``passed: False``.
+    """
+    label = "default" if seed is None else str(seed)
+    num_fewshot = cfg["capability"].get("num_fewshot", 5)
+    all_tasks = list(cfg["capability"]["tasks"])
+    capped = {t: _FEWSHOT_CAP[t] for t in all_tasks if t in _FEWSHOT_CAP and _FEWSHOT_CAP[t] < num_fewshot}
+    main_tasks = [t for t in all_tasks if t not in capped]
+    merged: dict[str, Any] = {}
+
+    for group_tasks, group_fewshot, suffix in [
+        (main_tasks, num_fewshot, ""),
+        (list(capped.keys()), None, "-capped"),
+    ]:
+        if not group_tasks:
+            continue
+        fs = group_fewshot if group_fewshot is not None else max(capped[t] for t in group_tasks)
+        group_dir = out_dir / f"seed-{label}{suffix}"
+        group_dir.mkdir(parents=True, exist_ok=True)
+        proc = subprocess.run(
+            _capability_command(cfg, group_dir, seed, tasks=group_tasks, num_fewshot=fs),
+            capture_output=True, text=True, cwd=str(run_dir),
+        )
+        (group_dir / "stderr.log").write_text(proc.stderr, encoding="utf-8")
+        (group_dir / "stdout.log").write_text(proc.stdout, encoding="utf-8")
+        if proc.returncode != 0:
+            return {"passed": False, "ok": False, "seed": label, "returncode": proc.returncode,
+                    "stderr_tail": proc.stderr[-2000:], "group": suffix or "main"}
+        payloads = sorted(group_dir.glob("**/results*.json"))
+        if not payloads:
+            raise ExecutionError(f"capability suite produced no results JSON for seed {label}{suffix}")
+        merged.update(json.loads(payloads[-1].read_text(encoding="utf-8")).get("results", {}))
+
+    return merged
 
 
 def _capability_across_seeds(per_seed: dict[str, dict[str, Any]]) -> dict[str, dict]:
@@ -758,8 +813,9 @@ def check_capability_suite(run_dir: Path) -> dict:
     """Run lm-evaluation-harness once per registered capability seed and aggregate the metrics.
 
     Each seed writes its own results directory and logs, so a failing run names the seed that
-    failed instead of overwriting the only artifact. The receipt carries every seed's numbers
-    alongside the cross-seed mean and spread the capability margin is read against.
+    failed instead of overwriting the only artifact. Tasks whose fewshot pool is smaller than
+    the registered num_fewshot run in a separate invocation at the capped value (see
+    ``_FEWSHOT_CAP``), and their results are merged before aggregation.
     """
     require_admitted(run_dir)
     cfg = config(run_dir)
@@ -769,18 +825,17 @@ def check_capability_suite(run_dir: Path) -> dict:
     per_seed: dict[str, Any] = {}
     for seed in seeds:
         label = "default" if seed is None else str(seed)
-        seed_dir = out_dir / f"seed-{label}"
-        seed_dir.mkdir(parents=True, exist_ok=True)
-        proc = subprocess.run(_capability_command(cfg, seed_dir, seed), capture_output=True, text=True, cwd=str(run_dir))
-        (seed_dir / "stderr.log").write_text(proc.stderr, encoding="utf-8")
-        (seed_dir / "stdout.log").write_text(proc.stdout, encoding="utf-8")
-        if proc.returncode != 0:
-            return {"passed": False, "ok": False, "seed": label, "returncode": proc.returncode, "stderr_tail": proc.stderr[-2000:]}
-        payloads = sorted(seed_dir.glob("**/results*.json"))
-        if not payloads:
-            raise ExecutionError(f"capability suite produced no results JSON for seed {label}")
-        per_seed[label] = json.loads(payloads[-1].read_text(encoding="utf-8")).get("results", {})
-    summary = {"seeds": list(per_seed), "per_seed": per_seed, **_capability_across_seeds(per_seed)}
+        result = _run_capability_seed(cfg, out_dir, seed, run_dir)
+        if isinstance(result, dict) and result.get("passed") is False:
+            return result
+        per_seed[label] = result
+    capped_tasks = {t: _FEWSHOT_CAP[t] for t in cfg["capability"]["tasks"]
+                    if t in _FEWSHOT_CAP and _FEWSHOT_CAP[t] < cfg["capability"].get("num_fewshot", 5)}
+    summary = {
+        "seeds": list(per_seed), "per_seed": per_seed,
+        **_capability_across_seeds(per_seed),
+        **({"fewshot_capped": capped_tasks} if capped_tasks else {}),
+    }
     digest = _save(run_dir, "capability_suite", summary)
     tasks = sorted({task for view in per_seed.values() for task in view})
     return {"passed": True, "ok": True, "seeds": summary["seeds"], "tasks": tasks, "result_sha256": digest}

@@ -741,7 +741,7 @@ def _capability_command(
         "--model_args", model_args,
         "--tasks", ",".join(tasks),
         "--num_fewshot", str(num_fewshot),
-        "--batch_size", str(cfg["capability"].get("batch_size", 256)),
+        "--batch_size", str(cfg["capability"].get("batch_size", 512)),
         "--output_path", str(out_dir),
         "--apply_chat_template",
     ]
@@ -768,8 +768,9 @@ def _run_capability_seed(cfg: dict, out_dir: Path, seed: int | None, run_dir: Pa
         cap_groups.setdefault(cap, []).append(t)
 
     # Split main tasks into parallel sub-groups for better GPU utilization.
-    # Each sub-group loads its own model instance; on a 192 GB GPU with a 0.8B model this is fine.
-    n_parallel = cfg["capability"].get("parallel", min(3, max(1, len(main_tasks) // 3)))
+    # Default 2 parallel groups: 4 caused OOM at batch 256 on 192 GB MI300X (194 GB peak).
+    # 2 groups × batch 512 ≈ 144 GB (75%), safe per Argon/Fable consultations.
+    n_parallel = cfg["capability"].get("parallel", min(2, max(1, len(main_tasks) // 3)))
     main_groups = [main_tasks[i::n_parallel] for i in range(n_parallel)]
 
     invocations: list[tuple[list[str], int, str]] = [

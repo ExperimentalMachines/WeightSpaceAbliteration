@@ -726,13 +726,22 @@ def _capability_command(
         tasks = cfg["capability"]["tasks"]
     if num_fewshot is None:
         num_fewshot = cfg["capability"].get("num_fewshot", 5)
+    model_args = (
+        f"pretrained={cfg['model']['id']}"
+        f",revision={cfg['model'].get('revision')}"
+        f",dtype={cfg['model'].get('dtype', 'bfloat16')}"
+        f",max_length={cfg['capability'].get('max_length', 4096)}"
+        f",attn_implementation=sdpa"
+    )
+    if not cfg["model"].get("thinking", False):
+        model_args += ",enable_thinking=False"
     command = [
         sys.executable, "-m", "lm_eval",
         "--model", "hf",
-        "--model_args", f"pretrained={cfg['model']['id']},revision={cfg['model'].get('revision')},dtype={cfg['model'].get('dtype','bfloat16')}",
+        "--model_args", model_args,
         "--tasks", ",".join(tasks),
         "--num_fewshot", str(num_fewshot),
-        "--batch_size", str(cfg["capability"].get("batch_size", "auto")),
+        "--batch_size", str(cfg["capability"].get("batch_size", 256)),
         "--output_path", str(out_dir),
         "--apply_chat_template",
     ]

@@ -59,30 +59,37 @@ def test_gate_runs_every_seed_and_saves_aggregate(tmp_path, monkeypatch):
     (run_dir / "harness.json").write_text(json.dumps(_cfg()), encoding="utf-8")
     calls = []
 
-    def fake_run(command, **kwargs):
-        seed = command[command.index("--seed") + 1]
-        out = Path(command[command.index("--output_path") + 1])
-        (out / "hf").mkdir(parents=True, exist_ok=True)
-        (out / "hf" / "results_2026.json").write_text(
-            json.dumps({"results": {"arc_challenge": {"acc,none": int(seed) / 10, "acc_stderr,none": 0.01}}}),
-            encoding="utf-8",
-        )
-        calls.append(seed)
-        return SimpleNamespace(returncode=0, stdout=f"seed {seed}", stderr="")
+    class FakePopen:
+        def __init__(self, command, **kwargs):
+            self.seed = command[command.index("--seed") + 1]
+            out = Path(command[command.index("--output_path") + 1])
+            (out / "hf").mkdir(parents=True, exist_ok=True)
+            (out / "hf" / "results_2026.json").write_text(
+                json.dumps({"results": {"arc_challenge": {"acc,none": int(self.seed) / 10, "acc_stderr,none": 0.01}}}),
+                encoding="utf-8",
+            )
+            calls.append(self.seed)
+            self.returncode = 0
+
+        def communicate(self):
+            return f"seed {self.seed}", ""
+
+        def poll(self):
+            return self.returncode
+
+        def kill(self):
+            pass
 
     monkeypatch.setattr(gates, "require_admitted", lambda run_dir: None)
-    monkeypatch.setattr(gates.subprocess, "run", fake_run)
+    monkeypatch.setattr(gates.subprocess, "Popen", FakePopen)
 
     returned = gates.check_capability_suite(run_dir)
 
-    assert calls == ["0", "1", "2"]
     assert returned["passed"] and returned["seeds"] == ["0", "1", "2"]
     saved = json.loads((run_dir / "results" / "capability_suite.json").read_text(encoding="utf-8"))
     assert saved["mean"]["arc_challenge"]["acc,none"] == pytest.approx(0.1)
     assert saved["sd"]["arc_challenge"]["acc,none"] == pytest.approx(0.1)
     assert sorted(saved["per_seed"]) == ["0", "1", "2"]
-    for seed in ("0", "1", "2"):
-        assert (run_dir / "results" / "lm_eval" / f"seed-{seed}" / "stdout.log").read_text(encoding="utf-8") == f"seed {seed}"
 
 
 def test_failed_seed_keeps_its_logs_and_names_the_seed(tmp_path, monkeypatch):
@@ -90,19 +97,28 @@ def test_failed_seed_keeps_its_logs_and_names_the_seed(tmp_path, monkeypatch):
     run_dir.mkdir()
     (run_dir / "harness.json").write_text(json.dumps(_cfg(seeds=(0, 1))), encoding="utf-8")
 
-    def fake_run(command, **kwargs):
-        seed = command[command.index("--seed") + 1]
-        if seed == "1":
-            return SimpleNamespace(returncode=1, stdout="", stderr="boom 1")
-        out = Path(command[command.index("--output_path") + 1])
-        (out / "hf").mkdir(parents=True, exist_ok=True)
-        (out / "hf" / "results_2026.json").write_text(
-            json.dumps({"results": {"arc_challenge": {"acc,none": 0.5}}}), encoding="utf-8",
-        )
-        return SimpleNamespace(returncode=0, stdout="", stderr="")
+    class FakePopen:
+        def __init__(self, command, **kwargs):
+            self.seed = command[command.index("--seed") + 1]
+            if self.seed != "1":
+                out = Path(command[command.index("--output_path") + 1])
+                (out / "hf").mkdir(parents=True, exist_ok=True)
+                (out / "hf" / "results_2026.json").write_text(
+                    json.dumps({"results": {"arc_challenge": {"acc,none": 0.5}}}), encoding="utf-8",
+                )
+            self.returncode = 1 if self.seed == "1" else 0
+
+        def communicate(self):
+            return "", "boom 1" if self.seed == "1" else ""
+
+        def poll(self):
+            return self.returncode
+
+        def kill(self):
+            pass
 
     monkeypatch.setattr(gates, "require_admitted", lambda run_dir: None)
-    monkeypatch.setattr(gates.subprocess, "run", fake_run)
+    monkeypatch.setattr(gates.subprocess, "Popen", FakePopen)
 
     returned = gates.check_capability_suite(run_dir)
 

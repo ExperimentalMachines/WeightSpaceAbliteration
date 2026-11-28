@@ -751,43 +751,61 @@ def _capability_command(
 
 
 def _run_capability_seed(cfg: dict, out_dir: Path, seed: int | None, run_dir: Path) -> dict | dict:
-    """Run one seed, splitting fewshot-limited tasks into a second invocation.
+    """Run one seed, launching all task groups in parallel.
 
-    Returns the merged results dict on success, or a failure dict with ``passed: False``.
+    The main group (registered num_fewshot) and each capped group (reduced num_fewshot)
+    run concurrently via Popen. On a 192 GB MI300X with a 0.8B model, the total VRAM
+    across all groups fits comfortably. Results are merged after all processes finish.
     """
     label = "default" if seed is None else str(seed)
     num_fewshot = cfg["capability"].get("num_fewshot", 5)
     all_tasks = list(cfg["capability"]["tasks"])
     capped = {t: _FEWSHOT_CAP[t] for t in all_tasks if t in _FEWSHOT_CAP and _FEWSHOT_CAP[t] < num_fewshot}
     main_tasks = [t for t in all_tasks if t not in capped]
-    merged: dict[str, Any] = {}
 
-    # Group capped tasks by their cap value so each runs at the right num_fewshot.
     cap_groups: dict[int, list[str]] = {}
     for t, cap in capped.items():
         cap_groups.setdefault(cap, []).append(t)
 
-    invocations: list[tuple[list[str], int, str]] = [(main_tasks, num_fewshot, "")]
+    # Split main tasks into parallel sub-groups for better GPU utilization.
+    # Each sub-group loads its own model instance; on a 192 GB GPU with a 0.8B model this is fine.
+    n_parallel = cfg["capability"].get("parallel", min(3, max(1, len(main_tasks) // 3)))
+    main_groups = [main_tasks[i::n_parallel] for i in range(n_parallel)]
+
+    invocations: list[tuple[list[str], int, str]] = [
+        (group, num_fewshot, f"-p{i}") for i, group in enumerate(main_groups) if group
+    ]
     for cap_val, cap_tasks in sorted(cap_groups.items()):
         invocations.append((cap_tasks, cap_val, f"-capped-{cap_val}"))
 
+    # Launch all groups in parallel.
+    running: list[tuple[str, Path, subprocess.Popen]] = []
     for group_tasks, fs, suffix in invocations:
         if not group_tasks:
             continue
         group_dir = out_dir / f"seed-{label}{suffix}"
         group_dir.mkdir(parents=True, exist_ok=True)
-        proc = subprocess.run(
+        proc = subprocess.Popen(
             _capability_command(cfg, group_dir, seed, tasks=group_tasks, num_fewshot=fs),
-            capture_output=True, text=True, cwd=str(run_dir),
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, cwd=str(run_dir),
         )
-        (group_dir / "stderr.log").write_text(proc.stderr, encoding="utf-8")
-        (group_dir / "stdout.log").write_text(proc.stdout, encoding="utf-8")
+        running.append((suffix or "main", group_dir, proc))
+
+    # Collect results as each process finishes.
+    merged: dict[str, Any] = {}
+    for suffix, group_dir, proc in running:
+        stdout, stderr = proc.communicate()
+        (group_dir / "stderr.log").write_text(stderr, encoding="utf-8")
+        (group_dir / "stdout.log").write_text(stdout, encoding="utf-8")
         if proc.returncode != 0:
+            for _, _, other in running:
+                if other.poll() is None:
+                    other.kill()
             return {"passed": False, "ok": False, "seed": label, "returncode": proc.returncode,
-                    "stderr_tail": proc.stderr[-2000:], "group": suffix or "main"}
+                    "stderr_tail": stderr[-2000:], "group": suffix}
         payloads = sorted(group_dir.glob("**/results*.json"))
         if not payloads:
-            raise ExecutionError(f"capability suite produced no results JSON for seed {label}{suffix}")
+            raise ExecutionError(f"capability suite produced no results JSON for seed {label} group {suffix}")
         merged.update(json.loads(payloads[-1].read_text(encoding="utf-8")).get("results", {}))
 
     return merged

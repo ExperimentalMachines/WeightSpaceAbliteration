@@ -732,6 +732,7 @@ def _capability_command(
         "--model_args", f"pretrained={cfg['model']['id']},revision={cfg['model'].get('revision')},dtype={cfg['model'].get('dtype','bfloat16')}",
         "--tasks", ",".join(tasks),
         "--num_fewshot", str(num_fewshot),
+        "--batch_size", str(cfg["capability"].get("batch_size", "auto")),
         "--output_path", str(out_dir),
         "--apply_chat_template",
     ]
